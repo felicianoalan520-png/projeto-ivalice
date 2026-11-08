@@ -23,8 +23,8 @@ public class IvaliceConfig {
                 .define("enableOverworldBiomes", true);
 
         OVERWORLD_REGION_WEIGHT = BUILDER
-                .comment("Peso da região de Ivalice no TerraBlender (valores maiores tornam os biomas de FFXII mais frequentes no mundo). Padrão: 10.")
-                .defineInRange("overworldRegionWeight", 10, 1, 100);
+                .comment("Peso da região de Ivalice no TerraBlender (valores maiores tornam os biomas de FFXII mais frequentes no mundo). Padrão: 25.")
+                .defineInRange("overworldRegionWeight", 25, 1, 100);
 
         BUILDER.pop();
 

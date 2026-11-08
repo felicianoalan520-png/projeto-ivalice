@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ivalice:item/white_mousse_spawn_egg"
+  }
+}
