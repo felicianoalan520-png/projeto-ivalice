@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "ivalice:block/golmore_darkwood_log_top",
+    "side": "ivalice:block/golmore_darkwood_log"
+  }
+}

@@ -1,0 +1,154 @@
+﻿{
+    "attributes":  {
+                       "minecraft:gameplay/natural_mob_spawns":  {
+                                                                     "argument":  {
+                                                                                      "spawn_costs":  {
+
+                                                                                                      },
+                                                                                      "spawns_by_category":  {
+                                                                                                                 "ambient":  [
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:bat",
+                                                                                                                                     "count":  8,
+                                                                                                                                     "weight":  10
+                                                                                                                                 }
+                                                                                                                             ],
+                                                                                                                 "creature":  [
+                                                                                                                                  {
+                                                                                                                                      "type":  "minecraft:rabbit",
+                                                                                                                                      "count":  {
+                                                                                                                                                    "type":  "minecraft:uniform",
+                                                                                                                                                    "max_inclusive":  4,
+                                                                                                                                                    "min_inclusive":  2
+                                                                                                                                                },
+                                                                                                                                      "weight":  20
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                      "type":  "minecraft:wolf",
+                                                                                                                                      "count":  {
+                                                                                                                                                    "type":  "minecraft:uniform",
+                                                                                                                                                    "max_inclusive":  4,
+                                                                                                                                                    "min_inclusive":  2
+                                                                                                                                                },
+                                                                                                                                      "weight":  10
+                                                                                                                                  },
+                                                                                                                                  {
+                                                                                                                                      "type":  "minecraft:horse",
+                                                                                                                                      "count":  {
+                                                                                                                                                    "type":  "minecraft:uniform",
+                                                                                                                                                    "max_inclusive":  4,
+                                                                                                                                                    "min_inclusive":  2
+                                                                                                                                                },
+                                                                                                                                      "weight":  5
+                                                                                                                                  }
+                                                                                                                              ],
+                                                                                                                 "monster":  [
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:spider",
+                                                                                                                                     "count":  4,
+                                                                                                                                     "weight":  80
+                                                                                                                                 },
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:zombie",
+                                                                                                                                     "count":  4,
+                                                                                                                                     "weight":  80
+                                                                                                                                 },
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:skeleton",
+                                                                                                                                     "count":  4,
+                                                                                                                                     "weight":  80
+                                                                                                                                 }
+                                                                                                                             ]
+                                                                                                             }
+                                                                                  },
+                                                                     "modifier":  "overlay"
+                                                                 },
+                       "minecraft:visual/fog_color":  "#ffefc2",
+                       "minecraft:visual/sky_color":  "#6bc2ff"
+                   },
+    "carvers":  [
+                    "minecraft:cave",
+                    "minecraft:cave_extra_underground",
+                    "minecraft:canyon"
+                ],
+    "downfall":  0.2,
+    "effects":  {
+                    "dry_foliage_color":  "#d4b24c",
+                    "foliage_color":  "#b8ba4a",
+                    "grass_color":  "#c9bd4f",
+                    "water_color":  "#2eb5d1"
+                },
+    "features":  [
+                     [
+
+                     ],
+                     [
+                         "minecraft:lake_lava_underground"
+                     ],
+                     [
+                         "minecraft:amethyst_geode"
+                     ],
+                     [
+                         "minecraft:monster_room",
+                         "minecraft:monster_room_deep"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:ore_dirt",
+                         "minecraft:ore_gravel",
+                         "minecraft:ore_granite_upper",
+                         "minecraft:ore_granite_lower",
+                         "minecraft:ore_diorite_upper",
+                         "minecraft:ore_diorite_lower",
+                         "minecraft:ore_andesite_upper",
+                         "minecraft:ore_andesite_lower",
+                         "minecraft:ore_tuff",
+                         "minecraft:ore_coal_upper",
+                         "minecraft:ore_coal_lower",
+                         "minecraft:ore_iron_upper",
+                         "minecraft:ore_iron_middle",
+                         "minecraft:ore_iron_small",
+                         "minecraft:ore_gold",
+                         "minecraft:ore_gold_lower",
+                         "minecraft:ore_redstone",
+                         "minecraft:ore_redstone_lower",
+                         "minecraft:ore_diamond",
+                         "minecraft:ore_diamond_medium",
+                         "minecraft:ore_diamond_large",
+                         "minecraft:ore_diamond_buried",
+                         "minecraft:ore_lapis",
+                         "minecraft:ore_lapis_buried",
+                         "minecraft:ore_copper",
+                         "minecraft:underwater_magma",
+                         "minecraft:disk_sand",
+                         "minecraft:disk_clay",
+                         "minecraft:disk_gravel",
+                         "ivalice:ore_sunstone"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:spring_water"
+                     ],
+                     [
+                         "minecraft:glow_lichen",
+                         "minecraft:patch_tall_grass",
+                         "minecraft:trees_savanna",
+                         "minecraft:flower_warm",
+                         "minecraft:patch_grass_savanna",
+                         "ivalice:patch_gysahl_greens",
+                         "ivalice:patch_estersand_scrub"
+                     ],
+                     [
+                         "minecraft:freeze_top_layer"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "temperature":  1.4
+}

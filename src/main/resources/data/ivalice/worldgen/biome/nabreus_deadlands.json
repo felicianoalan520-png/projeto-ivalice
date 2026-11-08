@@ -1,0 +1,158 @@
+﻿{
+    "attributes":  {
+                       "minecraft:audio/background_music":  {
+                                                                "default":  {
+                                                                                "max_delay":  24000,
+                                                                                "min_delay":  12000,
+                                                                                "sound":  "minecraft:music.overworld.swamp"
+                                                                            }
+                                                            },
+                       "minecraft:gameplay/increased_fire_burnout":  true,
+                       "minecraft:gameplay/natural_mob_spawns":  {
+                                                                     "argument":  {
+                                                                                      "spawn_costs":  {
+
+                                                                                                      },
+                                                                                      "spawns_by_category":  {
+                                                                                                                 "ambient":  [
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:bat",
+                                                                                                                                     "count":  8,
+                                                                                                                                     "weight":  20
+                                                                                                                                 }
+                                                                                                                             ],
+                                                                                                                 "creature":  [
+                                                                                                                                  {
+                                                                                                                                      "type":  "minecraft:frog",
+                                                                                                                                      "count":  3,
+                                                                                                                                      "weight":  10
+                                                                                                                                  }
+                                                                                                                              ],
+                                                                                                                 "monster":  [
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:skeleton",
+                                                                                                                                     "count":  4,
+                                                                                                                                     "weight":  100
+                                                                                                                                 },
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:bogged",
+                                                                                                                                     "count":  4,
+                                                                                                                                     "weight":  80
+                                                                                                                                 },
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:zombie",
+                                                                                                                                     "count":  4,
+                                                                                                                                     "weight":  100
+                                                                                                                                 },
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:slime",
+                                                                                                                                     "count":  3,
+                                                                                                                                     "weight":  60
+                                                                                                                                 }
+                                                                                                                             ]
+                                                                                                             }
+                                                                                  },
+                                                                     "modifier":  "overlay"
+                                                                 },
+                       "minecraft:visual/ambient_particles":  {
+                                                                  "argument":  [
+                                                                                   {
+                                                                                       "particle":  {
+                                                                                                        "type":  "minecraft:ash"
+                                                                                                    },
+                                                                                       "probability":  0.025
+                                                                                   }
+                                                                               ],
+                                                                  "modifier":  "append"
+                                                              },
+                       "minecraft:visual/fog_color":  "#384542",
+                       "minecraft:visual/sky_color":  "#42524f",
+                       "minecraft:visual/water_fog_color":  "#182421"
+                   },
+    "carvers":  [
+                    "minecraft:cave",
+                    "minecraft:cave_extra_underground",
+                    "minecraft:canyon"
+                ],
+    "downfall":  0.9,
+    "effects":  {
+                    "dry_foliage_color":  "#4a5240",
+                    "foliage_color":  "#3f4d3b",
+                    "grass_color":  "#42523f",
+                    "water_color":  "#2f453e"
+                },
+    "features":  [
+                     [
+
+                     ],
+                     [
+                         "minecraft:lake_lava_underground"
+                     ],
+                     [
+                         "minecraft:amethyst_geode"
+                     ],
+                     [
+                         "minecraft:fossil_upper",
+                         "minecraft:fossil_lower",
+                         "minecraft:monster_room",
+                         "minecraft:monster_room_deep"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:ore_dirt",
+                         "minecraft:ore_gravel",
+                         "minecraft:ore_granite_upper",
+                         "minecraft:ore_granite_lower",
+                         "minecraft:ore_diorite_upper",
+                         "minecraft:ore_diorite_lower",
+                         "minecraft:ore_andesite_upper",
+                         "minecraft:ore_andesite_lower",
+                         "minecraft:ore_tuff",
+                         "minecraft:ore_coal_upper",
+                         "minecraft:ore_coal_lower",
+                         "minecraft:ore_iron_upper",
+                         "minecraft:ore_iron_middle",
+                         "minecraft:ore_iron_small",
+                         "minecraft:ore_gold",
+                         "minecraft:ore_gold_lower",
+                         "minecraft:ore_redstone",
+                         "minecraft:ore_redstone_lower",
+                         "minecraft:ore_diamond",
+                         "minecraft:ore_diamond_medium",
+                         "minecraft:ore_diamond_large",
+                         "minecraft:ore_diamond_buried",
+                         "minecraft:ore_lapis",
+                         "minecraft:ore_lapis_buried",
+                         "minecraft:ore_copper",
+                         "minecraft:underwater_magma",
+                         "minecraft:disk_sand",
+                         "minecraft:disk_clay",
+                         "minecraft:disk_gravel"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:spring_water"
+                     ],
+                     [
+                         "minecraft:trees_swamp",
+                         "minecraft:patch_dead_bush",
+                         "minecraft:patch_waterlily",
+                         "minecraft:brown_mushroom_swamp",
+                         "minecraft:red_mushroom_swamp",
+                         "minecraft:seagrass_swamp",
+                         "ivalice:patch_feywood_white_lily"
+                     ],
+                     [
+                         "minecraft:freeze_top_layer"
+                     ]
+                 ],
+    "has_precipitation":  true,
+    "temperature":  0.6
+}

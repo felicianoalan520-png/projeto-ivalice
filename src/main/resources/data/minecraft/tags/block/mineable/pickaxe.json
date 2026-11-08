@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "ivalice:dalmasca_sandstone",
+    "ivalice:sunstone_ore",
+    "ivalice:golmore_moss_stone",
+    "ivalice:paramina_permafrost",
+    "ivalice:mosphoran_slate"
+  ]
+}

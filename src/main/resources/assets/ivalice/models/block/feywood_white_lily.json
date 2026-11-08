@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "ivalice:block/feywood_white_lily"
+  }
+}

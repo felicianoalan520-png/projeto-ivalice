@@ -1,0 +1,16 @@
+﻿{
+  "variants": {
+    "axis=x": {
+      "model": "ivalice:block/golmore_darkwood_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "ivalice:block/golmore_darkwood_log"
+    },
+    "axis=z": {
+      "model": "ivalice:block/golmore_darkwood_log",
+      "x": 90
+    }
+  }
+}
