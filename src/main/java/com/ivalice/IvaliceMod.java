@@ -80,6 +80,7 @@ public class IvaliceMod {
         NeoForge.EVENT_BUS.addListener(IvaliceEquipment::onTick);
         NeoForge.EVENT_BUS.addListener(BattleManager::onLogout);
         NeoForge.EVENT_BUS.addListener(BattleManager::onDamage);
+        NeoForge.EVENT_BUS.addListener(BattleManager::onKnockback);
         NeoForge.EVENT_BUS.addListener(IvaliceStatuses::onDeath);
         NeoForge.EVENT_BUS.addListener(ZodiacJobs::onAttack);
         NeoForge.EVENT_BUS.addListener(ZodiacJobs::onPlayerTick);

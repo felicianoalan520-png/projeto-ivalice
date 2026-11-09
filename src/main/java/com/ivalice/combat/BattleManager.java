@@ -12,6 +12,7 @@ import com.ivalice.job.ZodiacJobs;
 import com.ivalice.network.IvaliceStatePayload;
 import com.ivalice.registry.IvaliceItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,8 +23,8 @@ import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Prediction;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -60,11 +62,13 @@ public final class BattleManager {
         final ServerPlayer player;
         final List<IvaliceMonsterEntity> enemies;
         final Set<UUID> revealed = new HashSet<>();
+        final Set<UUID> expiredDoom = new HashSet<>();
         final int maxMp;
         int mp;
         int round = 1;
         int revision = nextRevision++;
         boolean resolving;
+        Hit allowedHit;
         Round roundInProgress;
 
         Session(ServerPlayer player, List<IvaliceMonsterEntity> enemies) {
@@ -84,11 +88,14 @@ public final class BattleManager {
 
     private static final class Round {
         final List<Beat> beats = new ArrayList<>();
+        final Set<UUID> acted = new HashSet<>();
         int index;
         int age;
         int counters;
         String result = "";
     }
+
+    private record Hit(LivingEntity target, DamageSource source) {}
 
     private record Beat(LivingEntity actor, List<? extends LivingEntity> targets, BattleVisual.Style style,
                         String label, Runnable apply) {}
@@ -294,6 +301,7 @@ public final class BattleManager {
             ENEMIES.put(mob.getUUID(), session);
             mob.setTarget(null);
             mob.getNavigation().stop();
+            face(mob, player);
             mob.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
             if (profile.getKills(mob.getSpeciesId()) >= 3) {
                 session.revealed.add(mob.getUUID());
@@ -354,19 +362,53 @@ public final class BattleManager {
         }
     }
 
+    private static Session sessionOf(LivingEntity entity) {
+        return entity instanceof ServerPlayer ? BATTLES.get(entity.getUUID())
+                : entity instanceof IvaliceMonsterEntity ? ENEMIES.get(entity.getUUID()) : null;
+    }
+
     public static void onDamage(LivingIncomingDamageEvent event) {
-        if (event.getSource().is(DamageTypes.GENERIC_KILL)) return;
-        if (event.getEntity() instanceof IvaliceMonsterEntity mob) {
-            Session session = ENEMIES.get(mob.getUUID());
-            if (session != null && (!session.resolving || event.getSource().getEntity() != session.player)) {
-                event.setCanceled(true);
-            }
-        } else if (event.getEntity() instanceof ServerPlayer player
-                && event.getSource().getEntity() instanceof Mob attacker) {
-            Session session = BATTLES.get(player.getUUID());
-            if (session != null && (!session.resolving || ENEMIES.get(attacker.getUUID()) != session)) {
-                event.setCanceled(true);
-            }
+        DamageSource source = event.getSource();
+        if (source.is(DamageTypes.GENERIC_KILL) || source.is(DamageTypes.FELL_OUT_OF_WORLD)
+                || source.is(DamageTypes.OUTSIDE_BORDER)) return;
+        Session session = sessionOf(event.getEntity());
+        if (session != null && (session.allowedHit == null
+                || session.allowedHit.target != event.getEntity() || session.allowedHit.source != source)) {
+            event.setCanceled(true);
+        }
+    }
+
+    public static void onKnockback(LivingKnockBackEvent event) {
+        if (event.getEntity().level() instanceof ServerLevel && sessionOf(event.getEntity()) != null) {
+            event.setCanceled(true);
+        }
+    }
+
+    static boolean deferDoom(LivingEntity entity) {
+        Session session = sessionOf(entity);
+        if (session == null) return false;
+        session.expiredDoom.add(entity.getUUID());
+        return true;
+    }
+
+    static void damage(ServerPlayer player, LivingEntity target, DamageSource source, float amount) {
+        damage(BATTLES.get(player.getUUID()), target, source, amount);
+    }
+
+    private static void damage(Session session, LivingEntity target, DamageSource source, float amount) {
+        if (amount <= 0 || !target.isAlive() || !(target.level() instanceof ServerLevel level)) return;
+        Session targetSession = sessionOf(target);
+        if (targetSession != null && (targetSession != session || !session.resolving)) return;
+        Hit previous = targetSession == null ? null : session.allowedHit;
+        if (targetSession != null) {
+            session.allowedHit = new Hit(target, source);
+            target.damageCooldownTime = 0;
+        }
+        try {
+            if (target instanceof IvaliceMonsterEntity mob) mob.hurtWithCalculatedDamage(level, source, amount);
+            else target.hurtServer(level, source, amount);
+        } finally {
+            if (targetSession != null) session.allowedHit = previous;
         }
     }
 
@@ -384,10 +426,7 @@ public final class BattleManager {
             finish(session, "Você recuou.");
             return;
         }
-        if (session.roundInProgress != null) {
-            sendAnimation(session, "Rodada em andamento");
-            return;
-        }
+        if (session.roundInProgress != null) return;
         if (revision != 0 && revision != session.revision) {
             sendState(session, "A rodada já mudou.");
             return;
@@ -453,11 +492,9 @@ public final class BattleManager {
                 sendState(session, "Item indisponível ou alvo incompatível.");
                 return;
             }
-            session.revision = nextRevision++;
             planRound(session, action, target, false, 0, consumable);
             return;
         }
-        session.revision = nextRevision++;
         planRound(session, action, target, area, useGil ? -cost : cost);
     }
 
@@ -469,23 +506,24 @@ public final class BattleManager {
                                   IvaliceUseItem consumable) {
         Round round = new Round();
         session.roundInProgress = round;
+        session.revision = nextRevision++;
         List<IvaliceMonsterEntity> order = session.enemies.stream()
                 .sorted(Comparator.comparingDouble(BattleManager::speed).reversed()).toList();
         double playerSpeed = session.player.getAttributeValue(Attributes.MOVEMENT_SPEED) * 3.0;
         boolean doubleAttack = action == Action.ATTACK
                 && (playerSpeed >= speed(order.getFirst()) * 1.35
                 || (IvaliceEquipment.has(session.player, "genji_gloves") && session.player.getRandom().nextFloat() < .45F));
-        boolean queued = false;
+        if (action != null) {
+            addPlayerBeats(session, round, action, target, area, cost, doubleAttack, consumable);
+        } else {
+            round.beats.add(new Beat(session.player, List.of(session.player), BattleVisual.Style.TECHNIQUE,
+                    "Seu turno • Sem ação", () -> {}));
+        }
         for (IvaliceMonsterEntity enemy : order) {
-            if (!queued && playerSpeed >= speed(enemy)) {
-                if (action != null) addPlayerBeats(session, round, action, target, area, cost, doubleAttack, consumable);
-                queued = true;
-            }
             BattleVisual.Style style = enemy.hasEffect(IvaliceStatuses.SILENCE) ? BattleVisual.Style.SLASH : enemyStyle(enemy, session.round);
             round.beats.add(new Beat(enemy, List.of(session.player), style, shortName(enemy) + " • " + enemyMove(enemy, style),
                     () -> applyCounter(session, enemy, style)));
         }
-        if (!queued && action != null) addPlayerBeats(session, round, action, target, area, cost, false, consumable);
         sendAnimation(session, "Rodada " + session.round);
     }
 
@@ -494,7 +532,7 @@ public final class BattleManager {
         if (consumable != null) {
             var effect = consumable.effect();
             var targets = battleItemTargets(session, target, effect);
-            round.beats.add(new Beat(session.player, targets, effect.style(), consumable.getCanonicalRef(), () -> {
+            round.beats.add(new Beat(session.player, targets, effect.style(), "Seu turno • " + consumable.getCanonicalRef(), () -> {
                 var inventory = session.player.getInventory();
                 if (!IvaliceConsumables.applicable(effect, battleItemTargets(session, target, effect))) return;
                 for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
@@ -510,7 +548,8 @@ public final class BattleManager {
         }
         List<? extends LivingEntity> targets = action.targetsSelf() ? List.of(session.player)
                 : area ? List.copyOf(session.enemies) : List.of(target);
-        round.beats.add(new Beat(session.player, targets, style(action), actionLabel(action) + (area && !action.isInnateArea() ? " em área" : ""),
+        round.beats.add(new Beat(session.player, targets, style(action), "Seu turno • " + actionLabel(action)
+                + (area && !action.isInnateArea() ? " em área" : ""),
                 () -> {
                     round.result = act(session, action, target, area, cost);
                     if (doubleAttack) {
@@ -596,16 +635,19 @@ public final class BattleManager {
         Beat beat = round.beats.get(round.index);
         ServerLevel level = session.player.level();
         if (round.age == 0) {
+            if (beat.actor instanceof IvaliceMonsterEntity mob) face(mob, session.player);
             BattleVisual.begin(level, beat.actor, beat.style);
             sendAnimation(session, beat.label);
         }
         for (LivingEntity target : beat.targets) {
             if (target.level() == level) BattleVisual.animate(level, beat.actor, target, beat.style, round.age);
         }
-        if (round.age == beat.style.impactTick && beat.actor.isAlive()) {
+        if (round.age == beat.style.impactTick && beat.actor.isAlive()
+                && (beat.actor == session.player || sessionOf(beat.actor) == session)) {
             session.resolving = true;
             try {
-                beat.apply.run();
+                if (round.acted.add(beat.actor.getUUID())) applyTurnStatuses(session, beat.actor);
+                if (beat.actor.isAlive()) beat.apply.run();
             } finally {
                 session.resolving = false;
             }
@@ -616,18 +658,33 @@ public final class BattleManager {
         }
     }
 
+    private static void face(IvaliceMonsterEntity enemy, ServerPlayer player) {
+        enemy.lookAt(EntityAnchorArgument.Anchor.EYES, player.getEyePosition());
+        enemy.setYBodyRot(enemy.getYRot());
+    }
+
+    private static void applyTurnStatuses(Session session, LivingEntity actor) {
+        ServerLevel level = session.player.level();
+        if (session.expiredDoom.remove(actor.getUUID())) {
+            damage(session, actor, level.damageSources().magic(), actor.getMaxHealth() * 4);
+        } else if (actor.hasEffect(MobEffects.WITHER)) {
+            damage(session, actor, level.damageSources().wither(), 1);
+        } else if (actor.hasEffect(MobEffects.POISON) && actor.getHealth() > 1) {
+            damage(session, actor, level.damageSources().magic(), Math.min(1, actor.getHealth() - 1));
+        }
+    }
+
     private static void applyCounter(Session session, IvaliceMonsterEntity enemy, BattleVisual.Style style) {
         ServerPlayer player = session.player;
         if (!player.isAlive() || ENEMIES.get(enemy.getUUID()) != session || IvaliceStatuses.unableToAct(enemy)) return;
         if (enemy.hasEffect(IvaliceStatuses.CONFUSE) && enemy.getRandom().nextBoolean()) {
-            enemy.hurtWithCalculatedDamage(player.level(), player.level().damageSources().mobAttack(enemy),
+            damage(session, enemy, player.level().damageSources().mobAttack(enemy),
                     (float) enemy.getAttributeValue(Attributes.ATTACK_DAMAGE) * .4F);
             return;
         }
         if (enemy.hasEffect(IvaliceStatuses.SILENCE)) style = BattleVisual.Style.SLASH;
         if ((style == BattleVisual.Style.SLASH || style == BattleVisual.Style.CLEAVE)
                 && enemy.hasEffect(MobEffects.BLINDNESS) && enemy.getRandom().nextFloat() < .55F) return;
-        player.damageCooldownTime = 0;
         ServerLevel level = player.level();
         var damage = (style == BattleVisual.Style.SLASH || style == BattleVisual.Style.CLEAVE)
                 ? level.damageSources().mobAttack(enemy)
@@ -654,7 +711,7 @@ public final class BattleManager {
             player.heal(amount);
         } else {
             if (player.hasEffect(IvaliceStatuses.SHELL) && style != BattleVisual.Style.SLASH && style != BattleVisual.Style.CLEAVE) amount *= .65F;
-            player.hurtServer(level, damage, amount);
+            damage(session, player, damage, amount);
             if (player.isAlive() && style == BattleVisual.Style.DARKGA && enemy.getSpeciesId().equals("ruin_deathgaze")
                     && !player.hasEffect(IvaliceStatuses.DOOM) && !IvaliceEquipment.has(player, "ribbon")) {
                 player.addEffect(new MobEffectInstance(IvaliceStatuses.DOOM, 400));
@@ -875,21 +932,6 @@ public final class BattleManager {
                     for (IvaliceMonsterEntity enemy : List.copyOf(session.enemies)) {
                         castDamage(player, enemy, action, bonus * areaScale);
                     }
-                    // Magias de Tier 3 (-ga) e Tier 4 também atingem monstros próximos numa área massiva do mundo!
-                    if (action.tier >= 3) {
-                        double splashRadius = action.tier == 4 ? 18.0 : 12.0;
-                        for (IvaliceMonsterEntity nearby : player.level().getEntitiesOfClass(IvaliceMonsterEntity.class,
-                                target.getBoundingBox().inflate(splashRadius),
-                                mob -> mob.isAlive() && !session.enemies.contains(mob))) {
-                            if (!isEngaged(nearby)) {
-                                float dmg = (action.damage + (level - 1) * 0.45F) * bonus * 0.75F
-                                        * getElementalMultiplier(nearby.getStats(), action.element);
-                                if (dmg < 0) nearby.heal(-dmg);
-                                if (dmg > 0) nearby.hurtWithCalculatedDamage(player.level(),
-                                        player.level().damageSources().indirectMagic(player, player), dmg);
-                            }
-                        }
-                    }
                     return spellName(action) + (action.isInnateArea() ? " [Cataclismo em Área]" : " em área");
                 }
                 castDamage(player, target, action, bonus);
@@ -1021,7 +1063,7 @@ public final class BattleManager {
                 && (session == null || ENEMIES.get(target.getUUID()) == session)) {
             if (amount <= 0) return;
             if (magic && target.hasEffect(IvaliceStatuses.REFLECT) && !IvaliceEquipment.has(player, "tza_opal_ring")) {
-                player.hurtServer(player.level(), player.level().damageSources().indirectMagic(target, target), amount);
+                damage(session, player, player.level().damageSources().indirectMagic(target, target), amount);
                 return;
             }
             if (target.hasEffect(IvaliceStatuses.REVERSE)) {
@@ -1031,9 +1073,8 @@ public final class BattleManager {
             if (magic && target.hasEffect(IvaliceStatuses.SHELL)) amount *= .65F;
             if (!magic && target.hasEffect(IvaliceStatuses.DISEASE)) amount *= 1.20F;
             target.removeEffect(IvaliceStatuses.SLEEP);
-            if (session != null) target.damageCooldownTime = 0;
             ServerLevel level = player.level();
-            target.hurtWithCalculatedDamage(level, magic ? level.damageSources().indirectMagic(player, player)
+            damage(session, target, magic ? level.damageSources().indirectMagic(player, player)
                     : level.damageSources().playerAttack(player), amount);
         }
     }
@@ -1069,16 +1110,26 @@ public final class BattleManager {
             if (mob.isAlive() && mob.level() == session.player.level() && session.player.distanceToSqr(mob) <= 256) {
                 return false;
             }
-            ENEMIES.remove(mob.getUUID(), session);
+            unlockEnemy(session, mob);
             return true;
         });
     }
 
+    private static void unlockEnemy(Session session, IvaliceMonsterEntity mob) {
+        ENEMIES.remove(mob.getUUID(), session);
+        restoreExpiredDoom(session, mob);
+    }
+
+    private static void restoreExpiredDoom(Session session, LivingEntity entity) {
+        if (session.expiredDoom.remove(entity.getUUID()) && entity.isAlive()) {
+            entity.addEffect(new MobEffectInstance(IvaliceStatuses.DOOM, 1));
+        }
+    }
+
     private static void release(Session session) {
         BATTLES.remove(session.player.getUUID(), session);
-        for (IvaliceMonsterEntity mob : session.enemies) {
-            ENEMIES.remove(mob.getUUID(), session);
-        }
+        restoreExpiredDoom(session, session.player);
+        for (IvaliceMonsterEntity mob : session.enemies) unlockEnemy(session, mob);
     }
 
     private static void finish(Session session, String message) {

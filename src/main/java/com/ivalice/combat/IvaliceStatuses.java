@@ -38,7 +38,9 @@ public final class IvaliceStatuses {
                 public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
                     if (entity instanceof com.ivalice.entity.IvaliceMonsterEntity mob
                             && !mob.getStats().rankType().equals("Normal")) return false;
-                    entity.hurtServer(level, level.damageSources().magic(), entity.getMaxHealth() * 4);
+                    if (!BattleManager.deferDoom(entity)) {
+                        entity.hurtServer(level, level.damageSources().magic(), entity.getMaxHealth() * 4);
+                    }
                     return false;
                 }
             });

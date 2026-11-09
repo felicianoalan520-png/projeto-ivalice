@@ -236,6 +236,6 @@ final class IvaliceActionEffects {
     private static void damage(ServerPlayer caster, LivingEntity target, float amount, boolean magic) {
         if (amount <= 0) return;
         if (target instanceof IvaliceMonsterEntity enemy) BattleManager.strike(caster, enemy, amount, magic);
-        else target.hurtServer(caster.level(), caster.level().damageSources().magic(), amount);
+        else BattleManager.damage(caster, target, caster.level().damageSources().magic(), amount);
     }
 }

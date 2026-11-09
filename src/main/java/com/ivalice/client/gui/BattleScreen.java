@@ -222,7 +222,7 @@ public final class BattleScreen extends IvalicePanelScreen {
 
     @Override
     public boolean isPauseScreen() {
-        return !waiting;
+        return false;
     }
 
     @Override

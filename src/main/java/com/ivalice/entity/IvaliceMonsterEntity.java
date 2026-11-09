@@ -31,6 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.Map;
@@ -173,6 +174,25 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         return !(target instanceof ServerPlayer player && BattleManager.isInBattle(player)) && super.canAttack(target);
     }
 
+    private boolean isServerBattleParticipant() {
+        return level() instanceof ServerLevel && BattleManager.isEngaged(this);
+    }
+
+    @Override
+    public boolean isEffectiveAi() {
+        return super.isEffectiveAi() && !isServerBattleParticipant();
+    }
+
+    @Override
+    protected void pushEntities() {
+        if (!isServerBattleParticipant()) super.pushEntities();
+    }
+
+    @Override
+    public boolean isPushable() {
+        return !isServerBattleParticipant() && super.isPushable();
+    }
+
     @Override
     public void tick() {
         if (summoner != null && level() instanceof ServerLevel server) {
@@ -198,14 +218,14 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
                 }
             }
         }
-        if (!level().isClientSide() && isAlive() && BattleManager.isEngaged(this)) {
-            if (this.tickCount % 15 == 0 && (alphaLeader || getStats().rankType().contains("Esper") || getStats().rankType().contains("Mark"))
+        if (isServerBattleParticipant()) {
+            setDeltaMovement(Vec3.ZERO);
+            setJumping(false);
+            if (tickCount % 15 == 0 && (alphaLeader || getStats().rankType().contains("Esper") || getStats().rankType().contains("Mark"))
                     && level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.ENCHANT,
                         getX(), getY() + getBbHeight() * 0.5, getZ(), 6, 0.35, 0.35, 0.35, 0.02);
             }
-            super.baseTick();
-            return;
         }
         super.tick();
         if (!this.level().isClientSide()) {
@@ -336,7 +356,8 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     public boolean doHurtTarget(ServerLevel level, Entity target) {
-        if (IvaliceStatuses.unableToAct(this)) return false;
+        if (BattleManager.isEngaged(this) || (target instanceof ServerPlayer player && BattleManager.isInBattle(player))
+                || IvaliceStatuses.unableToAct(this)) return false;
         playBattleAnimation("strike");
         net.minecraft.world.phys.Vec3 dir = target.position().subtract(this.position()).normalize();
         this.push(dir.x * 0.35, 0.18, dir.z * 0.35);

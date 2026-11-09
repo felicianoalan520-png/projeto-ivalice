@@ -7,6 +7,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -94,10 +95,8 @@ public final class BattleVisual {
         if (actor instanceof IvaliceMonsterEntity mob) {
             mob.playBattleAnimation(style == Style.SLASH || style == Style.CLEAVE ? "strike" : "cast");
         }
-        if (style == Style.SLASH || style == Style.CLEAVE) {
-            actor.swingAndResetAttackStrength(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, true);
-        } else {
-            actor.swingAndResetAttackStrength(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, true);
+        actor.swingAndResetAttackStrength(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, true);
+        if (style != Style.SLASH && style != Style.CLEAVE) {
             int ringCount = 12 * style.tier;
             double radius = 0.6 + style.tier * 0.35;
             Vec3 origin = actor.position().add(0, 0.2, 0);
@@ -117,19 +116,11 @@ public final class BattleVisual {
     public static void animate(ServerLevel level, LivingEntity actor, LivingEntity target, Style style, int age) {
         if (!target.isAlive() && age <= style.impactTick) return;
         Vec3 start = center(actor);
-        Vec3 destination = center(target);
-
-        // Impulso físico dinâmico em ataques corpo a corpo
-        if ((style == Style.SLASH || style == Style.CLEAVE) && age == 2 && actor.isAlive()) {
-            Vec3 lunge = destination.subtract(start).normalize().scale(0.48);
-            actor.push(lunge.x, 0.18, lunge.z);
-            particles(level, ParticleTypes.CLOUD, actor.position().add(0, 0.2, 0), 6, 0.25, 0.04);
-        }
+        boolean playerTarget = target instanceof ServerPlayer;
+        Vec3 destination = playerTarget ? target.position().add(0, .2, 0) : center(target);
 
         if (age == style.impactTick) {
-            boolean changeTerrain = !(actor instanceof IvaliceMonsterEntity mob)
-                    || !mob.getStats().rankType().equals("Normal");
-            impact(level, target, style, changeTerrain);
+            impact(level, target, style, false);
             return;
         }
         if (age > style.impactTick) {
@@ -194,8 +185,10 @@ public final class BattleVisual {
                 double radius = (0.4 + style.tier * 0.55) * (0.5 + time * 0.7);
                 for (int i = 0; i < 4 * style.tier; i++) {
                     double angle = age * 0.75 + (Math.PI * 2 * i) / (4 * style.tier);
-                    Vec3 swirl = destination.add(Math.cos(angle) * radius, (i % 4) * 0.65, Math.sin(angle) * radius);
-                    particles(level, ParticleTypes.CLOUD, swirl, 2, 0.12, 0.03);
+                    double ring = playerTarget ? radius + .7 : radius;
+                    Vec3 swirl = destination.add(Math.cos(angle) * ring, (i % 4) * (playerTarget ? .2 : .65),
+                            Math.sin(angle) * ring);
+                    particles(level, ParticleTypes.CLOUD, swirl, playerTarget ? 1 : 2, .12, .03);
                 }
             }
             case ICE, BLIZZARA, BLIZZAGA -> {
@@ -232,8 +225,9 @@ public final class BattleVisual {
         impact(level, target, style, true);
     }
 
-    private static void impact(ServerLevel level, LivingEntity target, Style style, boolean changeTerrain) {
-        Vec3 center = center(target);
+    private static void impact(ServerLevel level, LivingEntity target, Style style, boolean affectWorld) {
+        boolean nearCamera = !affectWorld && target instanceof ServerPlayer;
+        Vec3 center = nearCamera ? target.position().add(0, .25, 0) : center(target);
         if (style == Style.SLASH || style == Style.CLEAVE) {
             particles(level, ParticleTypes.SWEEP_ATTACK, center, style == Style.CLEAVE ? 4 : 1, 0.25, 0.0);
             BlockState ground = level.getBlockState(target.blockPosition().below());
@@ -242,11 +236,14 @@ public final class BattleVisual {
             }
         }
 
-        particles(level, style.particle, center, style.tier >= 3 ? 65 : (style.tier == 2 ? 36 : 18),
-                0.35 * style.tier, 0.14);
+        boolean gust = style == Style.WIND || style == Style.AERORA || style == Style.AEROGA;
+        if (!nearCamera || !gust) {
+            int count = nearCamera ? 10 : (style.tier >= 3 ? 65 : (style.tier == 2 ? 36 : 18));
+            particles(level, style.particle, center, count, .35 * style.tier, .14);
+        }
 
         if (style.tier >= 3) {
-            particles(level, ParticleTypes.EXPLOSION_EMITTER, center, 1, 0.2, 0.0);
+            if (!nearCamera) particles(level, ParticleTypes.EXPLOSION_EMITTER, center, 1, .2, 0.0);
             level.playSound(null, target.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.3F, 0.8F);
         }
 
@@ -254,12 +251,12 @@ public final class BattleVisual {
             case FIRE, FIRA, FIRAGA, ARDOR, FLARE -> {
                 particles(level, ParticleTypes.LAVA, center, 6 * style.tier, 0.25 * style.tier, 0.05);
                 particles(level, ParticleTypes.FLAME, center, 18 * style.tier, 0.45 * style.tier, 0.08);
-                target.igniteForSeconds(2.5F * style.tier);
+                if (affectWorld) target.igniteForSeconds(2.5F * style.tier);
             }
             case WATER, AQUARA, WATERGA -> {
                 particles(level, ParticleTypes.FALLING_WATER, center.add(0, 1.0, 0), 18 * style.tier, 0.45 * style.tier, 0.06);
                 particles(level, ParticleTypes.SPLASH, center, 24 * style.tier, 0.5 * style.tier, 0.15);
-                target.clearFire();
+                if (affectWorld) target.clearFire();
             }
             case THUNDER, THUNDARA, THUNDAGA -> {
                 if (style.tier >= 2) {
@@ -271,8 +268,9 @@ public final class BattleVisual {
                 }
             }
             case WIND, AERORA, AEROGA -> {
-                particles(level, ParticleTypes.GUST_EMITTER_LARGE, center, style.tier, 0.4 * style.tier, 0.05);
-                target.push(0, 0.22 * style.tier, 0);
+                if (nearCamera) particles(level, ParticleTypes.CLOUD, center, 5, .45, .02);
+                else particles(level, ParticleTypes.GUST_EMITTER_LARGE, center, style.tier, .4 * style.tier, .05);
+                if (affectWorld) target.push(0, 0.22 * style.tier, 0);
             }
             case COLLAPSE, SCATHE, HOLY -> {
                 particles(level, ParticleTypes.SONIC_BOOM, center, 3, 0.4, 0.02);
@@ -286,7 +284,7 @@ public final class BattleVisual {
         }
 
         // Interação real com o mundo (fogo, gelo, crateras e transformação regional de blocos conforme o Tier!)
-        if (changeTerrain) applyWorldImpact(level, target.blockPosition(), style);
+        if (affectWorld) applyWorldImpact(level, target.blockPosition(), style);
     }
 
     private static void spawnVisualLightning(ServerLevel level, Vec3 pos) {
