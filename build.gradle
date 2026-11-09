@@ -121,7 +121,9 @@ configurations {
 
 dependencies {
     implementation "maven.modrinth:terrablender:26.3.0.0.9"
+    jarJar("maven.modrinth:terrablender:26.3.0.0.9")
     implementation "maven.modrinth:geckolib:2s1O42FX"
+    jarJar("maven.modrinth:geckolib:2s1O42FX")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
