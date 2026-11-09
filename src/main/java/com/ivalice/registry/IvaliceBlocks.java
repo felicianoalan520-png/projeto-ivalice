@@ -167,10 +167,45 @@ public class IvaliceBlocks {
     public static final DeferredBlock<Block> DALMASCA_CARVED_BRICKS = masonry("dalmasca_carved_bricks", MapColor.SAND);
     public static final DeferredBlock<Block> GIZA_PAINTED_ADOBE = masonry("giza_painted_adobe", MapColor.TERRACOTTA_ORANGE);
 
+    public static final DeferredBlock<Block> DALMASCA_MOSAIC = masonry("dalmasca_mosaic", MapColor.COLOR_CYAN);
+    public static final DeferredBlock<Block> ARCHADIAN_BRICKS = masonry("archadian_bricks", MapColor.DEEPSLATE);
+    public static final DeferredBlock<Block> BALFONHEIM_DOCKWOOD = masonry("balfonheim_dockwood", MapColor.WOOD);
+    public static final DeferredBlock<Block> BHUJERBAN_LIMESTONE = masonry("bhujerban_limestone", MapColor.TERRACOTTA_WHITE);
+    public static final DeferredBlock<Block> AMBER_LANTERN_TILE = registerBlock("amber_lantern_tile",
+            Block::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).strength(0.8F)
+                    .sound(SoundType.GLASS).lightLevel(state -> 13));
+
+    // --- 10. Blocos Arquitetônicos Realistas (PBR) e Blocos de Impacto Elemental ---
+    public static final DeferredBlock<Block> RABANASTRE_MARBLE_PILLAR = masonry("rabanastre_marble_pillar", MapColor.QUARTZ);
+    public static final DeferredBlock<Block> RABANASTRE_GOLD_INLAY = masonry("rabanastre_gold_inlay", MapColor.GOLD);
+    public static final DeferredBlock<Block> ARCHADIAN_IMPERIAL_GLASS = registerBlock("archadian_imperial_glass",
+            Block::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).strength(1.0F)
+                    .sound(SoundType.GLASS).lightLevel(state -> 7));
+    public static final DeferredBlock<Block> ARCHADIAN_STEEL_PLATE = masonry("archadian_steel_plate", MapColor.METAL);
+    public static final DeferredBlock<Block> BHUJERBAN_SKY_COBBLE = masonry("bhujerban_sky_cobble", MapColor.STONE);
+    public static final DeferredBlock<Block> NABREUS_ANCIENT_RUIN_STONE = masonry("nabreus_ancient_ruin_stone", MapColor.TERRACOTTA_GRAY);
+    public static final DeferredBlock<Block> FEYWOOD_RUNED_MARBLE = registerBlock("feywood_runed_marble",
+            Block::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.DIAMOND).strength(2.0F, 8.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.AMETHYST).lightLevel(state -> 8));
+    public static final DeferredBlock<Block> SCORCHED_MAGMA_EARTH = registerBlock("scorched_magma_earth",
+            Block::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).strength(1.4F, 5.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.BASALT).lightLevel(state -> 6));
+    public static final DeferredBlock<Block> GLACIER_RIME_STONE = registerBlock("glacier_rime_stone",
+            Block::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.ICE).friction(0.96F).strength(1.4F, 4.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.GLASS).lightLevel(state -> 4));
+
     public static final DeferredBlock<Block> DALMASCA_EMBERBLOOM = regionalPlant("dalmasca_emberbloom");
     public static final DeferredBlock<Block> GIZA_SUNBLOOM = regionalPlant("giza_sunbloom");
     public static final DeferredBlock<Block> GOLMORE_ORCHID = regionalPlant("golmore_orchid");
     public static final DeferredBlock<Block> PHON_SEA_LILY = regionalPlant("phon_sea_lily");
+
+    public static final DeferredBlock<Block> YENSA_SALT_REED = regionalPlant("yensa_salt_reed");
+    public static final DeferredBlock<Block> GIZA_RAIN_REED = regionalPlant("giza_rain_reed");
+    public static final DeferredBlock<Block> TCHITA_WIND_ASTER = regionalPlant("tchita_wind_aster");
+    public static final DeferredBlock<Block> SALIKA_AMBER_BLOOM = regionalPlant("salika_amber_bloom");
+    public static final DeferredBlock<Block> NABREUS_MIST_BELL = regionalPlant("nabreus_mist_bell");
+    public static final DeferredBlock<Block> PARAMINA_FROST_BELL = regionalPlant("paramina_frost_bell");
+    public static final DeferredBlock<Block> MOSPHORAN_STONEBLOOM = regionalPlant("mosphoran_stonebloom");
 
     private static DeferredBlock<Block> masonry(String id, MapColor color) {
         return registerBlock(id, Block::new, () -> BlockBehaviour.Properties.of().mapColor(color)
@@ -182,7 +217,10 @@ public class IvaliceBlocks {
             @Override
             protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
                 return super.mayPlaceOn(state, level, pos) || state.is(BlockTags.SAND)
-                        || state.is(DALMASCA_SAND.get()) || state.is(YENSA_FINE_SAND.get());
+                        || state.is(DALMASCA_SAND.get()) || state.is(YENSA_FINE_SAND.get())
+                        || state.is(FEYWOOD_MIST_SOIL.get()) || state.is(NABREUS_MIRE.get())
+                        || state.is(PARAMINA_PERMAFROST.get()) || state.is(MOSPHORAN_SLATE.get())
+                        || state.is(net.minecraft.world.level.block.Blocks.SNOW_BLOCK);
             }
         }, () -> BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollision()
                 .instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.POPPED));

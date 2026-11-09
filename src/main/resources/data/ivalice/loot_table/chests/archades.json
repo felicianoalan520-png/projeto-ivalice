@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:hi_potion"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_diamond_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_gold_hairpin"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_haste"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_platinum_shield"
+        }
+      ]
+    }
+  ]
+}

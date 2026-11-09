@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ivalice:item/catalog/scroll",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -8732930
+      }
+    ]
+  }
+}

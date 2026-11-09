@@ -11,6 +11,18 @@
     },
     "ivalice:ozmone_plain": {
       "villager_type": "ivalice:giza"
+    },
+    "ivalice:tchita_uplands": {
+      "villager_type": "ivalice:archades"
+    },
+    "ivalice:cerobi_steppe": {
+      "villager_type": "ivalice:archades"
+    },
+    "ivalice:phon_coast": {
+      "villager_type": "ivalice:balfonheim"
+    },
+    "ivalice:mosphoran_highwaste": {
+      "villager_type": "ivalice:bhujerba"
     }
   }
 }

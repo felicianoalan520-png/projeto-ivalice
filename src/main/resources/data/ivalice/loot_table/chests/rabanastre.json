@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:potion"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:phoenix_down"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_longsword"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_iron_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:magick_cure"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:magick_fire"
+        }
+      ]
+    }
+  ]
+}

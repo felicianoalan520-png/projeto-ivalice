@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ivalice:item/catalog/staff",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -5703702
+      }
+    ]
+  }
+}

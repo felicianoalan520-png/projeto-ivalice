@@ -24,11 +24,21 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
             {"cerobi_steppe", "Cerobi Steppe"}
     };
 
-    private enum Page { ROOT, TRAVEL, BESTIARY, JOURNAL, CHARACTER, BAZAAR, LICENSES, JOBS, JOB, RESET_JOB, MONSTER, HUNT }
+    private enum Page { ROOT, TRAVEL, BESTIARY, JOURNAL, CHARACTER, BAZAAR, LICENSES, JOBS, JOB, RESET_JOB, MONSTER, HUNT, GUIDE, GUIDE_TOPIC }
     private Page page;
     private int listPage;
     private IvaliceMonsterStats monster;
     private ZodiacJob selectedJob;
+    private GuideTopic guideTopic;
+    private record GuideTopic(String title, String text) {}
+    private static final List<GuideTopic> GUIDE = List.of(
+            new GuideTopic("Primeiros passos", "Explore Ivalice, o Nether e o Fim. Use Num 1 para abrir este menu. Os shaders com relevo 3D e POM estão em shaderpacks/Ivalice-Realism-PBR.zip."),
+            new GuideTopic("Níveis 1 ao 99", "Sua progressão vai do Nível 1 ao Nível 99 (máximo). Cada nível aumenta Vida, Ataque, Defesa e MP, libera a 2ª profissão no Nv.5 e destrava magias progressivas."),
+            new GuideTopic("Magias e raridades", "Aldeões vendem magias apenas até o Tier 2 (Nv.1-28). Magias Tier 3 -ga (Raras, Nv.36-56) e Tier 4 Cataclísmicas (Épicas, Nv.68-95) devem ser fabricadas na Alquimia!"),
+            new GuideTopic("Alquimia e ingredientes", "Cada magia exige ingredientes de regiões específicas: Fire/Water/Wind Stones nos biomas de Ivalice, Gemsteel/Dark Magicite no Nether e Serpentarius/Empyreal Soul no Fim."),
+            new GuideTopic("Dimensões (FFIV a XV)", "No Nether nascem criaturas de FFIV e FFXV (Mindflayer, Rubicante, Iron Giant, Golbez, Ifrit e Adamantoise). No End nascem as de FFV e FFVI (Ultros, Gil Turtle, Atma, Shinryu, Omega e Kefka Nv.99)."),
+            new GuideTopic("Bestiário e caçadas", "Num 4 exibe as 42 espécies 3D (FFXII, FFIV, FFV, FFVI e FFXV). Num 3 abre o Quadro do Clã Centurio para invocar Marks, Espers e Chefes Interdimensionais.")
+    );
     private IvalicePlayerData.MarkHuntEntry hunt;
     private record Entry(String label, Runnable action) {}
 
@@ -91,8 +101,16 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
                 entries.add(new Entry("Bestiário", () -> open(Page.BESTIARY)));
                 entries.add(new Entry("Personagem", () -> open(Page.CHARACTER)));
                 entries.add(new Entry("Viajar", () -> open(Page.TRAVEL)));
-                entries.add(new Entry("Bazaar", () -> open(Page.BAZAAR)));
-                entries.add(new Entry("Voltar ao jogo", super::onClose));
+                entries.add(new Entry("Alquimia & Bazaar", () -> open(Page.BAZAAR)));
+                entries.add(new Entry("Guia de iniciante", () -> open(Page.GUIDE)));
+            }
+            case GUIDE -> {
+                for (GuideTopic topic : GUIDE) {
+                    entries.add(new Entry(topic.title(), () -> {
+                        guideTopic = topic;
+                        open(Page.GUIDE_TOPIC);
+                    }));
+                }
             }
             case TRAVEL -> {
                 for (String[] biome : BIOMES) {
@@ -190,6 +208,7 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
             case ROOT -> super.onClose();
             case MONSTER -> open(Page.BESTIARY);
             case HUNT -> open(Page.JOURNAL);
+            case GUIDE_TOPIC -> open(Page.GUIDE);
             case LICENSES, JOBS -> open(Page.CHARACTER);
             case JOB, RESET_JOB -> open(Page.JOBS);
             default -> open(Page.ROOT);
@@ -209,11 +228,13 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
             case JOBS -> "Profissões do Zodíaco";
             case JOB -> selectedJob.label;
             case RESET_JOB -> "Reiniciar profissões";
-            case BAZAAR -> "Bazaar de Rabanastre";
+            case BAZAAR -> "Alquimia & Bazaar de Rabanastre";
             case MONSTER -> shortName(monster);
             case HUNT -> hunt.markName();
+            case GUIDE -> "Guia de iniciante";
+            case GUIDE_TOPIC -> guideTopic.title();
         };
-        String stats = "Nível " + data.getIntOr("level", 1) + "   •   "
+        String stats = "Nível " + data.getIntOr("level", 1) + "/99   •   "
                 + data.getIntOr("gil", 0) + " Gil   •   " + data.getIntOr("lp", 0) + " LP";
         String subtitle = switch (page) {
             case ROOT, CHARACTER, LICENSES -> stats;
@@ -226,9 +247,17 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
             case BAZAAR -> data.getIntOr("gil", 0) + " Gil • Também aceita espólios";
             case MONSTER -> monster.family() + " • Nível " + monster.level();
             case HUNT -> hunt.rank() + " • " + hunt.petitioner();
+            case GUIDE -> "Escolha um assunto";
+            case GUIDE_TOPIC -> "Guia de iniciante";
         };
         drawPanel(graphics, heading, subtitle);
-        if (page == Page.JOB) {
+        if (page == Page.GUIDE_TOPIC) {
+            int y = 42;
+            for (var part : font.split(net.minecraft.network.chat.Component.literal(guideTopic.text()), panelWidth - 18)) {
+                graphics.text(font, part, panelX + 9, panelY + y, TEXT);
+                y += 11;
+            }
+        } else if (page == Page.JOB) {
             int y = 42;
             for (var part : font.split(net.minecraft.network.chat.Component.literal(selectedJob.specialty), panelWidth - 18)) {
                 graphics.text(font, part, panelX + 9, panelY + y, TEXT);

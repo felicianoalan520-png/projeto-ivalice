@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "ivalice:block/nabreus_mist_bell"
+  }
+}

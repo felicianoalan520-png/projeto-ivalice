@@ -1,0 +1,234 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ivalice.mandragora",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            6,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -2.0,
+                3.0,
+                -2.0
+              ],
+              "size": [
+                4,
+                5,
+                4
+              ],
+              "uv": [
+                24,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            9,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                6.0,
+                -3.0
+              ],
+              "size": [
+                6,
+                5,
+                6
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "crest",
+          "pivot": [
+            0,
+            11,
+            0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -1.0,
+                11.0,
+                -1.0
+              ],
+              "size": [
+                2,
+                4,
+                2
+              ],
+              "uv": [
+                56,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -3.0,
+                13.0,
+                0.0
+              ],
+              "size": [
+                6,
+                2,
+                2
+              ],
+              "uv": [
+                40,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm_left",
+          "pivot": [
+            2,
+            6,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                2.0,
+                4.0,
+                -1.0
+              ],
+              "size": [
+                2,
+                3,
+                2
+              ],
+              "uv": [
+                56,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm_right",
+          "pivot": [
+            -2,
+            6,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                4.0,
+                -1.0
+              ],
+              "size": [
+                2,
+                3,
+                2
+              ],
+              "uv": [
+                24,
+                9
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg_left",
+          "pivot": [
+            1,
+            4,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                0.0,
+                0.0,
+                -1.0
+              ],
+              "size": [
+                2,
+                4,
+                2
+              ],
+              "uv": [
+                40,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg_right",
+          "pivot": [
+            -1,
+            4,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -2.0,
+                0.0,
+                -1.0
+              ],
+              "size": [
+                2,
+                4,
+                2
+              ],
+              "uv": [
+                48,
+                4
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

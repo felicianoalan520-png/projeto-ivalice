@@ -103,7 +103,9 @@
       "minecraft:trees_windswept_savanna",
       "minecraft:flower_plains",
       "minecraft:patch_grass_plain",
-      "ivalice:patch_gysahl_greens"
+      "ivalice:patch_gysahl_greens",
+      "ivalice:patch_tchita_wind_aster",
+      "ivalice:patch_mosphoran_stonebloom"
     ],
     [
       "minecraft:freeze_top_layer"

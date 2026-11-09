@@ -385,12 +385,51 @@ public class IvaliceItems {
         return item;
     }
 
+    private static ToolMaterial resolveToolMaterial(int rank, Rarity rarity) {
+        if (rarity == Rarity.EPIC || rank >= 24) return ToolMaterial.NETHERITE;
+        if (rarity == Rarity.RARE || rank >= 15) return ToolMaterial.DIAMOND;
+        if (rarity == Rarity.UNCOMMON || rank >= 8) return ToolMaterial.IRON;
+        if (rank >= 4) return ToolMaterial.STONE;
+        return ToolMaterial.WOOD;
+    }
+
+    private static net.minecraft.world.item.equipment.ArmorMaterial resolveArmorMaterial(int rank, Rarity rarity, IvaliceItemCategory category) {
+        if (rarity == Rarity.EPIC || rank >= 24) return ArmorMaterials.NETHERITE;
+        if (rarity == Rarity.RARE || rank >= 15) return ArmorMaterials.DIAMOND;
+        if (rarity == Rarity.UNCOMMON || rank >= 8) {
+            return category == IvaliceItemCategory.DEFENSE_LIGHT_ARMOR ? ArmorMaterials.CHAINMAIL : ArmorMaterials.IRON;
+        }
+        return ArmorMaterials.LEATHER;
+    }
+
+    private static float resolveCategoryAttackSpeed(IvaliceItemCategory category) {
+        return switch (category) {
+            case WEAPON_DAGGER -> -1.7F;
+            case WEAPON_MEASURE -> -1.9F;
+            case WEAPON_KATANA, WEAPON_POLE -> -2.0F;
+            case WEAPON_BOW, WEAPON_CROSSBOW, WEAPON_ROD -> -2.2F;
+            case WEAPON_SWORD, WEAPON_STAFF -> -2.3F;
+            case WEAPON_GREATSWORD, WEAPON_SPEAR, WEAPON_HAND_BOMB -> -2.5F;
+            case WEAPON_GUN -> -2.6F;
+            case WEAPON_AXE_HAMMER -> -2.8F;
+            default -> -2.4F;
+        };
+    }
+
     private static DeferredItem<Item> registerWeapon(
             String id, IvaliceItemCategory category, float attackBonus, float attackSpeed,
             String desc, int gil, String source, String ref, Rarity rarity
     ) {
+        return registerWeapon(id, category, resolveToolMaterial(gil >= 20000 ? 25 : gil >= 6000 ? 16 : gil >= 1500 ? 10 : 3, rarity),
+                attackBonus, attackSpeed, desc, gil, source, ref, rarity);
+    }
+
+    private static DeferredItem<Item> registerWeapon(
+            String id, IvaliceItemCategory category, ToolMaterial material, float attackBonus, float attackSpeed,
+            String desc, int gil, String source, String ref, Rarity rarity
+    ) {
         DeferredItem<Item> item = ITEMS.registerItem(id, props -> new IvaliceCatalogItem(
-                props.sword(ToolMaterial.DIAMOND, attackBonus, attackSpeed).rarity(rarity).stacksTo(1),
+                props.sword(material, attackBonus, attackSpeed).rarity(rarity).stacksTo(1),
                 category, desc, gil, source, ref, rarity
         ));
         EQUIPMENT_TAB_ITEMS.add(item);
@@ -402,8 +441,16 @@ public class IvaliceItems {
             String id, IvaliceItemCategory category, ArmorType armorType,
             String desc, int gil, String source, String ref, Rarity rarity
     ) {
+        return registerArmor(id, category, resolveArmorMaterial(gil >= 20000 ? 25 : gil >= 6000 ? 16 : gil >= 600 ? 10 : 3, rarity, category),
+                armorType, desc, gil, source, ref, rarity);
+    }
+
+    private static DeferredItem<Item> registerArmor(
+            String id, IvaliceItemCategory category, net.minecraft.world.item.equipment.ArmorMaterial material, ArmorType armorType,
+            String desc, int gil, String source, String ref, Rarity rarity
+    ) {
         DeferredItem<Item> item = ITEMS.registerItem(id, props -> new IvaliceCatalogItem(
-                props.humanoidArmor(ArmorMaterials.DIAMOND, armorType).rarity(rarity).stacksTo(1),
+                props.humanoidArmor(material, armorType).rarity(rarity).stacksTo(1),
                 category, desc, gil, source, ref, rarity
         ));
         EQUIPMENT_TAB_ITEMS.add(item);
@@ -476,7 +523,96 @@ public class IvaliceItems {
         return Collections.unmodifiableMap(BY_ID);
     }
 
+    static void registerArchive(IvaliceTzaCatalog.Entry entry) {
+        if (BY_ID.containsKey(entry.id())) return;
+        String desc = "Catálogo de The Zodiac Age (Rank " + entry.rank() + ") • " + entry.sourceId();
+        String source = entry.isSoldInRegionalShops() ? "Comércio Regional de Ivalice" : "Espólio de Chefes / Síntese no Bazaar";
+        String reference = entry.name();
+        Rarity rarity = entry.rank() >= 24 || entry.price() >= 18000 ? Rarity.EPIC
+                : entry.rank() >= 15 || entry.price() >= 4500 ? Rarity.RARE
+                : entry.rank() >= 8 || entry.price() >= 1000 ? Rarity.UNCOMMON
+                : Rarity.COMMON;
+        switch (entry.kind()) {
+            case "weapon" -> {
+                ToolMaterial mat = resolveToolMaterial(entry.rank(), rarity);
+                float bonus = Math.min(13.5F, 1.0F + entry.rank() * 0.38F);
+                float speed = resolveCategoryAttackSpeed(entry.category());
+                registerWeapon(entry.id(), entry.category(), mat, bonus, speed, desc, entry.price(), source, reference, rarity);
+            }
+            case "head", "chest" -> {
+                net.minecraft.world.item.equipment.ArmorMaterial mat = resolveArmorMaterial(entry.rank(), rarity, entry.category());
+                registerArmor(entry.id(), entry.category(), mat,
+                        entry.kind().equals("head") ? ArmorType.HELMET : ArmorType.CHESTPLATE,
+                        desc, entry.price(), source, reference, rarity);
+            }
+            case "spell" -> {
+                IvaliceSpellItem.SpellAction action = archiveSpell(reference);
+                if (action != null) {
+                    int cd = switch (action.tier) {
+                        case 4 -> 180;
+                        case 3 -> 130;
+                        case 2 -> 95;
+                        default -> 65;
+                    };
+                    String spellDesc = String.format("Grimório Tier %d (Requer Nível %d+) • %s",
+                            action.tier, action.minLevel,
+                            action.tier <= 2 ? "Vendido por Mercadores Arcanos até Tier 2"
+                                    : (action.tier == 3 ? "Fabricado via Alquimia com Espólios Regionais/Nether"
+                                    : "Relíquia Arcana fabricada com Espólios do Nether & The End"));
+                    registerSpell(entry.id(), entry.category(), spellDesc, entry.price(), source, reference, action.spellRarity, action, cd);
+                } else {
+                    registerCatalog(entry.id(), entry.category(), desc, entry.price(), source, reference, rarity, true);
+                }
+            }
+            case "consumable" -> {
+                if (List.of("Megalixir", "Elixir", "Hi-Ether").contains(reference)) {
+                    registerConsumable(entry.id(), desc, entry.price(), source, reference, rarity,
+                            reference.equals("Hi-Ether") ? 0F : 20F, reference.equals("Megalixir"),
+                            List.of(new MobEffectInstance(MobEffects.REGENERATION, 100, 1)));
+                } else {
+                    registerCatalog(entry.id(), entry.category(), desc, entry.price(), source, reference, rarity, false);
+                }
+            }
+            default -> registerCatalog(entry.id(), entry.category(), desc, entry.price(), source, reference, rarity,
+                    entry.kind().equals("shield") || entry.kind().equals("accessory") || entry.kind().equals("technick"));
+        }
+    }
+
+    private static IvaliceSpellItem.SpellAction archiveSpell(String name) {
+        return switch (name) {
+            case "Fire" -> IvaliceSpellItem.SpellAction.FIRE;
+            case "Fira" -> IvaliceSpellItem.SpellAction.FIRA;
+            case "Firaga" -> IvaliceSpellItem.SpellAction.FIRAGA;
+            case "Blizzard" -> IvaliceSpellItem.SpellAction.BLIZZARD;
+            case "Blizzara" -> IvaliceSpellItem.SpellAction.BLIZZARA;
+            case "Blizzaga" -> IvaliceSpellItem.SpellAction.BLIZZAGA;
+            case "Thunder" -> IvaliceSpellItem.SpellAction.THUNDER;
+            case "Thundara" -> IvaliceSpellItem.SpellAction.THUNDARA;
+            case "Thundaga" -> IvaliceSpellItem.SpellAction.THUNDAGA;
+            case "Aero" -> IvaliceSpellItem.SpellAction.AERO;
+            case "Aerora" -> IvaliceSpellItem.SpellAction.AERORA;
+            case "Aeroga" -> IvaliceSpellItem.SpellAction.AEROGA;
+            case "Aqua", "Water" -> IvaliceSpellItem.SpellAction.AQUA;
+            case "Aquara", "Watera" -> IvaliceSpellItem.SpellAction.AQUARA;
+            case "Aquaga", "Waterga" -> IvaliceSpellItem.SpellAction.WATERGA;
+            case "Dark" -> IvaliceSpellItem.SpellAction.DARK;
+            case "Darkra" -> IvaliceSpellItem.SpellAction.DARKRA;
+            case "Darkga" -> IvaliceSpellItem.SpellAction.DARKGA;
+            case "Cure" -> IvaliceSpellItem.SpellAction.CURE;
+            case "Cura" -> IvaliceSpellItem.SpellAction.CURA;
+            case "Curaga", "Curaja", "Renew" -> IvaliceSpellItem.SpellAction.CURAGA;
+            case "Haste", "Hastega" -> IvaliceSpellItem.SpellAction.HASTEGA;
+            case "Flare", "Shock" -> IvaliceSpellItem.SpellAction.FLARE;
+            case "Ardor" -> IvaliceSpellItem.SpellAction.ARDOR;
+            case "Collapse", "Scourge" -> IvaliceSpellItem.SpellAction.COLLAPSE;
+            case "Scathe", "Bio" -> IvaliceSpellItem.SpellAction.SCATHE;
+            case "Holy" -> IvaliceSpellItem.SpellAction.HOLY;
+            default -> null;
+        };
+    }
+
     public static void register(IEventBus eventBus) {
+        IvaliceTzaCatalog.register();
         ITEMS.register(eventBus);
     }
 }

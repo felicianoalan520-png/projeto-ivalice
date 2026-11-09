@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ivalice:item/catalog/armor",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -6915330
+      }
+    ]
+  }
+}

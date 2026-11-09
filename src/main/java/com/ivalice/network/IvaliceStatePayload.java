@@ -38,6 +38,7 @@ public record IvaliceStatePayload(CompoundTag state) implements CustomPacketPayl
         state.put("encountered", strings(profile.encounteredMonsters));
         state.put("hunts", strings(profile.completedHunts));
         state.put("licenses", strings(profile.unlockedLicenses));
+        state.put("spells", strings(profile.learnedSpells));
         state.put("jobs", strings(profile.jobs));
         CompoundTag kills = new CompoundTag();
         profile.bestiaryKills.forEach(kills::putInt);

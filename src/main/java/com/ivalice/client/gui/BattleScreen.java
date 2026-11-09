@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 public final class BattleScreen extends IvalicePanelScreen {
-    private enum Page { COMMANDS, MAGICK, MORE, CAST_MODE, TECHNICKS, TARGET }
+    private enum Page { COMMANDS, MAGICK, CAST_MODE, TECHNICKS, TARGET }
     private CompoundTag state;
     private Page page = Page.COMMANDS;
     private Page targetBack;
@@ -18,7 +18,9 @@ public final class BattleScreen extends IvalicePanelScreen {
     private boolean waiting;
     private boolean finished;
     private int ticksWaiting;
+    private String visualCue = "";
     private int targetsPage;
+    private int spellsPage;
 
     public BattleScreen(CompoundTag state) {
         super("Encontro de Ivalice");
@@ -29,6 +31,15 @@ public final class BattleScreen extends IvalicePanelScreen {
         state = updated;
         waiting = false;
         open(Page.COMMANDS);
+    }
+
+    public void showAnimation(String cue) {
+        visualCue = cue;
+        ticksWaiting = 0;
+        if (!waiting) {
+            waiting = true;
+            rebuildWidgets();
+        }
     }
 
     public void finish() {
@@ -45,31 +56,43 @@ public final class BattleScreen extends IvalicePanelScreen {
         switch (page) {
             case COMMANDS -> {
                 option("Ataque", 0, 0, () -> select("attack"));
-                option("Magias", 1, 0, () -> open(Page.MAGICK));
+                option("Magias", 1, 0, () -> {
+                    spellsPage = 0;
+                    open(Page.MAGICK);
+                });
                 option("Hi-Potion", 0, 1, () -> send("potion", firstTarget()));
                 option("Técnicas", 1, 1, () -> open(Page.TECHNICKS));
                 option("Gambit", 0, 2, () -> select("gambit"));
                 option("Fugir", 1, 2, () -> send("flee", firstTarget()));
             }
             case MAGICK -> {
-                if (state.getBooleanOr("black", false)) {
-                    option("Fire", 0, 0, () -> spell("fire", "Fire", 12));
-                    option("Blizzard", 1, 0, () -> spell("blizzard", "Blizzard", 12));
-                    option("Thunder", 0, 1, () -> spell("thunder", "Thunder", 22));
-                    option("Mais magias", 0, 2, () -> open(Page.MORE));
+                ListTag spells = availableSpells();
+                int count = Math.max(1, (spells.size() + 5) / 6);
+                spellsPage = Math.clamp(spellsPage, 0, count - 1);
+                for (int i = spellsPage * 6; i < Math.min((spellsPage + 1) * 6, spells.size()); i++) {
+                    CompoundTag sp = spells.getCompoundOrEmpty(i);
+                    String id = sp.getStringOr("id", "fire");
+                    String label = sp.getStringOr("label", "Fire");
+                    int mp = sp.getIntOr("mp", 10);
+                    boolean self = sp.getBooleanOr("self", false);
+                    boolean areaOnly = sp.getBooleanOr("areaOnly", false);
+                    int slot = i % 6;
+                    String btnText = label + " • " + mp + " MP";
+                    option(btnText, slot % 2, slot / 2, () -> {
+                        if (self) {
+                            send(id, firstTarget());
+                        } else if (areaOnly) {
+                            send(id + "_area", firstTarget());
+                        } else {
+                            spell(id, label, mp);
+                        }
+                    });
                 }
-                if (state.getBooleanOr("white", false)) {
-                    option("Cura • 10 MP", 1, 1, () -> send("cure", firstTarget()));
-                }
-                if (state.getBooleanOr("time", false) && !state.getBooleanOr("black", false)) {
-                    option("Hastega • 18 MP", 0, 0, () -> send("hastega", firstTarget()));
-                }
-            }
-            case MORE -> {
-                option("Aero", 0, 0, () -> spell("aero", "Aero", 14));
-                option("Aqua", 1, 0, () -> spell("water_magic", "Aqua", 14));
-                if (state.getBooleanOr("time", false)) {
-                    option("Hastega • 18 MP", 0, 1, () -> send("hastega", firstTarget()));
+                if (spells.size() > 6) {
+                    button("Mais ›", panelX + panelWidth - 134, panelY + 79, 60, () -> {
+                        spellsPage = (spellsPage + 1) % count;
+                        rebuildWidgets();
+                    });
                 }
             }
             case CAST_MODE -> {
@@ -108,6 +131,10 @@ public final class BattleScreen extends IvalicePanelScreen {
 
     private ListTag enemies() {
         return state.getListOrEmpty("enemies");
+    }
+
+    private ListTag availableSpells() {
+        return state.getListOrEmpty("availableSpells");
     }
 
     public int targetNumber(int entityId) {
@@ -152,6 +179,7 @@ public final class BattleScreen extends IvalicePanelScreen {
     private void send(String choice, int id) {
         if (waiting) return;
         waiting = true;
+        visualCue = "";
         ticksWaiting = 0;
         rebuildWidgets();
         ClientScreenHelper.command("ivalice battle " + id + " " + choice + " " + state.getIntOr("revision", 1));
@@ -159,7 +187,7 @@ public final class BattleScreen extends IvalicePanelScreen {
 
     @Override
     public void tick() {
-        if (waiting && ++ticksWaiting > 100) {
+        if (waiting && ++ticksWaiting > 220) {
             super.onClose();
         }
     }
@@ -175,7 +203,6 @@ public final class BattleScreen extends IvalicePanelScreen {
         switch (page) {
             case COMMANDS -> send("flee", firstTarget());
             case TARGET -> open(targetBack);
-            case MORE -> open(Page.MAGICK);
             case CAST_MODE -> open(spellBack);
             default -> open(Page.COMMANDS);
         }
@@ -190,9 +217,15 @@ public final class BattleScreen extends IvalicePanelScreen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        if (waiting) {
+            if (!visualCue.isEmpty()) {
+                graphics.centeredText(font, fit(visualCue, width - 16), width / 2, 16, ACCENT);
+            }
+            return;
+        }
         String heading = switch (page) {
             case COMMANDS -> "Rodada " + state.getIntOr("round", 1) + "   •   " + enemies().size() + " inimigo(s)";
-            case MAGICK, MORE -> "Magias";
+            case MAGICK -> "Grimório de Magias";
             case CAST_MODE -> spellLabel;
             case TECHNICKS -> "Técnicas";
             case TARGET -> "Escolha o alvo";
@@ -204,14 +237,11 @@ public final class BattleScreen extends IvalicePanelScreen {
             drawMeter(graphics, 12, minecraft.player.getHealth() / minecraft.player.getMaxHealth(), 0xFFE4A06D);
             drawMeter(graphics, 21, (float) state.getIntOr("mp", 0) / Math.max(1, state.getIntOr("maxMp", 100)), 0xFF73B9CC);
         }
-        if (waiting) {
-            line(graphics, "Resolvendo rodada…", 52, TEXT);
-        } else if (page == Page.CAST_MODE) {
+        if (page == Page.CAST_MODE) {
             line(graphics, "Alvo único: dano completo.", 58, TEXT);
             line(graphics, "Em área: 60% de dano por inimigo.", 70, MUTED);
-        } else if (page == Page.MAGICK && !state.getBooleanOr("black", false)
-                && !state.getBooleanOr("white", false) && !state.getBooleanOr("time", false)) {
-            line(graphics, "Suas profissões atuais não concedem magias.", 52, TEXT);
+        } else if (page == Page.MAGICK && availableSpells().isEmpty()) {
+            line(graphics, "Compre ou use Pergaminhos de Magia com uma profissão mágica.", 52, TEXT);
         } else if (page == Page.TARGET && enemies().size() > 6) {
             line(graphics, "Esc para voltar", 105, MUTED);
         } else {

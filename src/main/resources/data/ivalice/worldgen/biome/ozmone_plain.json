@@ -126,7 +126,9 @@
       "minecraft:flower_plains",
       "minecraft:patch_grass_plain",
       "ivalice:patch_gysahl_greens",
-      "ivalice:patch_giza_sunbloom"
+      "ivalice:patch_giza_sunbloom",
+      "ivalice:patch_giza_rain_reed",
+      "ivalice:patch_tchita_wind_aster"
     ],
     [
       "minecraft:freeze_top_layer"

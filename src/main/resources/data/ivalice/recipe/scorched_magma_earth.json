@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:magma_block"
+  },
+  "result": {
+    "id": "ivalice:scorched_magma_earth",
+    "count": 4
+  }
+}

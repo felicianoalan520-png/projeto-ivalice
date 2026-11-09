@@ -125,7 +125,9 @@
       "minecraft:trees_windswept_hills",
       "minecraft:flower_default",
       "minecraft:patch_grass_normal",
-      "ivalice:patch_gysahl_greens"
+      "ivalice:patch_gysahl_greens",
+      "ivalice:patch_tchita_wind_aster",
+      "ivalice:patch_mosphoran_stonebloom"
     ],
     [
       "minecraft:freeze_top_layer"

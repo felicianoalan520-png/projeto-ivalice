@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -38,20 +39,43 @@ import java.util.Map;
  */
 public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation RUN_ANIM = RawAnimation.begin().thenLoop("run");
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private final String speciesId;
     private boolean stolenFrom = false;
+    private boolean alphaLeader = false;
+    private boolean alphaInitialized = false;
 
     public IvaliceMonsterEntity(EntityType<? extends IvaliceMonsterEntity> type, Level level, String speciesId) {
         super(type, level);
         this.speciesId = speciesId;
         IvaliceMonsterStats stats = getStats();
         this.xpReward = stats.xpReward();
-        if (!"Neutral".equalsIgnoreCase(stats.behavior())) {
+        this.alphaLeader = "Alpha".equalsIgnoreCase(stats.rankType()) || speciesId.startsWith("alpha_");
+        if (!"Neutral".equalsIgnoreCase(stats.behavior()) || this.alphaLeader) {
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         }
+    }
+
+    public boolean isAlphaLeader() {
+        return alphaLeader;
+    }
+
+    public void promoteToAlpha() {
+        if (this.alphaLeader) return;
+        this.alphaLeader = true;
+        var scaleAttr = this.getAttribute(Attributes.SCALE);
+        if (scaleAttr != null) scaleAttr.setBaseValue(1.32D);
+        var hpAttr = this.getAttribute(Attributes.MAX_HEALTH);
+        if (hpAttr != null) {
+            hpAttr.setBaseValue(hpAttr.getBaseValue() * 1.85D);
+            this.setHealth(this.getMaxHealth());
+        }
+        var atkAttr = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (atkAttr != null) atkAttr.setBaseValue(atkAttr.getBaseValue() * 1.45D);
+        updateCustomNameplate();
     }
 
     public String getSpeciesId() {
@@ -98,12 +122,35 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!level().isClientSide() && !alphaInitialized) {
+            alphaInitialized = true;
+            if (!alphaLeader && "Normal".equalsIgnoreCase(getStats().rankType()) && this.random.nextFloat() < 0.12F) {
+                promoteToAlpha();
+            } else if (alphaLeader) {
+                var scaleAttr = this.getAttribute(Attributes.SCALE);
+                if (scaleAttr != null && scaleAttr.getBaseValue() <= 1.01D) {
+                    scaleAttr.setBaseValue(1.25D);
+                }
+            }
+        }
         if (!level().isClientSide() && isAlive() && BattleManager.isEngaged(this)) {
+            if (this.tickCount % 15 == 0 && (alphaLeader || getStats().rankType().contains("Esper") || getStats().rankType().contains("Mark"))
+                    && level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.ENCHANT,
+                        getX(), getY() + getBbHeight() * 0.5, getZ(), 6, 0.35, 0.35, 0.35, 0.02);
+            }
             return;
         }
         super.tick();
-        if (!this.level().isClientSide() && this.tickCount % 20 == 0) {
-            updateCustomNameplate();
+        if (!this.level().isClientSide()) {
+            this.setAggressive(this.getTarget() != null && this.getTarget().isAlive());
+            if (this.tickCount % 20 == 0) {
+                updateCustomNameplate();
+            }
+            if (this.alphaLeader && this.tickCount % 25 == 0 && this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.FLAME,
+                        getX(), getY() + getBbHeight() * 0.45, getZ(), 2, 0.25, 0.25, 0.25, 0.01);
+            }
         }
     }
 
@@ -114,16 +161,20 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
             rankColor = ChatFormatting.LIGHT_PURPLE;
         } else if (stats.rankType().contains("Elite Mark")) {
             rankColor = ChatFormatting.RED;
+        } else if (alphaLeader || "Alpha".equalsIgnoreCase(stats.rankType())) {
+            rankColor = ChatFormatting.GOLD;
         } else if ("Neutral".equalsIgnoreCase(stats.behavior())) {
             rankColor = ChatFormatting.GREEN;
         } else {
-            rankColor = ChatFormatting.GOLD;
+            rankColor = ChatFormatting.YELLOW;
         }
 
         int hp = (int) Math.ceil(this.getHealth());
         int maxHp = (int) Math.ceil(this.getMaxHealth());
+        int lvl = alphaLeader && !speciesId.startsWith("alpha_") ? stats.level() + 5 : stats.level();
+        String prefix = (alphaLeader && !stats.displayName().contains("★")) ? "★ [ALFA] " : "";
         this.setCustomName(Component.literal(
-                String.format("[Lv.%d] %s (%d/%d HP)", stats.level(), stats.displayName(), hp, maxHp)
+                String.format("%s[Lv.%d] %s (%d/%d HP)", prefix, lvl, stats.displayName(), hp, maxHp)
         ).withStyle(rankColor));
         this.setCustomNameVisible(true);
     }
@@ -154,24 +205,27 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         super.dropCustomDeathLoot(level, damageSource, recentlyHit);
         IvaliceMonsterStats stats = getStats();
 
-        // Drop primário garantido (1 a 2 unidades)
         Item primary = IvaliceItems.getItemById(stats.primaryLootId());
-        if (primary != null) {
-            int count = 1 + this.random.nextInt(2);
-            this.spawnAtLocation(level, new ItemStack(primary, count));
+        if (primary != null && (!"Normal".equals(stats.rankType()) || alphaLeader || random.nextFloat() < 0.78F)) {
+            int count = (!"Normal".equals(stats.rankType()) || alphaLeader) ? 2 + random.nextInt(2) : 1 + random.nextInt(2);
+            spawnAtLocation(level, new ItemStack(primary, count));
         }
-
-        // Drop raro (25% de chance em monstros comuns, 100% em Elite Marks e Espers)
-        boolean dropRare = stats.rankType().contains("Mark") || stats.rankType().contains("Esper") || this.random.nextFloat() < 0.25F;
-        if (dropRare) {
-            Item rare = IvaliceItems.getItemById(stats.rareLootId());
-            if (rare != null) {
-                this.spawnAtLocation(level, new ItemStack(rare, 1));
+        Item rare = IvaliceItems.getItemById(stats.rareLootId());
+        if (rare != null && (!"Normal".equals(stats.rankType()) || alphaLeader || random.nextFloat() < 0.22F)) {
+            spawnAtLocation(level, new ItemStack(rare));
+        }
+        if (alphaLeader) {
+            String[] stones = {"fire_stone", "water_stone", "wind_stone", "earth_stone", "dark_magicite"};
+            Item bonusStone = IvaliceItems.getItemById(stones[random.nextInt(stones.length)]);
+            if (bonusStone != null) {
+                spawnAtLocation(level, new ItemStack(bonusStone, 1 + random.nextInt(2)));
             }
         }
 
-        if ("mateus".equals(speciesId) && damageSource.getEntity() instanceof ServerPlayer
-                && random.nextFloat() < 0.12F) {
+        if (("mateus".equals(speciesId) || "zodiark".equals(speciesId) || "yiazmat".equals(speciesId)
+                || "ifrit_pyreburner".equals(speciesId) || "shinryu".equals(speciesId)
+                || "omega_mk".equals(speciesId) || "kefka_god".equals(speciesId))
+                && damageSource.getEntity() instanceof ServerPlayer && random.nextFloat() < 0.35F) {
             spawnAtLocation(level, new ItemStack(IvaliceItems.ZODIAC_RESET_SEAL.get()));
         }
 
@@ -182,13 +236,31 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
+    public boolean doHurtTarget(ServerLevel level, Entity target) {
+        playBattleAnimation("strike");
+        net.minecraft.world.phys.Vec3 dir = target.position().subtract(this.position()).normalize();
+        this.push(dir.x * 0.35, 0.18, dir.z * 0.35);
+        return super.doHurtTarget(level, target);
+    }
+
+    public void playBattleAnimation(String animation) {
+        triggerAnim("movement", animation);
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("movement", 5, state -> {
+        controllers.add(new AnimationController<>("movement", 4, state -> {
             if (state.isMoving()) {
+                if (this.isAggressive() || this.getDeltaMovement().horizontalDistanceSqr() > 0.016D) {
+                    return state.setAndContinue(RUN_ANIM);
+                }
                 return state.setAndContinue(WALK_ANIM);
             }
             return state.setAndContinue(IDLE_ANIM);
-        }));
+        }).triggerableAnim("strike", RawAnimation.begin().thenPlay("strike"))
+                .triggerableAnim("cast", RawAnimation.begin().thenPlay("cast"))
+                .triggerableAnim("flinch", RawAnimation.begin().thenPlay("flinch"))
+                .triggerableAnim("run", RawAnimation.begin().thenPlay("run")));
     }
 
     @Override

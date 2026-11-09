@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ivalice:item/catalog/orb",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -5967428
+      }
+    ]
+  }
+}

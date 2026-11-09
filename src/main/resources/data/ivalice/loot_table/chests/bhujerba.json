@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:hi_potion"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_aero"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_javelin"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_mage_masher"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_bhujerban_madhu"
+        }
+      ]
+    }
+  ]
+}

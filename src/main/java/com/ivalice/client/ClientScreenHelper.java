@@ -34,9 +34,14 @@ public final class ClientScreenHelper {
                 if (mc.gui.screen() instanceof BattleScreen battle) battle.acceptState(data);
                 else if (mc.player != null && mc.player.isAlive()) mc.gui.setScreen(new BattleScreen(data));
             }
+            case "animation" -> {
+                if (mc.gui.screen() instanceof BattleScreen battle) {
+                    battle.showAnimation(data.getStringOr("message", ""));
+                }
+            }
             case "closed" -> {
                 if (mc.gui.screen() instanceof BattleScreen battle) battle.finish();
-                mc.player.sendSystemMessage(Component.literal(data.getStringOr("message", "")));
+                if (mc.player != null) mc.player.sendSystemMessage(Component.literal(data.getStringOr("message", "")));
             }
         }
     }

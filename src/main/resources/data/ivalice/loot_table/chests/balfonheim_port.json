@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:x_potion"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_hi_ether"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:fomalhaut"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ivalice:tza_megalixir"
+        }
+      ]
+    }
+  ]
+}

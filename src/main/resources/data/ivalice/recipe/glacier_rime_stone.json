@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:packed_ice"
+  },
+  "result": {
+    "id": "ivalice:glacier_rime_stone",
+    "count": 4
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ivalice:item/catalog/shield",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -723044
+      }
+    ]
+  }
+}

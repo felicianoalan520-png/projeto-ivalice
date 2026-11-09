@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:gold_ingot"
+  },
+  "result": {
+    "id": "ivalice:rabanastre_gold_inlay",
+    "count": 4
+  }
+}

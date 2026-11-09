@@ -128,7 +128,8 @@
       "minecraft:patch_grass_savanna",
       "ivalice:patch_gysahl_greens",
       "ivalice:patch_estersand_scrub",
-      "ivalice:patch_giza_sunbloom"
+      "ivalice:patch_giza_sunbloom",
+      "ivalice:patch_giza_rain_reed"
     ],
     [
       "minecraft:freeze_top_layer"

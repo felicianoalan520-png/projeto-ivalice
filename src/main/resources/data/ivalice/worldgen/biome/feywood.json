@@ -119,7 +119,10 @@
       "minecraft:pale_moss_patch",
       "minecraft:pale_garden_flowers",
       "minecraft:patch_grass_forest",
-      "ivalice:patch_feywood_white_lily"
+      "ivalice:feywood_silver_grove",
+      "ivalice:patch_feywood_white_lily",
+      "ivalice:patch_nabreus_mist_bell",
+      "ivalice:patch_paramina_frost_bell"
     ],
     [
       "minecraft:freeze_top_layer"

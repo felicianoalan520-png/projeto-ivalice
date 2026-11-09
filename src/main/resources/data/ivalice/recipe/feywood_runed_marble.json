@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:amethyst_shard"
+  },
+  "result": {
+    "id": "ivalice:feywood_runed_marble",
+    "count": 4
+  }
+}

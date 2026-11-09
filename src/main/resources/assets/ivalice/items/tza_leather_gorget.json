@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ivalice:item/catalog/ring",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -956219
+      }
+    ]
+  }
+}

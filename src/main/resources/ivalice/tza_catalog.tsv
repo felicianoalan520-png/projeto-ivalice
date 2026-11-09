@@ -1,0 +1,1246 @@
+0000	potion	CONSUMABLE	consumable	1	Potion
+0001	hi_potion	CONSUMABLE	consumable	2	Hi-Potion
+0002	x_potion	CONSUMABLE	consumable	3	X-Potion
+0003	ether	CONSUMABLE	consumable	4	Ether
+0004	tza_hi_ether	CONSUMABLE	consumable	5	Hi-Ether
+0005	elixir	CONSUMABLE	consumable	6	Elixir
+0006	phoenix_down	CONSUMABLE	consumable	7	Phoenix Down
+0007	tza_gold_needle	CONSUMABLE	consumable	8	Gold Needle
+0008	echo_herbs	CONSUMABLE	consumable	9	Echo Herbs
+0009	antidote	CONSUMABLE	consumable	10	Antidote
+000A	eye_drops	CONSUMABLE	consumable	11	Eye Drops
+000B	tza_prince_s_kiss	CONSUMABLE	consumable	12	Prince's Kiss
+000C	tza_handkerchief	CONSUMABLE	consumable	13	Handkerchief
+000D	tza_chronos_tear	CONSUMABLE	consumable	14	Chronos Tear
+000E	tza_nu_khai_sand	CONSUMABLE	consumable	15	Nu Khai Sand
+000F	tza_serum	CONSUMABLE	consumable	16	Serum
+0010	remedy	CONSUMABLE	consumable	17	Remedy
+0011	tza_soleil_fang	CONSUMABLE	consumable	18	Soleil Fang
+0012	tza_rime_fang	CONSUMABLE	consumable	19	Rime Fang
+0013	tza_lightning_fang	CONSUMABLE	consumable	20	Lightning Fang
+0014	tza_bacchus_s_wine	CONSUMABLE	consumable	21	Bacchus's Wine
+0015	tza_megalixir	CONSUMABLE	consumable	22	Megalixir
+0016	tza_baltoro_seed	CONSUMABLE	consumable	23	Baltoro Seed
+0017	tza_domaine_calvados	CONSUMABLE	consumable	24	Domaine Calvados
+0018	tza_dark_energy	CONSUMABLE	consumable	25	Dark Energy
+0019	tza_meteorite_1	CONSUMABLE	consumable	26	Meteorite (1)
+001A	tza_meteorite_2	CONSUMABLE	consumable	27	Meteorite (2)
+001B	tza_meteorite_3	CONSUMABLE	consumable	28	Meteorite (3)
+001C	tza_meteorite_4	CONSUMABLE	consumable	29	Meteorite (4)
+002A	tza_reverse_mote	CONSUMABLE	consumable	30	Reverse Mote
+002B	tza_dark_mote	CONSUMABLE	consumable	31	Dark Mote
+002C	tza_aero_mote	CONSUMABLE	consumable	32	Aero Mote
+002D	tza_aquara_mote	CONSUMABLE	consumable	33	Aquara Mote
+002E	tza_holy_mote	CONSUMABLE	consumable	34	Holy Mote
+002F	tza_scathe_mote	CONSUMABLE	consumable	35	Scathe Mote
+0030	tza_balance_mote	CONSUMABLE	consumable	36	Balance Mote
+0031	tza_hastega_mote	CONSUMABLE	consumable	37	Hastega Mote
+0032	tza_reflectga_mote	CONSUMABLE	consumable	38	Reflectga Mote
+0033	tza_vanishga_mote	CONSUMABLE	consumable	39	Vanishga Mote
+0034	tza_float_mote	CONSUMABLE	consumable	40	Float Mote
+0035	tza_warp_mote	CONSUMABLE	consumable	41	Warp Mote
+0036	tza_bio_mote	CONSUMABLE	consumable	42	Bio Mote
+0037	tza_shock_mote	CONSUMABLE	consumable	43	Shock Mote
+0038	tza_gravity_mote	CONSUMABLE	consumable	44	Gravity Mote
+0039	tza_cura_mote	CONSUMABLE	consumable	45	Cura Mote
+003A	tza_dispel_mote	CONSUMABLE	consumable	46	Dispel Mote
+003B	tza_aeroga_mote	CONSUMABLE	consumable	47	Aeroga Mote
+003C	tza_bubble_mote	CONSUMABLE	consumable	48	Bubble Mote
+003D	tza_eksir_berries	CONSUMABLE	consumable	49	Eksir Berries
+003E	tza_dark_matter	CONSUMABLE	consumable	50	Dark Matter
+003F	tza_knot_of_rust	CONSUMABLE	consumable	51	Knot of Rust
+1001	tza_broadsword	WEAPON_SWORD	weapon	1	Broadsword
+1002	tza_longsword	WEAPON_SWORD	weapon	2	Longsword
+1003	tza_iron_sword	WEAPON_SWORD	weapon	3	Iron Sword
+1004	tza_zwill_blade	WEAPON_SWORD	weapon	4	Zwill Blade
+1005	tza_ancient_sword	WEAPON_SWORD	weapon	5	Ancient Sword
+1006	tza_blood_sword	WEAPON_SWORD	weapon	6	Blood Sword
+1007	tza_lohengrin	WEAPON_SWORD	weapon	7	Lohengrin
+1008	tza_flametongue	WEAPON_SWORD	weapon	8	Flametongue
+1009	tza_demonsbane	WEAPON_SWORD	weapon	9	Demonsbane
+100A	tza_icebrand	WEAPON_SWORD	weapon	10	Icebrand
+100B	tza_platinum_sword	WEAPON_SWORD	weapon	11	Platinum Sword
+100C	tza_bastard_sword	WEAPON_SWORD	weapon	12	Bastard Sword
+100D	tza_diamond_sword	WEAPON_SWORD	weapon	13	Diamond Sword
+100E	tza_runeblade	WEAPON_SWORD	weapon	14	Runeblade
+100F	deathbringer	WEAPON_SWORD	weapon	15	Deathbringer
+1010	tza_stoneblade	WEAPON_SWORD	weapon	16	Stoneblade
+1011	durandal	WEAPON_SWORD	weapon	17	Durandal
+1012	tza_claymore	WEAPON_GREATSWORD	weapon	1	Claymore
+1013	tza_defender	WEAPON_GREATSWORD	weapon	2	Defender
+1014	save_the_queen	WEAPON_GREATSWORD	weapon	3	Save the Queen
+1015	tza_ragnarok	WEAPON_GREATSWORD	weapon	4	Ragnarok
+1016	tza_ultima_blade	WEAPON_GREATSWORD	weapon	5	Ultima Blade
+1017	excalibur	WEAPON_GREATSWORD	weapon	6	Excalibur
+1018	tournesol	WEAPON_GREATSWORD	weapon	7	Tournesol
+1019	tza_kotetsu	WEAPON_KATANA	weapon	1	Kotetsu
+101A	tza_osafune	WEAPON_KATANA	weapon	2	Osafune
+101B	tza_kogarasumaru	WEAPON_KATANA	weapon	3	Kogarasumaru
+101C	tza_magoroku	WEAPON_KATANA	weapon	4	Magoroku
+101D	tza_murasame	WEAPON_KATANA	weapon	5	Murasame
+101E	tza_kiku_ichimonji	WEAPON_KATANA	weapon	6	Kiku-ichimonji
+101F	tza_yakei	WEAPON_KATANA	weapon	7	Yakei
+1020	tza_ame_no_murakumo	WEAPON_KATANA	weapon	8	Ame-no-Murakumo
+1021	tza_muramasa	WEAPON_KATANA	weapon	9	Muramasa
+1022	masamune	WEAPON_KATANA	weapon	10	Masamune
+1023	tza_ashura	WEAPON_DAGGER	weapon	1	Ashura
+1024	tza_sakura_saezuri	WEAPON_DAGGER	weapon	2	Sakura-saezuri
+1025	tza_kagenui	WEAPON_DAGGER	weapon	3	Kagenui
+1026	tza_koga_blade	WEAPON_DAGGER	weapon	4	Koga Blade
+1027	tza_iga_blade	WEAPON_DAGGER	weapon	5	Iga Blade
+1028	tza_orochi	WEAPON_DAGGER	weapon	6	Orochi
+1029	tza_yagyu_darkblade	WEAPON_DAGGER	weapon	7	Yagyu Darkblade
+102A	tza_javelin	WEAPON_SPEAR	weapon	1	Javelin
+102B	tza_spear	WEAPON_SPEAR	weapon	2	Spear
+102C	tza_partisan	WEAPON_SPEAR	weapon	3	Partisan
+102D	tza_heavy_lance	WEAPON_SPEAR	weapon	4	Heavy Lance
+102E	tza_storm_spear	WEAPON_SPEAR	weapon	5	Storm Spear
+102F	tza_obelisk	WEAPON_SPEAR	weapon	6	Obelisk
+1030	tza_halberd	WEAPON_SPEAR	weapon	7	Halberd
+1031	tza_trident	WEAPON_SPEAR	weapon	8	Trident
+1032	tza_holy_lance	WEAPON_SPEAR	weapon	9	Holy Lance
+1033	gungnir	WEAPON_SPEAR	weapon	10	Gungnir
+1034	tza_dragon_whisker	WEAPON_SPEAR	weapon	11	Dragon Whisker
+1035	zodiac_spear	WEAPON_SPEAR	weapon	12	Zodiac Spear
+1036	tza_oaken_pole	WEAPON_POLE	weapon	1	Oaken Pole
+1037	tza_cypress_pole	WEAPON_POLE	weapon	2	Cypress Pole
+1038	tza_battle_bamboo	WEAPON_POLE	weapon	3	Battle Bamboo
+1039	tza_musk_stick	WEAPON_POLE	weapon	4	Musk Stick
+103A	tza_iron_pole	WEAPON_POLE	weapon	5	Iron Pole
+103B	tza_six_fluted_pole	WEAPON_POLE	weapon	6	Six-fluted Pole
+103C	tza_gokuu_pole	WEAPON_POLE	weapon	7	Gokuu Pole
+103D	tza_zephyr_pole	WEAPON_POLE	weapon	8	Zephyr Pole
+103E	tza_ivory_pole	WEAPON_POLE	weapon	9	Ivory Pole
+103F	tza_sweep	WEAPON_POLE	weapon	10	Sweep
+1040	tza_eight_fluted_pole	WEAPON_POLE	weapon	11	Eight-fluted Pole
+1041	whale_whisker	WEAPON_POLE	weapon	12	Whale Whisker
+1042	tza_shortbow	WEAPON_BOW	weapon	1	Shortbow
+1043	tza_silver_bow	WEAPON_BOW	weapon	2	Silver Bow
+1044	tza_aevis_killer	WEAPON_BOW	weapon	3	Aevis Killer
+1045	tza_killer_bow	WEAPON_BOW	weapon	4	Killer Bow
+1046	tza_longbow	WEAPON_BOW	weapon	5	Longbow
+1047	tza_elfin_bow	WEAPON_BOW	weapon	6	Elfin Bow
+1048	tza_loxley_bow	WEAPON_BOW	weapon	7	Loxley Bow
+1049	tza_giant_stonebow	WEAPON_BOW	weapon	8	Giant Stonebow
+104A	burning_bow	WEAPON_BOW	weapon	9	Burning Bow
+104B	tza_traitor_s_bow	WEAPON_BOW	weapon	10	Traitor's Bow
+104C	yoichi_bow	WEAPON_BOW	weapon	11	Yoichi Bow
+104D	tza_perseus_bow	WEAPON_BOW	weapon	12	Perseus Bow
+104E	tza_artemis_bow	WEAPON_BOW	weapon	13	Artemis Bow
+104F	sagittarius	WEAPON_BOW	weapon	14	Sagittarius
+1050	tza_bowgun	WEAPON_CROSSBOW	weapon	1	Bowgun
+1051	tza_crossbow	WEAPON_CROSSBOW	weapon	2	Crossbow
+1052	tza_paramina_crossbow	WEAPON_CROSSBOW	weapon	3	Paramina Crossbow
+1053	tza_recurve_crossbow	WEAPON_CROSSBOW	weapon	4	Recurve Crossbow
+1054	tza_hunting_crossbow	WEAPON_CROSSBOW	weapon	5	Hunting Crossbow
+1055	tza_penetrator_crossbow	WEAPON_CROSSBOW	weapon	6	Penetrator Crossbow
+1056	tza_gastrophetes	WEAPON_CROSSBOW	weapon	7	Gastrophetes
+1057	altair	WEAPON_GUN	weapon	1	Altair
+1058	tza_capella	WEAPON_GUN	weapon	2	Capella
+1059	tza_vega	WEAPON_GUN	weapon	3	Vega
+105A	tza_sirius	WEAPON_GUN	weapon	4	Sirius
+105B	tza_betelgeuse	WEAPON_GUN	weapon	5	Betelgeuse
+105C	tza_ras_algethi	WEAPON_GUN	weapon	6	Ras Algethi
+105D	tza_aldebaran	WEAPON_GUN	weapon	7	Aldebaran
+105E	tza_spica	WEAPON_GUN	weapon	8	Spica
+105F	tza_antares	WEAPON_GUN	weapon	9	Antares
+1060	tza_arcturus	WEAPON_GUN	weapon	10	Arcturus
+1061	fomalhaut	WEAPON_GUN	weapon	11	Fomalhaut
+1062	tza_handaxe	WEAPON_AXE_HAMMER	weapon	1	Handaxe
+1063	tza_broadaxe	WEAPON_AXE_HAMMER	weapon	2	Broadaxe
+1064	tza_slasher	WEAPON_AXE_HAMMER	weapon	3	Slasher
+1065	tza_hammerhead	WEAPON_AXE_HAMMER	weapon	4	Hammerhead
+1066	francisca	WEAPON_AXE_HAMMER	weapon	5	Francisca
+1067	tza_greataxe	WEAPON_AXE_HAMMER	weapon	6	Greataxe
+1068	tza_golden_axe	WEAPON_AXE_HAMMER	weapon	7	Golden Axe
+1069	tza_iron_hammer	WEAPON_AXE_HAMMER	weapon	8	Iron Hammer
+106A	tza_war_hammer	WEAPON_AXE_HAMMER	weapon	9	War Hammer
+106B	tza_sledgehammer	WEAPON_AXE_HAMMER	weapon	10	Sledgehammer
+106C	tza_morning_star	WEAPON_AXE_HAMMER	weapon	11	Morning Star
+106D	scorpion_tail	WEAPON_AXE_HAMMER	weapon	12	Scorpion Tail
+106E	tza_dagger	WEAPON_DAGGER	weapon	8	Dagger
+106F	tza_mage_masher	WEAPON_DAGGER	weapon	9	Mage Masher
+1070	tza_assassin_s_dagger	WEAPON_DAGGER	weapon	10	Assassin's Dagger
+1071	tza_chopper	WEAPON_DAGGER	weapon	11	Chopper
+1072	tza_main_gauche	WEAPON_DAGGER	weapon	12	Main Gauche
+1073	gladius	WEAPON_DAGGER	weapon	13	Gladius
+1074	tza_avenger	WEAPON_DAGGER	weapon	14	Avenger
+1075	tza_orichalcum_dirk	WEAPON_DAGGER	weapon	15	Orichalcum Dirk
+1076	tza_platinum_dagger	WEAPON_DAGGER	weapon	16	Platinum Dagger
+1077	tza_zwill_crossblade	WEAPON_DAGGER	weapon	17	Zwill Crossblade
+1078	shikari_nagasa	WEAPON_DAGGER	weapon	18	Shikari Nagasa
+1079	tza_rod	WEAPON_ROD	weapon	1	Rod
+107A	tza_serpent_rod	WEAPON_ROD	weapon	2	Serpent Rod
+107B	tza_healing_rod	WEAPON_ROD	weapon	3	Healing Rod
+107C	tza_gaia_rod	WEAPON_ROD	weapon	4	Gaia Rod
+107D	tza_power_rod	WEAPON_ROD	weapon	5	Power Rod
+107E	tza_empyrean_rod	WEAPON_ROD	weapon	6	Empyrean Rod
+107F	tza_holy_rod	WEAPON_ROD	weapon	7	Holy Rod
+1080	rod_of_faith	WEAPON_ROD	weapon	8	Rod of Faith
+1081	oak_staff	WEAPON_STAFF	weapon	1	Oak Staff
+1082	cherry_staff	WEAPON_STAFF	weapon	2	Cherry Staff
+1083	tza_wizard_s_staff	WEAPON_STAFF	weapon	3	Wizard's Staff
+1084	tza_flame_staff	WEAPON_STAFF	weapon	4	Flame Staff
+1085	tza_storm_staff	WEAPON_STAFF	weapon	5	Storm Staff
+1086	tza_glacial_staff	WEAPON_STAFF	weapon	6	Glacial Staff
+1087	tza_golden_staff	WEAPON_STAFF	weapon	7	Golden Staff
+1088	tza_judicer_s_staff	WEAPON_STAFF	weapon	8	Judicer's Staff
+1089	tza_cloud_staff	WEAPON_STAFF	weapon	9	Cloud Staff
+108A	staff_of_the_magi	WEAPON_STAFF	weapon	10	Staff of the Magi
+108B	tza_mace	WEAPON_MACE	weapon	1	Mace
+108C	tza_bronze_mace	WEAPON_MACE	weapon	2	Bronze Mace
+108D	tza_bhuj	WEAPON_MACE	weapon	3	Bhuj
+108E	tza_miter	WEAPON_MACE	weapon	4	Miter
+108F	tza_thorned_mace	WEAPON_MACE	weapon	5	Thorned Mace
+1090	tza_chaos_mace	WEAPON_MACE	weapon	6	Chaos Mace
+1091	tza_doom_mace	WEAPON_MACE	weapon	7	Doom Mace
+1092	tza_zeus_mace	WEAPON_MACE	weapon	8	Zeus Mace
+1093	tza_grand_mace	WEAPON_MACE	weapon	9	Grand Mace
+1094	tza_gilt_measure	WEAPON_MEASURE	weapon	1	Gilt Measure
+1095	tza_arc_scale	WEAPON_MEASURE	weapon	2	Arc Scale
+1096	tza_multiscale	WEAPON_MEASURE	weapon	3	Multiscale
+1097	tza_cross_scale	WEAPON_MEASURE	weapon	4	Cross Scale
+1098	tza_caliper	WEAPON_MEASURE	weapon	5	Caliper
+1099	euclids_sextant	WEAPON_MEASURE	weapon	6	Euclid's Sextant
+109A	tza_hornito	WEAPON_HAND_BOMB	weapon	1	Hornito
+109B	tza_fumarole	WEAPON_HAND_BOMB	weapon	2	Fumarole
+109C	tza_tumulus	WEAPON_HAND_BOMB	weapon	3	Tumulus
+109D	tza_caldera	WEAPON_HAND_BOMB	weapon	4	Caldera
+109E	volcano	WEAPON_HAND_BOMB	weapon	5	Volcano
+109F	tza_bonebreaker	WEAPON_MACE	weapon	10	Bonebreaker
+10A0	mythril_sword	WEAPON_SWORD	weapon	18	Mythril Sword
+10A1	tza_hero_s_blade	WEAPON_SWORD	weapon	19	Hero's Blade
+10A2	tza_treaty_blade	WEAPON_GREATSWORD	weapon	8	Treaty-Blade
+10A3	tza_sword_of_kings	WEAPON_GREATSWORD	weapon	9	Sword of Kings
+10A4	tza_joyeuse	WEAPON_SWORD	weapon	20	Joyeuse
+10A5	tza_chirijiraden	WEAPON_SWORD	weapon	21	Chirijiraden
+10A6	tza_nightmare	WEAPON_GREATSWORD	weapon	10	Nightmare
+10A7	tza_flimsy_blade	WEAPON_SWORD	weapon	22	Flimsy Blade
+10A8	mythril_blade	WEAPON_SWORD	weapon	23	Mythril Blade
+10A9	tza_nightmare_10a9	WEAPON_GREATSWORD	weapon	11	Nightmare
+10AA	tza_kumbha	WEAPON_KATANA	weapon	11	Kumbha
+10AB	tza_mesa	WEAPON_DAGGER	weapon	19	Mesa
+10AC	tza_mina	WEAPON_DAGGER	weapon	20	Mina
+10AD	wyrmhero_blade	WEAPON_GREATSWORD	weapon	12	Wyrmhero Blade
+10AE	tza_vrsabha	WEAPON_SPEAR	weapon	13	Vrsabha
+10AF	tza_bone_of_byblos	WEAPON_MACE	weapon	11	Bone of Byblos
+10B0	tza_tula	WEAPON_CROSSBOW	weapon	8	Tula
+10B1	tza_great_trango	WEAPON_SWORD	weapon	24	Great Trango
+10B2	tza_seitengrat	WEAPON_BOW	weapon	15	Seitengrat
+10B3	tza_belias_s_weapon	ESPER_GLYPH	esper	1	Belias's Weapon
+10B4	tza_mateus_s_weapon	ESPER_GLYPH	esper	2	Mateus's Weapon
+10B5	tza_adrammelech_s_weapon	ESPER_GLYPH	esper	3	Adrammelech's Weapon
+10B6	tza_hashmal_s_weapon	ESPER_GLYPH	esper	4	Hashmal's Weapon
+10B7	tza_cuchulainn_s_weapon	ESPER_GLYPH	esper	5	Cúchulainn's Weapon
+10B8	tza_famfrit_s_weapon	ESPER_GLYPH	esper	6	Famfrit's Weapon
+10B9	tza_zalera_s_weapon	ESPER_GLYPH	esper	7	Zalera's Weapon
+10BA	tza_shemhazai_s_weapon	ESPER_GLYPH	esper	8	Shemhazai's Weapon
+10BB	tza_chaos_s_weapon	ESPER_GLYPH	esper	9	Chaos's Weapon
+10BC	tza_zeromus_s_weapon	ESPER_GLYPH	esper	10	Zeromus's Weapon
+10BD	tza_exodus_s_weapon	ESPER_GLYPH	esper	11	Exodus's Weapon
+10BE	tza_ultima_s_weapon	ESPER_GLYPH	esper	12	Ultima's Weapon
+10BF	tza_zodiark_s_weapon	ESPER_GLYPH	esper	13	Zodiark's Weapon
+10C0	tza_karkata	WEAPON_SWORD	weapon	25	Karkata
+10C1	tza_excalipur	WEAPON_GREATSWORD	weapon	13	Excalipur
+10C2	tza_simha	WEAPON_SWORD	weapon	26	Simha
+10C3	tza_makara	WEAPON_HAND_BOMB	weapon	6	Makara
+10C4	tza_vrscika	WEAPON_AXE_HAMMER	weapon	13	Vrscika
+10C5	tza_mithuna	WEAPON_GUN	weapon	12	Mithuna
+10C6	tza_kanya	WEAPON_POLE	weapon	13	Kanya
+10C7	tza_dhanusha	WEAPON_BOW	weapon	16	Dhanusha
+10C8	tza_gendarme	DEFENSE_SHIELD	shield	1	Gendarme
+10C9	tza_leather_shield	DEFENSE_SHIELD	shield	2	Leather Shield
+10CA	tza_buckler	DEFENSE_SHIELD	shield	3	Buckler
+10CB	tza_bronze_shield	DEFENSE_SHIELD	shield	4	Bronze Shield
+10CC	tza_round_shield	DEFENSE_SHIELD	shield	5	Round Shield
+10CD	tza_shell_shield	DEFENSE_SHIELD	shield	6	Shell Shield
+10CE	tza_golden_shield	DEFENSE_SHIELD	shield	7	Golden Shield
+10CF	tza_ice_shield	DEFENSE_SHIELD	shield	8	Ice Shield
+10D0	tza_flame_shield	DEFENSE_SHIELD	shield	9	Flame Shield
+10D1	tza_diamond_shield	DEFENSE_SHIELD	shield	10	Diamond Shield
+10D2	tza_platinum_shield	DEFENSE_SHIELD	shield	11	Platinum Shield
+10D3	tza_dragon_shield	DEFENSE_SHIELD	shield	12	Dragon Shield
+10D4	tza_crystal_shield	DEFENSE_SHIELD	shield	13	Crystal Shield
+10D5	tza_genji_shield	DEFENSE_SHIELD	shield	14	Genji Shield
+10D6	tza_kaiser_shield	DEFENSE_SHIELD	shield	15	Kaiser Shield
+10D7	aegis_shield	DEFENSE_SHIELD	shield	16	Aegis Shield
+10D8	tza_demon_shield	DEFENSE_SHIELD	shield	17	Demon Shield
+10D9	tza_venetian_shield	DEFENSE_SHIELD	shield	18	Venetian Shield
+10DA	zodiac_escutcheon	DEFENSE_SHIELD	shield	19	Zodiac Escutcheon
+10DB	tza_ensanguined_shield	DEFENSE_SHIELD	shield	20	Ensanguined Shield
+10DC	leather_cap	DEFENSE_LIGHT_ARMOR	head	1	Leather Cap
+10DD	tza_headgear	DEFENSE_LIGHT_ARMOR	head	2	Headgear
+10DE	tza_headguard	DEFENSE_LIGHT_ARMOR	head	3	Headguard
+10DF	tza_leather_headgear	DEFENSE_LIGHT_ARMOR	head	4	Leather Headgear
+10E0	tza_horned_hat	DEFENSE_LIGHT_ARMOR	head	5	Horned Hat
+10E1	tza_balaclava	DEFENSE_LIGHT_ARMOR	head	6	Balaclava
+10E2	tza_soldier_s_cap	DEFENSE_LIGHT_ARMOR	head	7	Soldier's Cap
+10E3	tza_green_beret	DEFENSE_LIGHT_ARMOR	head	8	Green Beret
+10E4	tza_red_cap	DEFENSE_LIGHT_ARMOR	head	9	Red Cap
+10E5	tza_headband	DEFENSE_LIGHT_ARMOR	head	10	Headband
+10E6	tza_pirate_hat	DEFENSE_LIGHT_ARMOR	head	11	Pirate Hat
+10E7	tza_goggle_mask	DEFENSE_LIGHT_ARMOR	head	12	Goggle Mask
+10E8	tza_adamant_hat	DEFENSE_LIGHT_ARMOR	head	13	Adamant Hat
+10E9	tza_officer_s_hat	DEFENSE_LIGHT_ARMOR	head	14	Officer's Hat
+10EA	tza_chakra_band	DEFENSE_LIGHT_ARMOR	head	15	Chakra Band
+10EB	tza_thief_s_cap	DEFENSE_LIGHT_ARMOR	head	16	Thief's Cap
+10EC	tza_gigas_hat	DEFENSE_LIGHT_ARMOR	head	17	Gigas Hat
+10ED	tza_chaperon	DEFENSE_LIGHT_ARMOR	head	18	Chaperon
+10EE	tza_crown_of_laurels	DEFENSE_LIGHT_ARMOR	head	19	Crown of Laurels
+10EF	tza_renewing_morion	DEFENSE_LIGHT_ARMOR	head	20	Renewing Morion
+10F0	tza_dueling_mask	DEFENSE_LIGHT_ARMOR	head	21	Dueling Mask
+10F1	tza_cotton_cap	DEFENSE_MYSTIC_ARMOR	head	1	Cotton Cap
+10F2	tza_magick_curch	DEFENSE_MYSTIC_ARMOR	head	2	Magick Curch
+10F3	tza_pointy_hat	DEFENSE_MYSTIC_ARMOR	head	3	Pointy Hat
+10F4	tza_topkapi_hat	DEFENSE_MYSTIC_ARMOR	head	4	Topkapi Hat
+10F5	tza_calot_hat	DEFENSE_MYSTIC_ARMOR	head	5	Calot Hat
+10F6	tza_wizard_s_hat	DEFENSE_MYSTIC_ARMOR	head	6	Wizard's Hat
+10F7	tza_lambent_hat	DEFENSE_MYSTIC_ARMOR	head	7	Lambent Hat
+10F8	tza_feathered_cap	DEFENSE_MYSTIC_ARMOR	head	8	Feathered Cap
+10F9	tza_mage_s_hat	DEFENSE_MYSTIC_ARMOR	head	9	Mage's Hat
+10FA	tza_lamia_s_tiara	DEFENSE_MYSTIC_ARMOR	head	10	Lamia's Tiara
+10FB	tza_sorcerer_s_hat	DEFENSE_MYSTIC_ARMOR	head	11	Sorcerer's Hat
+10FC	tza_black_cowl	DEFENSE_MYSTIC_ARMOR	head	12	Black Cowl
+10FD	tza_astrakhan_hat	DEFENSE_MYSTIC_ARMOR	head	13	Astrakhan Hat
+10FE	tza_gaia_hat	DEFENSE_MYSTIC_ARMOR	head	14	Gaia Hat
+10FF	tza_hypnocrown	DEFENSE_MYSTIC_ARMOR	head	15	Hypnocrown
+1100	tza_gold_hairpin	DEFENSE_MYSTIC_ARMOR	head	16	Gold Hairpin
+1101	tza_celebrant_s_miter	DEFENSE_MYSTIC_ARMOR	head	17	Celebrant's Miter
+1102	tza_black_mask	DEFENSE_MYSTIC_ARMOR	head	18	Black Mask
+1103	tza_white_mask	DEFENSE_MYSTIC_ARMOR	head	19	White Mask
+1104	tza_golden_skullcap	DEFENSE_MYSTIC_ARMOR	head	20	Golden Skullcap
+1105	tza_circlet	DEFENSE_MYSTIC_ARMOR	head	21	Circlet
+1106	tza_leather_helm	DEFENSE_HEAVY_ARMOR	head	1	Leather Helm
+1107	bronze_helm	DEFENSE_HEAVY_ARMOR	head	2	Bronze Helm
+1108	tza_sallet	DEFENSE_HEAVY_ARMOR	head	3	Sallet
+1109	iron_helm	DEFENSE_HEAVY_ARMOR	head	4	Iron Helm
+110A	tza_barbut	DEFENSE_HEAVY_ARMOR	head	5	Barbut
+110B	tza_winged_helm	DEFENSE_HEAVY_ARMOR	head	6	Winged Helm
+110C	tza_golden_helm	DEFENSE_HEAVY_ARMOR	head	7	Golden Helm
+110D	tza_burgonet	DEFENSE_HEAVY_ARMOR	head	8	Burgonet
+110E	tza_close_helmet	DEFENSE_HEAVY_ARMOR	head	9	Close Helmet
+110F	tza_steel_mask	DEFENSE_HEAVY_ARMOR	head	10	Steel Mask
+1110	tza_bone_helm	DEFENSE_HEAVY_ARMOR	head	11	Bone Helm
+1111	tza_diamond_helm	DEFENSE_HEAVY_ARMOR	head	12	Diamond Helm
+1112	tza_platinum_helm	DEFENSE_HEAVY_ARMOR	head	13	Platinum Helm
+1113	tza_giant_s_helmet	DEFENSE_HEAVY_ARMOR	head	14	Giant's Helmet
+1114	tza_dragon_helm	DEFENSE_HEAVY_ARMOR	head	15	Dragon Helm
+1115	tza_magepower_shishak	DEFENSE_HEAVY_ARMOR	head	16	Magepower Shishak
+1116	tza_genji_helm	DEFENSE_HEAVY_ARMOR	head	17	Genji Helm
+1117	grand_helm	DEFENSE_HEAVY_ARMOR	head	18	Grand Helm
+1118	leather_clothing	DEFENSE_LIGHT_ARMOR	chest	22	Leather Clothing
+1119	tza_chromed_leathers	DEFENSE_LIGHT_ARMOR	chest	23	Chromed Leathers
+111A	tza_leather_breastplate	DEFENSE_LIGHT_ARMOR	chest	24	Leather Breastplate
+111B	tza_bronze_chestplate	DEFENSE_LIGHT_ARMOR	chest	25	Bronze Chestplate
+111C	tza_ringmail	DEFENSE_LIGHT_ARMOR	chest	26	Ringmail
+111D	tza_windbreaker	DEFENSE_LIGHT_ARMOR	chest	27	Windbreaker
+111E	tza_heavy_coat	DEFENSE_LIGHT_ARMOR	chest	28	Heavy Coat
+111F	tza_survival_vest	DEFENSE_LIGHT_ARMOR	chest	29	Survival Vest
+1120	tza_brigandine	DEFENSE_LIGHT_ARMOR	chest	30	Brigandine
+1121	tza_jujitsu_gi	DEFENSE_LIGHT_ARMOR	chest	31	Jujitsu Gi
+1122	tza_viking_coat	DEFENSE_LIGHT_ARMOR	chest	32	Viking Coat
+1123	tza_metal_jerkin	DEFENSE_LIGHT_ARMOR	chest	33	Metal Jerkin
+1124	tza_adamant_vest	DEFENSE_LIGHT_ARMOR	chest	34	Adamant Vest
+1125	tza_barrel_coat	DEFENSE_LIGHT_ARMOR	chest	35	Barrel Coat
+1126	tza_power_vest	DEFENSE_LIGHT_ARMOR	chest	36	Power Vest
+1127	tza_ninja_gear	DEFENSE_LIGHT_ARMOR	chest	37	Ninja Gear
+1128	tza_gigas_chestplate	DEFENSE_LIGHT_ARMOR	chest	38	Gigas Chestplate
+1129	tza_minerva_bustier	DEFENSE_LIGHT_ARMOR	chest	39	Minerva Bustier
+112A	tza_rubber_suit	DEFENSE_LIGHT_ARMOR	chest	40	Rubber Suit
+112B	mirage_vest	DEFENSE_LIGHT_ARMOR	chest	41	Mirage Vest
+112C	brave_suit	DEFENSE_LIGHT_ARMOR	chest	42	Brave Suit
+112D	tza_cotton_shirt	DEFENSE_MYSTIC_ARMOR	chest	22	Cotton Shirt
+112E	tza_light_woven_shirt	DEFENSE_MYSTIC_ARMOR	chest	23	Light Woven Shirt
+112F	tza_silken_shirt	DEFENSE_MYSTIC_ARMOR	chest	24	Silken Shirt
+1130	tza_kilimweave_shirt	DEFENSE_MYSTIC_ARMOR	chest	25	Kilimweave Shirt
+1131	tza_shepherd_s_bolero	DEFENSE_MYSTIC_ARMOR	chest	26	Shepherd's Bolero
+1132	tza_wizard_s_robes	DEFENSE_MYSTIC_ARMOR	chest	27	Wizard's Robes
+1133	tza_chanter_s_djellaba	DEFENSE_MYSTIC_ARMOR	chest	28	Chanter's Djellaba
+1134	tza_traveler_s_vestment	DEFENSE_MYSTIC_ARMOR	chest	29	Traveler's Vestment
+1135	mages_habit	DEFENSE_MYSTIC_ARMOR	chest	30	Mage's Habit
+1136	tza_enchanter_s_habit	DEFENSE_MYSTIC_ARMOR	chest	31	Enchanter's Habit
+1137	tza_sorcerer_s_habit	DEFENSE_MYSTIC_ARMOR	chest	32	Sorcerer's Habit
+1138	tza_black_garb	DEFENSE_MYSTIC_ARMOR	chest	33	Black Garb
+1139	tza_carmagnole	DEFENSE_MYSTIC_ARMOR	chest	34	Carmagnole
+113A	tza_maduin_gear	DEFENSE_MYSTIC_ARMOR	chest	35	Maduin Gear
+113B	tza_jade_gown	DEFENSE_MYSTIC_ARMOR	chest	36	Jade Gown
+113C	tza_gaia_gear	DEFENSE_MYSTIC_ARMOR	chest	37	Gaia Gear
+113D	tza_cleric_s_robes	DEFENSE_MYSTIC_ARMOR	chest	38	Cleric's Robes
+113E	tza_white_robes	DEFENSE_MYSTIC_ARMOR	chest	39	White Robes
+113F	tza_black_robes	DEFENSE_MYSTIC_ARMOR	chest	40	Black Robes
+1140	tza_glimmering_robes	DEFENSE_MYSTIC_ARMOR	chest	41	Glimmering Robes
+1141	lordly_robe	DEFENSE_MYSTIC_ARMOR	chest	42	Lordly Robes
+1142	tza_leather_armor	DEFENSE_HEAVY_ARMOR	chest	19	Leather Armor
+1143	scale_armor	DEFENSE_HEAVY_ARMOR	chest	20	Scale Armor
+1144	bronze_armor	DEFENSE_HEAVY_ARMOR	chest	21	Bronze Armor
+1145	tza_iron_armor	DEFENSE_HEAVY_ARMOR	chest	22	Iron Armor
+1146	tza_linen_cuirass	DEFENSE_HEAVY_ARMOR	chest	23	Linen Cuirass
+1147	tza_chainmail	DEFENSE_HEAVY_ARMOR	chest	24	Chainmail
+1148	tza_golden_armor	DEFENSE_HEAVY_ARMOR	chest	25	Golden Armor
+1149	tza_shielded_armor	DEFENSE_HEAVY_ARMOR	chest	26	Shielded Armor
+114A	tza_demon_mail	DEFENSE_HEAVY_ARMOR	chest	27	Demon Mail
+114B	tza_bone_mail	DEFENSE_HEAVY_ARMOR	chest	28	Bone Mail
+114C	tza_diamond_armor	DEFENSE_HEAVY_ARMOR	chest	29	Diamond Armor
+114D	tza_mirror_mail	DEFENSE_HEAVY_ARMOR	chest	30	Mirror Mail
+114E	tza_platinum_armor	DEFENSE_HEAVY_ARMOR	chest	31	Platinum Armor
+114F	tza_carabineer_mail	DEFENSE_HEAVY_ARMOR	chest	32	Carabineer Mail
+1150	tza_dragon_mail	DEFENSE_HEAVY_ARMOR	chest	33	Dragon Mail
+1151	tza_genji_armor	DEFENSE_HEAVY_ARMOR	chest	34	Genji Armor
+1152	maximillian	DEFENSE_HEAVY_ARMOR	chest	35	Maximillian
+1153	grand_armor	DEFENSE_HEAVY_ARMOR	chest	36	Grand Armor
+1154	tza_opal_ring	DEFENSE_ACCESSORY	accessory	1	Opal Ring
+1155	tza_ruby_ring	DEFENSE_ACCESSORY	accessory	2	Ruby Ring
+1156	tza_tourmaline_ring	DEFENSE_ACCESSORY	accessory	3	Tourmaline Ring
+1157	tza_sage_s_ring	DEFENSE_ACCESSORY	accessory	4	Sage's Ring
+1158	tza_ring_of_renewal	DEFENSE_ACCESSORY	accessory	5	Ring of Renewal
+1159	tza_agate_ring	DEFENSE_ACCESSORY	accessory	6	Agate Ring
+115A	tza_bangle	DEFENSE_ACCESSORY	accessory	7	Bangle
+115B	tza_orrachea_armlet	DEFENSE_ACCESSORY	accessory	8	Orrachea Armlet
+115C	tza_power_armlet	DEFENSE_ACCESSORY	accessory	9	Power Armlet
+115D	tza_argyle_armlet	DEFENSE_ACCESSORY	accessory	10	Argyle Armlet
+115E	tza_diamond_armlet	DEFENSE_ACCESSORY	accessory	11	Diamond Armlet
+115F	tza_amber_armlet	DEFENSE_ACCESSORY	accessory	12	Amber Armlet
+1160	tza_berserker_bracers	DEFENSE_ACCESSORY	accessory	13	Berserker Bracers
+1161	tza_magick_gloves	DEFENSE_ACCESSORY	accessory	14	Magick Gloves
+1162	tza_thief_s_cuffs	DEFENSE_ACCESSORY	accessory	15	Thief's Cuffs
+1163	tza_blazer_gloves	DEFENSE_ACCESSORY	accessory	16	Blazer Gloves
+1164	genji_gloves	DEFENSE_ACCESSORY	accessory	17	Genji Gloves
+1165	tza_gauntlets	DEFENSE_ACCESSORY	accessory	18	Gauntlets
+1166	tza_turtleshell_choker	DEFENSE_ACCESSORY	accessory	19	Turtleshell Choker
+1167	tza_nihopalaoa	DEFENSE_ACCESSORY	accessory	20	Nihopalaoa
+1168	tza_embroidered_tippet	DEFENSE_ACCESSORY	accessory	21	Embroidered Tippet
+1169	tza_leather_gorget	DEFENSE_ACCESSORY	accessory	22	Leather Gorget
+116A	tza_jade_collar	DEFENSE_ACCESSORY	accessory	23	Jade Collar
+116B	tza_steel_gorget	DEFENSE_ACCESSORY	accessory	24	Steel Gorget
+116C	tza_rose_corsage	DEFENSE_ACCESSORY	accessory	25	Rose Corsage
+116D	tza_pheasant_netsuke	DEFENSE_ACCESSORY	accessory	26	Pheasant Netsuke
+116E	tza_indigo_pendant	DEFENSE_ACCESSORY	accessory	27	Indigo Pendant
+116F	golden_amulet	DEFENSE_ACCESSORY	accessory	28	Golden Amulet
+1170	tza_bowline_sash	DEFENSE_ACCESSORY	accessory	29	Bowline Sash
+1171	tza_firefly	DEFENSE_ACCESSORY	accessory	30	Firefly
+1172	tza_sash	DEFENSE_ACCESSORY	accessory	31	Sash
+1173	bubble_belt	DEFENSE_ACCESSORY	accessory	32	Bubble Belt
+1174	tza_cameo_belt	DEFENSE_ACCESSORY	accessory	33	Cameo Belt
+1175	tza_nishijin_belt	DEFENSE_ACCESSORY	accessory	34	Nishijin Belt
+1176	tza_black_belt	DEFENSE_ACCESSORY	accessory	35	Black Belt
+1177	tza_battle_harness	DEFENSE_ACCESSORY	accessory	36	Battle Harness
+1178	tza_germinas_boots	DEFENSE_ACCESSORY	accessory	37	Germinas Boots
+1179	hermes_sandals	DEFENSE_ACCESSORY	accessory	38	Hermes Sandals
+117A	tza_gillie_boots	DEFENSE_ACCESSORY	accessory	39	Gillie Boots
+117B	tza_steel_poleyns	DEFENSE_ACCESSORY	accessory	40	Steel Poleyns
+117C	tza_winged_boots	DEFENSE_ACCESSORY	accessory	41	Winged Boots
+117D	tza_quasimodo_boots	DEFENSE_ACCESSORY	accessory	42	Quasimodo Boots
+117E	tza_manufacted_nethicite	DEFENSE_ACCESSORY	accessory	43	Manufacted Nethicite
+117F	tza_cat_ear_hood	DEFENSE_ACCESSORY	accessory	44	Cat-ear Hood
+1180	tza_fuzzy_miter	DEFENSE_ACCESSORY	accessory	45	Fuzzy Miter
+1181	ribbon	DEFENSE_ACCESSORY	accessory	46	Ribbon
+1182	goddess_magicite	DEFENSE_ACCESSORY	accessory	47	Goddess's Magicite
+1183	dawn_shard	DEFENSE_ACCESSORY	accessory	48	Dawn Shard
+1184	tza_onion_arrows	AMMUNITION	ammo	1	Onion Arrows
+1185	tza_parallel_arrows	AMMUNITION	ammo	2	Parallel Arrows
+1186	tza_fiery_arrows	AMMUNITION	ammo	3	Fiery Arrows
+1187	tza_bamboo_arrows	AMMUNITION	ammo	4	Bamboo Arrows
+1188	tza_lightning_arrows	AMMUNITION	ammo	5	Lightning Arrows
+1189	tza_assassin_s_arrows	AMMUNITION	ammo	6	Assassin's Arrows
+118A	tza_icecloud_arrows	AMMUNITION	ammo	7	Icecloud Arrows
+118B	tza_artemis_arrows	AMMUNITION	ammo	8	Artemis Arrows
+118C	tza_onion_bolts	AMMUNITION	ammo	9	Onion Bolts
+118D	tza_long_bolts	AMMUNITION	ammo	10	Long Bolts
+118E	tza_stone_bolts	AMMUNITION	ammo	11	Stone Bolts
+118F	tza_lead_bolts	AMMUNITION	ammo	12	Lead Bolts
+1190	tza_black_bolts	AMMUNITION	ammo	13	Black Bolts
+1191	tza_time_bolts	AMMUNITION	ammo	14	Time Bolts
+1192	tza_sapping_bolts	AMMUNITION	ammo	15	Sapping Bolts
+1193	tza_grand_bolts	AMMUNITION	ammo	16	Grand Bolts
+1194	tza_onion_shot	AMMUNITION	ammo	17	Onion Shot
+1195	tza_silent_shot	AMMUNITION	ammo	18	Silent Shot
+1196	tza_aqua_shot	AMMUNITION	ammo	19	Aqua Shot
+1197	wyrmfire_shot	AMMUNITION	ammo	20	Wyrmfire Shot
+1198	tza_mud_shot	AMMUNITION	ammo	21	Mud Shot
+1199	tza_windslicer_shot	AMMUNITION	ammo	22	Windslicer Shot
+119A	tza_dark_shot	AMMUNITION	ammo	23	Dark Shot
+119B	tza_stone_shot	AMMUNITION	ammo	24	Stone Shot
+119C	tza_onion_bombs	AMMUNITION	ammo	25	Onion Bombs
+119D	tza_poison_bombs	AMMUNITION	ammo	26	Poison Bombs
+119E	tza_stun_bombs	AMMUNITION	ammo	27	Stun Bombs
+119F	tza_oil_bombs	AMMUNITION	ammo	28	Oil Bombs
+11A0	tza_chaos_bombs	AMMUNITION	ammo	29	Chaos Bombs
+11A1	tza_stink_bombs	AMMUNITION	ammo	30	Stink Bombs
+11A2	tza_water_bombs	AMMUNITION	ammo	31	Water Bombs
+11A3	tza_castellanos	AMMUNITION	ammo	32	Castellanos
+2000	teleport_stone	LOOT_MATERIAL	loot	1	Teleport Stone
+2020	earth_stone	LOOT_MATERIAL	loot	2	Earth Stone
+2021	wind_stone	LOOT_MATERIAL	loot	3	Wind Stone
+2022	water_stone	LOOT_MATERIAL	loot	4	Water Stone
+2023	fire_stone	LOOT_MATERIAL	loot	5	Fire Stone
+2024	tza_ice_stone	LOOT_MATERIAL	loot	6	Ice Stone
+2025	storm_stone	LOOT_MATERIAL	loot	7	Storm Stone
+2026	tza_holy_stone	LOOT_MATERIAL	loot	8	Holy Stone
+2027	tza_dark_stone	LOOT_MATERIAL	loot	9	Dark Stone
+2028	tza_earth_magicite	LOOT_MATERIAL	loot	10	Earth Magicite
+2029	tza_wind_magicite	LOOT_MATERIAL	loot	11	Wind Magicite
+202A	tza_water_magicite	LOOT_MATERIAL	loot	12	Water Magicite
+202B	tza_fire_magicite	LOOT_MATERIAL	loot	13	Fire Magicite
+202C	tza_ice_magicite	LOOT_MATERIAL	loot	14	Ice Magicite
+202D	tza_storm_magicite	LOOT_MATERIAL	loot	15	Storm Magicite
+202E	tza_holy_magicite	LOOT_MATERIAL	loot	16	Holy Magicite
+202F	dark_magicite	LOOT_MATERIAL	loot	17	Dark Magicite
+2030	tza_earth_crystal	LOOT_MATERIAL	loot	18	Earth Crystal
+2031	tza_wind_crystal	LOOT_MATERIAL	loot	19	Wind Crystal
+2032	tza_water_crystal	LOOT_MATERIAL	loot	20	Water Crystal
+2033	tza_fire_crystal	LOOT_MATERIAL	loot	21	Fire Crystal
+2034	tza_ice_crystal	LOOT_MATERIAL	loot	22	Ice Crystal
+2035	tza_storm_crystal	LOOT_MATERIAL	loot	23	Storm Crystal
+2036	tza_holy_crystal	LOOT_MATERIAL	loot	24	Holy Crystal
+2037	tza_dark_crystal	LOOT_MATERIAL	loot	25	Dark Crystal
+2038	tza_aries_gem	LOOT_MATERIAL	loot	26	Aries Gem
+2039	tza_taurus_gem	LOOT_MATERIAL	loot	27	Taurus Gem
+203A	tza_gemini_gem	LOOT_MATERIAL	loot	28	Gemini Gem
+203B	tza_cancer_gem	LOOT_MATERIAL	loot	29	Cancer Gem
+203C	tza_leo_gem	LOOT_MATERIAL	loot	30	Leo Gem
+203D	tza_virgo_gem	LOOT_MATERIAL	loot	31	Virgo Gem
+203E	tza_libra_gem	LOOT_MATERIAL	loot	32	Libra Gem
+203F	tza_scorpio_gem	LOOT_MATERIAL	loot	33	Scorpio Gem
+2040	tza_sagittarius_gem	LOOT_MATERIAL	loot	34	Sagittarius Gem
+2041	tza_capricorn_gem	LOOT_MATERIAL	loot	35	Capricorn Gem
+2042	tza_aquarius_gem	LOOT_MATERIAL	loot	36	Aquarius Gem
+2043	tza_pisces_gem	LOOT_MATERIAL	loot	37	Pisces Gem
+2044	tza_salamand_halcyon	LOOT_MATERIAL	loot	38	Salamand Halcyon
+2045	tza_mardu_halcyon	LOOT_MATERIAL	loot	39	Mardu Halcyon
+2046	tza_leshach_halcyon	LOOT_MATERIAL	loot	40	Leshach Halcyon
+2047	tza_gnoma_halcyon	LOOT_MATERIAL	loot	41	Gnoma Halcyon
+2048	tza_undin_halcyon	LOOT_MATERIAL	loot	42	Undin Halcyon
+2049	tza_sylphi_halcyon	LOOT_MATERIAL	loot	43	Sylphi Halcyon
+204A	tza_diakon_halcyon	LOOT_MATERIAL	loot	44	Diakon Halcyon
+204B	tza_leamonde_halcyon	LOOT_MATERIAL	loot	45	Leamonde Halcyon
+204C	tza_arcana	LOOT_MATERIAL	loot	46	Arcana
+204D	high_arcana	LOOT_MATERIAL	loot	47	High Arcana
+204E	tza_turtle_shell	LOOT_MATERIAL	loot	48	Turtle Shell
+204F	tza_aged_turtle_shell	LOOT_MATERIAL	loot	49	Aged Turtle Shell
+2050	tza_ancient_turtle_shell	LOOT_MATERIAL	loot	50	Ancient Turtle Shell
+2051	tza_molting	LOOT_MATERIAL	loot	51	Molting
+2052	tza_iron_carapace	LOOT_MATERIAL	loot	52	Iron Carapace
+2053	tza_wyrm_carapace	LOOT_MATERIAL	loot	53	Wyrm Carapace
+2054	tza_insect_husk	LOOT_MATERIAL	loot	54	Insect Husk
+2055	tza_battlewyrm_carapace	LOOT_MATERIAL	loot	55	Battlewyrm Carapace
+2056	tza_destrier_barding	LOOT_MATERIAL	loot	56	Destrier Barding
+2057	tza_charger_barding	LOOT_MATERIAL	loot	57	Charger Barding
+2058	fish_scale	LOOT_MATERIAL	loot	58	Fish Scale
+2059	tza_yensa_scale	LOOT_MATERIAL	loot	59	Yensa Scale
+205A	ichthon_scale	LOOT_MATERIAL	loot	60	Ichthon Scale
+205B	tza_ring_wyrm_scale	LOOT_MATERIAL	loot	61	Ring Wyrm Scale
+205C	tza_drab_wool	LOOT_MATERIAL	loot	62	Drab Wool
+205D	tza_braid_wool	LOOT_MATERIAL	loot	63	Braid Wool
+205E	tza_fine_wool	LOOT_MATERIAL	loot	64	Fine Wool
+205F	tza_blood_wool	LOOT_MATERIAL	loot	65	Blood Wool
+2060	tza_rat_pelt	LOOT_MATERIAL	loot	66	Rat Pelt
+2061	tza_snake_skin	LOOT_MATERIAL	loot	67	Snake Skin
+2062	tza_tyrant_hide	LOOT_MATERIAL	loot	68	Tyrant Hide
+2063	tza_quality_hide	LOOT_MATERIAL	loot	69	Quality Hide
+2064	tza_beastlord_hide	LOOT_MATERIAL	loot	70	Beastlord Hide
+2065	tza_tanned_hide	LOOT_MATERIAL	loot	71	Tanned Hide
+2066	tza_tanned_giantskin	LOOT_MATERIAL	loot	72	Tanned Giantskin
+2067	tza_tanned_tyrant_hide	LOOT_MATERIAL	loot	73	Tanned Tyrant Hide
+2068	tza_prime_tanned_hide	LOOT_MATERIAL	loot	74	Prime Tanned Hide
+2069	wolf_pelt	LOOT_MATERIAL	loot	75	Wolf Pelt
+206A	tza_coeurl_pelt	LOOT_MATERIAL	loot	76	Coeurl Pelt
+206B	tza_quality_pelt	LOOT_MATERIAL	loot	77	Quality Pelt
+206C	tza_prime_pelt	LOOT_MATERIAL	loot	78	Prime Pelt
+206D	small_feather	LOOT_MATERIAL	loot	79	Small Feather
+206E	tza_large_feather	LOOT_MATERIAL	loot	80	Large Feather
+206F	tza_chocobo_feather	LOOT_MATERIAL	loot	81	Chocobo Feather
+2070	tza_giant_feather	LOOT_MATERIAL	loot	82	Giant Feather
+2071	tza_bundle_of_feathers	LOOT_MATERIAL	loot	83	Bundle of Feathers
+2072	tza_windslicer_pinion	LOOT_MATERIAL	loot	84	Windslicer Pinion
+2073	tza_horn	LOOT_MATERIAL	loot	85	Horn
+2074	tza_pointed_horn	LOOT_MATERIAL	loot	86	Pointed Horn
+2075	tza_solid_horn	LOOT_MATERIAL	loot	87	Solid Horn
+2076	tza_bat_fang	LOOT_MATERIAL	loot	88	Bat Fang
+2077	tza_crooked_fang	LOOT_MATERIAL	loot	89	Crooked Fang
+2078	tza_spiral_incisor	LOOT_MATERIAL	loot	90	Spiral Incisor
+2079	tza_wyvern_fang	LOOT_MATERIAL	loot	91	Wyvern Fang
+207A	cactus_fruit	LOOT_MATERIAL	loot	92	Cactus Fruit
+207B	tza_succulent_fruit	LOOT_MATERIAL	loot	93	Succulent Fruit
+207C	tza_screamroot	LOOT_MATERIAL	loot	94	Screamroot
+207D	malboro_vine	LOOT_MATERIAL	loot	95	Malboro Vine
+207E	tza_malboro_fruit	LOOT_MATERIAL	loot	96	Malboro Fruit
+207F	tza_malboro_flower	LOOT_MATERIAL	loot	97	Malboro Flower
+2080	tza_bone_fragment	LOOT_MATERIAL	loot	98	Bone Fragment
+2081	tza_sturdy_bone	LOOT_MATERIAL	loot	99	Sturdy Bone
+2082	tza_blood_darkened_bone	LOOT_MATERIAL	loot	100	Blood-darkened Bone
+2083	tza_lumber	LOOT_MATERIAL	loot	101	Lumber
+2084	tza_quality_lumber	LOOT_MATERIAL	loot	102	Quality Lumber
+2085	tza_solid_stone	LOOT_MATERIAL	loot	103	Solid Stone
+2086	tza_quality_stone	LOOT_MATERIAL	loot	104	Quality Stone
+2087	tza_iron_scraps	LOOT_MATERIAL	loot	105	Iron Scraps
+2088	tza_iron_ore	LOOT_MATERIAL	loot	106	Iron Ore
+2089	tza_green_liquid	LOOT_MATERIAL	loot	107	Green Liquid
+208A	tza_yellow_liquid	LOOT_MATERIAL	loot	108	Yellow Liquid
+208B	tza_silver_liquid	LOOT_MATERIAL	loot	109	Silver Liquid
+208C	tza_glass_jewel	LOOT_MATERIAL	loot	110	Glass Jewel
+208D	tza_sky_jewel	LOOT_MATERIAL	loot	111	Sky Jewel
+208E	tza_demon_eyeball	LOOT_MATERIAL	loot	112	Demon Eyeball
+208F	tza_demon_feather	LOOT_MATERIAL	loot	113	Demon Feather
+2090	tza_demon_tail	LOOT_MATERIAL	loot	114	Demon Tail
+2091	tza_grimoire_togail	LOOT_MATERIAL	loot	115	Grimoire Togail
+2092	tza_grimoire_aidhed	LOOT_MATERIAL	loot	116	Grimoire Aidhed
+2093	tza_bomb_ashes	LOOT_MATERIAL	loot	117	Bomb Ashes
+2094	tza_bomb_shell	LOOT_MATERIAL	loot	118	Bomb Shell
+2095	tza_book_of_orgain	LOOT_MATERIAL	loot	119	Book of Orgain
+2096	tza_book_of_orgain_cent	LOOT_MATERIAL	loot	120	Book of Orgain-Cent
+2097	tza_book_of_orgain_mille	LOOT_MATERIAL	loot	121	Book of Orgain-Mille
+2098	tza_foul_flesh	LOOT_MATERIAL	loot	122	Foul Flesh
+2099	tza_festering_flesh	LOOT_MATERIAL	loot	123	Festering Flesh
+209A	tza_maggoty_flesh	LOOT_MATERIAL	loot	124	Maggoty Flesh
+209B	tza_forbidden_flesh	LOOT_MATERIAL	loot	125	Forbidden Flesh
+209C	tza_feystone	LOOT_MATERIAL	loot	126	Feystone
+209D	tza_pebble	LOOT_MATERIAL	loot	127	Pebble
+209E	tza_broken_sword	LOOT_MATERIAL	loot	128	Broken Sword
+209F	tza_broken_greataxe	LOOT_MATERIAL	loot	129	Broken Greataxe
+20A0	tza_broken_spear	LOOT_MATERIAL	loot	130	Broken Spear
+20A1	tza_bent_staff	LOOT_MATERIAL	loot	131	Bent Staff
+20A2	tza_moon_ring	LOOT_MATERIAL	loot	132	Moon Ring
+20A3	tza_bundle_of_needles	LOOT_MATERIAL	loot	133	Bundle of Needles
+20A4	tza_coeurl_whisker	LOOT_MATERIAL	loot	134	Coeurl Whisker
+20A5	tza_mallet	LOOT_MATERIAL	loot	135	Mallet
+20A6	tza_tattered_garment	LOOT_MATERIAL	loot	136	Tattered Garment
+20A7	tza_split_armor	LOOT_MATERIAL	loot	137	Split Armor
+20A8	tza_chimera_head	LOOT_MATERIAL	loot	138	Chimera Head
+20A9	tza_rat_tail	LOOT_MATERIAL	loot	139	Rat Tail
+20AA	tza_slaven_harness	LOOT_MATERIAL	loot	140	Slaven Harness
+20AB	tza_blood_stained_necklace	LOOT_MATERIAL	loot	141	Blood-stained Necklace
+20AC	tza_destrier_mane	LOOT_MATERIAL	loot	142	Destrier Mane
+20AD	tza_wargod_s_band	LOOT_MATERIAL	loot	143	Wargod's Band
+20AE	soul_of_thamasa	LOOT_MATERIAL	loot	144	Soul of Thamasa
+20AF	tza_beastlord_horn	LOOT_MATERIAL	loot	145	Beastlord Horn
+20B0	tza_vampyr_fang	LOOT_MATERIAL	loot	146	Vampyr Fang
+20B1	tza_great_serpent_s_fang	LOOT_MATERIAL	loot	147	Great Serpent's Fang
+20B2	tza_death_s_head	LOOT_MATERIAL	loot	148	Death's-Head
+20B3	tza_ancient_bone	LOOT_MATERIAL	loot	149	Ancient Bone
+20B4	tza_wyrm_bone	LOOT_MATERIAL	loot	150	Wyrm Bone
+20B5	tza_tyrant_bone	LOOT_MATERIAL	loot	151	Tyrant Bone
+20B6	tza_mirror_scale	LOOT_MATERIAL	loot	152	Mirror Scale
+20B7	tza_emperor_scale	LOOT_MATERIAL	loot	153	Emperor Scale
+20B8	tza_mythril	LOOT_MATERIAL	loot	154	Mythril
+20B9	tza_adamantite	LOOT_MATERIAL	loot	155	Adamantite
+20BA	tza_scarletite	LOOT_MATERIAL	loot	156	Scarletite
+20BB	tza_damascus_steel	LOOT_MATERIAL	loot	157	Damascus Steel
+20BC	tza_orichalcum	LOOT_MATERIAL	loot	158	Orichalcum
+20BD	tza_mystletainn	LOOT_MATERIAL	loot	159	Mystletainn
+20BE	tza_einherjarium	LOOT_MATERIAL	loot	160	Einherjarium
+20BF	tza_electrum	LOOT_MATERIAL	loot	161	Electrum
+20C0	tza_dorsal_fin	LOOT_MATERIAL	loot	162	Dorsal Fin
+20C1	tza_yensa_fin	LOOT_MATERIAL	loot	163	Yensa Fin
+20C2	tza_ring_wyrm_liver	LOOT_MATERIAL	loot	164	Ring Wyrm Liver
+20C3	tza_eye_of_the_hawk	LOOT_MATERIAL	loot	165	Eye of the Hawk
+20C4	tza_serpent_eye	LOOT_MATERIAL	loot	166	Serpent Eye
+20C5	tza_ambrosia	LOOT_MATERIAL	loot	167	Ambrosia
+20C6	tza_foul_liquid	LOOT_MATERIAL	loot	168	Foul Liquid
+20C7	tza_putrid_liquid	LOOT_MATERIAL	loot	169	Putrid Liquid
+20C8	tza_caramel	LOOT_MATERIAL	loot	170	Caramel
+20C9	tza_slime_oil	LOOT_MATERIAL	loot	171	Slime Oil
+20CA	tza_unpurified_ether	LOOT_MATERIAL	loot	172	Unpurified Ether
+20CB	tza_demon_drink	LOOT_MATERIAL	loot	173	Demon Drink
+20CC	tza_death_powder	LOOT_MATERIAL	loot	174	Death Powder
+20CD	tza_soul_powder	LOOT_MATERIAL	loot	175	Soul Powder
+20CE	tza_zombie_powder	LOOT_MATERIAL	loot	176	Zombie Powder
+20CF	tza_snowfly	LOOT_MATERIAL	loot	177	Snowfly
+20D0	tza_corpse_fly	LOOT_MATERIAL	loot	178	Corpse Fly
+20D1	tza_bat_wing	LOOT_MATERIAL	loot	179	Bat Wing
+20D2	tza_wyvern_wing	LOOT_MATERIAL	loot	180	Wyvern Wing
+20D3	tza_bomb_fragment	LOOT_MATERIAL	loot	181	Bomb Fragment
+20D4	tza_throat_wolf_blood	LOOT_MATERIAL	loot	182	Throat Wolf Blood
+20D5	tza_frogspawn	LOOT_MATERIAL	loot	183	Frogspawn
+20D6	tza_frog_oil	LOOT_MATERIAL	loot	184	Frog Oil
+20D7	tza_behemoth_steak	LOOT_MATERIAL	loot	185	Behemoth Steak
+20D8	gysahl_greens	LOOT_MATERIAL	loot	186	Gysahl Greens
+20D9	tza_white_incense	LOOT_MATERIAL	loot	187	White Incense
+20DA	tza_antarctic_wind	LOOT_MATERIAL	loot	188	Antarctic Wind
+20DB	tza_arctic_wind	LOOT_MATERIAL	loot	189	Arctic Wind
+20DC	tza_wrath_of_the_gods	LOOT_MATERIAL	loot	190	Wrath of the Gods
+20DD	tza_charged_gizzard	LOOT_MATERIAL	loot	191	Charged Gizzard
+20DE	tza_lifewick	LOOT_MATERIAL	loot	192	Lifewick
+20DF	tza_ketu_board	LOOT_MATERIAL	loot	193	Ketu Board
+20E0	tza_magick_lamp	LOOT_MATERIAL	loot	194	Magick Lamp
+20E1	tza_hell_gate_s_flame	LOOT_MATERIAL	loot	195	Hell-Gate's Flame
+20E2	tza_sickle_blade	LOOT_MATERIAL	loot	196	Sickle-Blade
+20E3	tza_stardust	LOOT_MATERIAL	loot	197	Stardust
+20E4	tza_moondust	LOOT_MATERIAL	loot	198	Moondust
+20E5	tza_rainbow_egg	LOOT_MATERIAL	loot	199	Rainbow Egg
+20E6	tza_four_leaf_clover	LOOT_MATERIAL	loot	200	Four-leaf Clover
+20E7	tza_gimble_stalk	LOOT_MATERIAL	loot	201	Gimble Stalk
+20E8	tza_onion	LOOT_MATERIAL	loot	202	Onion
+20E9	tza_jack_o_lantern	LOOT_MATERIAL	loot	203	Jack-o'-Lantern
+20EA	tza_tomato_stalk	LOOT_MATERIAL	loot	204	Tomato Stalk
+20EB	tza_demon_s_sigh	LOOT_MATERIAL	loot	205	Demon's Sigh
+20EC	tza_omega_badge	LOOT_MATERIAL	loot	206	Omega Badge
+20ED	empyreal_soul	LOOT_MATERIAL	loot	207	Empyreal Soul
+20EE	serpentarius	LOOT_MATERIAL	loot	208	Serpentarius
+20EF	gemsteel	LOOT_MATERIAL	loot	209	Gemsteel
+20F0	tza_centurio_hero_s_badge	LOOT_MATERIAL	loot	210	Centurio Hero's Badge
+20F1	tza_horakhty_s_flame	LOOT_MATERIAL	loot	211	Horakhty's Flame
+20F2	tza_phobos_glaze	LOOT_MATERIAL	loot	212	Phobos Glaze
+20F3	tza_deimos_clay	LOOT_MATERIAL	loot	213	Deimos Clay
+20F4	tza_godslayer_s_badge	LOOT_MATERIAL	loot	214	Godslayer's Badge
+20F5	tza_lu_shang_s_badge	LOOT_MATERIAL	loot	215	Lu Shang's Badge
+2100	tza_empty_bottle	LOOT_MATERIAL	loot	216	Empty Bottle
+2101	tza_common_fish	LOOT_MATERIAL	loot	217	Common Fish
+2102	tza_delicious_fish	LOOT_MATERIAL	loot	218	Delicious Fish
+2103	tza_nebra_succulent	LOOT_MATERIAL	loot	219	Nebra Succulent
+2104	tza_peach_tuft	LOOT_MATERIAL	loot	220	Peach Tuft
+2105	tza_green_tuft	LOOT_MATERIAL	loot	221	Green Tuft
+2106	tza_orange_tuft	LOOT_MATERIAL	loot	222	Orange Tuft
+2107	tza_brown_tuft	LOOT_MATERIAL	loot	223	Brown Tuft
+2108	tza_white_tuft	LOOT_MATERIAL	loot	224	White Tuft
+2109	tza_valeblossom_dew	LOOT_MATERIAL	loot	225	Valeblossom Dew
+210A	tza_semclam_shell	LOOT_MATERIAL	loot	226	Semclam Shell
+210B	tza_nebralim	LOOT_MATERIAL	loot	227	Nebralim
+210C	tza_great_serpentskin	LOOT_MATERIAL	loot	228	Great Serpentskin
+210D	tza_bhujerban_madhu	LOOT_MATERIAL	loot	229	Bhujerban Madhu
+2112	tza_sandalwood_chop	LOOT_MATERIAL	loot	230	Sandalwood Chop
+2113	tza_pinewood_chop	LOOT_MATERIAL	loot	231	Pinewood Chop
+2114	tza_small_package	LOOT_MATERIAL	loot	232	Small Package
+2115	tza_dewdrop_pebble	LOOT_MATERIAL	loot	233	Dewdrop Pebble
+2116	tza_black_orb	LOOT_MATERIAL	loot	234	Black Orb
+2117	tza_jaya_stick	LOOT_MATERIAL	loot	235	Jaya Stick
+8000	tza_rabanastre_map	KEY_ITEM	map	1	Rabanastre Map
+8001	tza_nalbina_fortress_map	KEY_ITEM	map	2	Nalbina Fortress Map
+8002	tza_bhujerba_map	KEY_ITEM	map	3	Bhujerba Map
+8003	tza_jahara_map	KEY_ITEM	map	4	Jahara Map
+8004	tza_eruyt_village_map	KEY_ITEM	map	5	Eruyt Village Map
+8005	tza_mt_bur_omisace_map	KEY_ITEM	map	6	Mt Bur-Omisace Map
+8006	tza_archades_map	KEY_ITEM	map	7	Archades Map
+8007	tza_balfonheim_port_map	KEY_ITEM	map	8	Balfonheim Port Map
+8008	tza_dalmasca_estersand_map	KEY_ITEM	map	9	Dalmasca Estersand Map
+8009	tza_dalmasca_westersand_map	KEY_ITEM	map	10	Dalmasca Westersand Map
+800A	tza_giza_plains_map	KEY_ITEM	map	11	Giza Plains Map
+800B	tza_ogir_yensa_sandsea_map	KEY_ITEM	map	12	Ogir-Yensa Sandsea Map
+800C	tza_nam_yensa_sandsea_map	KEY_ITEM	map	13	Nam-Yensa Sandsea Map
+800D	tza_mosphoran_highwaste_map	KEY_ITEM	map	14	Mosphoran Highwaste Map
+800E	tza_salikawood_map	KEY_ITEM	map	15	Salikawood Map
+800F	tza_nabreus_deadlands_map	KEY_ITEM	map	16	Nabreus Deadlands Map
+8010	tza_ozmone_plain_map	KEY_ITEM	map	17	Ozmone Plain Map
+8011	tza_golmore_jungle_map	KEY_ITEM	map	18	Golmore Jungle Map
+8012	tza_feywood_map	KEY_ITEM	map	19	Feywood Map
+8013	tza_paramina_rift_map	KEY_ITEM	map	20	Paramina Rift Map
+8014	tza_phon_coast_map	KEY_ITEM	map	21	Phon Coast Map
+8015	tza_tchita_uplands_map	KEY_ITEM	map	22	Tchita Uplands Map
+8016	tza_cerobi_steppe_map	KEY_ITEM	map	23	Cerobi Steppe Map
+8017	tza_ridorana_cataract_map	KEY_ITEM	map	24	Ridorana Cataract Map
+8018	tza_garamsythe_waterway_map	KEY_ITEM	map	25	Garamsythe Waterway Map
+8019	tza_barheim_passage_map	KEY_ITEM	map	26	Barheim Passage Map
+801A	tza_zertinan_caverns_map	KEY_ITEM	map	27	Zertinan Caverns Map
+801B	tza_lhusu_mines_map	KEY_ITEM	map	28	Lhusu Mines Map
+801C	tza_tomb_of_raithwall_map	KEY_ITEM	map	29	Tomb of Raithwall Map
+801D	tza_necrohol_of_nabudis_map	KEY_ITEM	map	30	Necrohol of Nabudis Map
+801E	tza_henne_mines_map	KEY_ITEM	map	31	Henne Mines Map
+801F	tza_giruvegan_map	KEY_ITEM	map	32	Giruvegan Map
+8020	tza_stilshrine_of_miriam_map	KEY_ITEM	map	33	Stilshrine of Miriam Map
+8021	tza_sochen_cave_palace_map	KEY_ITEM	map	34	Sochen Cave Palace Map
+8022	tza_draklor_laboratories_map	KEY_ITEM	map	35	Draklor Laboratories Map
+8024	tza_leviathan_map	KEY_ITEM	map	36	Leviathan Map
+8025	tza_bahamut_map	KEY_ITEM	map	37	Bahamut Map
+8026	tza_royal_palace_of_rabanastre_map	KEY_ITEM	map	38	Royal Palace of Rabanastre Map
+8027	tza_garamsythe_candle	KEY_ITEM	map	39	Garamsythe Candle
+8028	tza_barheim_candle	KEY_ITEM	map	40	Barheim Candle
+8029	tza_lhusu_candle	KEY_ITEM	map	41	Lhusu Candle
+802A	tza_henne_candle	KEY_ITEM	map	42	Henne Candle
+802B	tza_feywood_candle	KEY_ITEM	map	43	Feywood Candle
+802C	tza_nalbina_dungeons_map	KEY_ITEM	map	44	Nalbina Dungeons Map
+802D	tza_pharos_first_ascent_map	KEY_ITEM	map	45	Pharos (First Ascent) Map
+802E	tza_pharos_second_ascent_map	KEY_ITEM	map	46	Pharos (Second Ascent) Map
+802F	tza_pharos_third_ascent_map	KEY_ITEM	map	47	Pharos (Third Ascent ) Map
+8040	tza_rabanastre_candle	KEY_ITEM	map	48	Rabanastre Candle
+8042	tza_nalbina_fortress_candle	KEY_ITEM	map	49	Nalbina Fortress Candle
+8043	tza_barheim_passage_candle	KEY_ITEM	map	50	Barheim Passage Candle
+8044	tza_the_salikawood_candle	KEY_ITEM	map	51	The Salikawood Candle
+8045	tza_nabreus_deadlands_candle	KEY_ITEM	map	52	Nabreus Deadlands Candle
+8047	tza_archades_candle	KEY_ITEM	map	53	Archades Candle
+8048	tza_the_sochen_cave_palace_candle	KEY_ITEM	map	54	The Sochen Cave Palace Candle
+8049	tza_the_henne_mines_candle	KEY_ITEM	map	55	The Henne Mines Candle
+804A	tza_bhujerba_candle	KEY_ITEM	map	56	Bhujerba Candle
+804B	tza_the_lhusu_mines_candle	KEY_ITEM	map	57	The Lhusu Mines Candle
+804C	tza_the_tomb_of_raithwall_candle	KEY_ITEM	map	58	The Tomb of Raithwall Candle
+804D	tza_zertinan_caverns_candle	KEY_ITEM	map	59	Zertinan Caverns Candle
+804E	tza_golmore_jungle_candle	KEY_ITEM	map	60	Golmore Jungle Candle
+804F	tza_the_feywood_candle	KEY_ITEM	map	61	The Feywood Candle
+8050	tza_giruvegan_candle	KEY_ITEM	map	62	Giruvegan Candle
+8051	tza_the_stilshrine_of_miriam_candle	KEY_ITEM	map	63	The Stilshrine of Miriam Candle
+8052	tza_the_port_at_balfonheim_candle	KEY_ITEM	map	64	The Port at Balfonheim Candle
+8053	tza_the_pharos_at_ridorana_candle	KEY_ITEM	map	65	The Pharos at Ridorana Candle
+8054	tza_jahara_candle	KEY_ITEM	map	66	Jahara Candle
+8055	tza_eruyt_village_candle	KEY_ITEM	map	67	Eruyt Village Candle
+8056	tza_mt_bur_omisace_candle	KEY_ITEM	map	68	Mt Bur-Omisace Candle
+8057	tza_dalmasca_estersand_candle	KEY_ITEM	map	69	Dalmasca Estersand Candle
+8058	tza_dalmasca_westersand_candle	KEY_ITEM	map	70	Dalmasca Westersand Candle
+8059	tza_mosphoran_highwaste_candle	KEY_ITEM	map	71	Mosphoran Highwaste Candle
+805A	tza_ogir_yensa_sandsea_candle	KEY_ITEM	map	72	Ogir-Yensa Sandsea Candle
+805B	tza_the_phon_coast_candle	KEY_ITEM	map	73	The Phon Coast Candle
+805C	tza_tchita_uplands_candle	KEY_ITEM	map	74	Tchita Uplands Candle
+8060	tza_blue_bottle	KEY_ITEM	key	75	Blue Bottle
+8061	tza_green_bottle	KEY_ITEM	key	76	Green Bottle
+8062	tza_red_bottle	KEY_ITEM	key	77	Red Bottle
+8063	tza_yellow_bottle	KEY_ITEM	key	78	Yellow Bottle
+8064	tza_black_bottle	KEY_ITEM	key	79	Black Bottle
+8065	tza_sage_s_monograph	KEY_ITEM	key	80	Sage's Monograph
+8066	tza_hunter_s_monograph	KEY_ITEM	key	81	Hunter's Monograph
+8067	tza_knight_s_monograph	KEY_ITEM	key	82	Knight's Monograph
+8068	tza_dragoon_s_monograph	KEY_ITEM	key	83	Dragoon's Monograph
+8069	tza_mage_s_monograph	KEY_ITEM	key	84	Mage's Monograph
+806A	tza_warmage_s_monograph	KEY_ITEM	key	85	Warmage's Monograph
+806B	tza_scholar_s_monograph	KEY_ITEM	key	86	Scholar's Monograph
+806C	tza_canopic_jar	KEY_ITEM	key	87	Canopic Jar
+8070	tza_writ_of_transit	KEY_ITEM	key	88	Writ of Transit
+8071	clan_primer	KEY_ITEM	key	89	Clan Primer
+8072	galbana_lilies	KEY_ITEM	key	90	Galbana Lilies
+8073	tza_cactus_flower	KEY_ITEM	key	91	Cactus Flower
+8074	tza_tube_fuse	KEY_ITEM	key	92	Tube Fuse
+8075	tza_sword_of_the_order	KEY_ITEM	key	93	Sword of the Order
+8076	tza_no_1_brig_key	KEY_ITEM	key	94	No. 1 Brig Key
+8077	tza_systems_access_key	KEY_ITEM	key	95	Systems Access Key
+8078	dawn_shard	KEY_ITEM	key	96	Dawn Shard
+8079	shadestone	KEY_ITEM	key	97	Shadestone
+807A	tza_sunstone	KEY_ITEM	key	98	Sunstone
+807B	tza_feather_of_the_flock	KEY_ITEM	key	99	Feather of the Flock
+807C	tza_ring_of_the_toad	KEY_ITEM	key	100	Ring of the Toad
+807D	tza_silent_urn	KEY_ITEM	key	101	Silent Urn
+807E	tza_site_3_key	KEY_ITEM	key	102	Site 3 Key
+807F	tza_site_11_key	KEY_ITEM	key	103	Site 11 Key
+8080	tza_crescent_stone	KEY_ITEM	key	104	Crescent Stone
+8081	tza_medallion_of_bravery	KEY_ITEM	key	105	Medallion of Bravery
+8082	tza_medallion_of_might	KEY_ITEM	key	106	Medallion of Might
+8083	tza_medallion_of_love	KEY_ITEM	key	107	Medallion of Love
+8084	tza_lusterless_medallion	KEY_ITEM	key	108	Lusterless Medallion
+8085	tza_stone_of_the_condemner	KEY_ITEM	key	109	Stone of the Condemner
+8086	tza_errmonea_leaf	KEY_ITEM	key	110	Errmonea Leaf
+8087	tza_rabbit_s_tail	KEY_ITEM	key	111	Rabbit's Tail
+8088	tza_ann_s_letter	KEY_ITEM	key	112	Ann's Letter
+8089	tza_manufacted_nethicite_8089	KEY_ITEM	key	113	Manufacted Nethicite
+808A	tza_rusted_scrap_of_armor	KEY_ITEM	key	114	Rusted Scrap of Armor
+808B	tza_sword_of_kings_808b	KEY_ITEM	key	115	Sword of Kings
+808C	tza_treaty_blade_808c	KEY_ITEM	key	116	Treaty-Blade
+808D	tza_dusty_letter	KEY_ITEM	key	117	Dusty Letter
+808E	tza_serpentwyne_must	KEY_ITEM	key	118	Serpentwyne Must
+808F	tza_dull_fragment	KEY_ITEM	key	119	Dull Fragment
+8090	tza_blackened_fragment	KEY_ITEM	key	120	Blackened Fragment
+8091	tza_grimy_fragment	KEY_ITEM	key	121	Grimy Fragment
+8092	tza_stolen_articles	KEY_ITEM	key	122	Stolen Articles
+8093	tza_barheim_key	KEY_ITEM	key	123	Barheim Key
+8094	tza_muramata	KEY_ITEM	key	124	Muramata
+8095	tza_matamune	KEY_ITEM	key	125	Matamune
+8096	tza_cactoid_compact	KEY_ITEM	key	126	Cactoid Compact
+8097	tza_cactoid_commendation	KEY_ITEM	key	127	Cactoid Commendation
+8098	tza_merchant_s_armband	KEY_ITEM	key	128	Merchant's Armband
+8099	tza_pilika_s_diary	KEY_ITEM	key	129	Pilika's Diary
+809A	tza_ring_of_the_light	KEY_ITEM	key	130	Ring of the Light
+809B	tza_viera_rucksack	KEY_ITEM	key	131	Viera Rucksack
+809C	tza_time_worn_necklace	KEY_ITEM	key	132	Time-worn Necklace
+809E	tza_lab_access_card	KEY_ITEM	key	133	Lab Access Card
+80A3	tza_moonsilver_medallion	KEY_ITEM	key	134	Moonsilver Medallion
+80A4	tza_wanly_limned_message	KEY_ITEM	key	135	Wanly Limned Message
+80A5	tza_green_hued_message	KEY_ITEM	key	136	Green-hued Message
+80A6	tza_vermillion_message	KEY_ITEM	key	137	Vermillion Message
+80A7	tza_auric_message	KEY_ITEM	key	138	Auric Message
+80A8	tza_onyx_message	KEY_ITEM	key	139	Onyx Message
+80AC	goddess_magicite	KEY_ITEM	key	140	Goddess's Magicite
+80AD	tza_gift_of_the_great_chief	KEY_ITEM	key	141	Gift of the Great-chief
+80AE	broken_key	KEY_ITEM	key	142	Broken Key
+80AF	tza_sluice_gate_key	KEY_ITEM	key	143	Sluice Gate Key
+80B1	tza_wind_globe	KEY_ITEM	key	144	Wind Globe
+80B2	tza_windvane	KEY_ITEM	key	145	Windvane
+80B4	tza_dragon_scale	KEY_ITEM	key	146	Dragon Scale
+80B5	tza_ageworn_key	KEY_ITEM	key	147	Ageworn Key
+80B6	tza_soul_ward_key	KEY_ITEM	key	148	Soul Ward Key
+80B7	tza_lente_s_tear	KEY_ITEM	key	149	Lente's Tear
+80B8	tza_shelled_trophy	KEY_ITEM	key	150	Shelled Trophy
+80B9	tza_fur_scaled_trophy	KEY_ITEM	key	151	Fur-scaled Trophy
+80BA	tza_bony_trophy	KEY_ITEM	key	152	Bony Trophy
+80BB	tza_fanged_trophy	KEY_ITEM	key	153	Fanged Trophy
+80BC	tza_hide_covered_trophy	KEY_ITEM	key	154	Hide-covered Trophy
+80BD	tza_maned_trophy	KEY_ITEM	key	155	Maned Trophy
+80BE	tza_fell_trophy	KEY_ITEM	key	156	Fell Trophy
+80BF	tza_accursed_trophy	KEY_ITEM	key	157	Accursed Trophy
+80C0	tza_beaked_trophy	KEY_ITEM	key	158	Beaked Trophy
+80C1	tza_maverick_trophy	KEY_ITEM	key	159	Maverick Trophy
+80C2	tza_soulless_trophy	KEY_ITEM	key	160	Soulless Trophy
+80C3	tza_leathern_trophy	KEY_ITEM	key	161	Leathern Trophy
+80C4	tza_sickle_trophy	KEY_ITEM	key	162	Sickle Trophy
+80C5	tza_vengeful_trophy	KEY_ITEM	key	163	Vengeful Trophy
+80C6	tza_gravesoil_trophy	KEY_ITEM	key	164	Gravesoil Trophy
+80C7	tza_metallic_trophy	KEY_ITEM	key	165	Metallic Trophy
+80C8	tza_slimy_trophy	KEY_ITEM	key	166	Slimy Trophy
+80C9	tza_scythe_trophy	KEY_ITEM	key	167	Scythe Trophy
+80CA	tza_feathered_trophy	KEY_ITEM	key	168	Feathered Trophy
+80CB	tza_skull_trophy	KEY_ITEM	key	169	Skull Trophy
+80CC	tza_mind_trophy	KEY_ITEM	key	170	Mind Trophy
+80CD	tza_eternal_trophy	KEY_ITEM	key	171	Eternal Trophy
+80CE	tza_clawed_trophy	KEY_ITEM	key	172	Clawed Trophy
+80CF	tza_odiferous_trophy	KEY_ITEM	key	173	Odiferous Trophy
+80D0	tza_whiskered_trophy	KEY_ITEM	key	174	Whiskered Trophy
+80D1	tza_frigid_trophy	KEY_ITEM	key	175	Frigid Trophy
+80D2	tza_ensanguined_trophy	KEY_ITEM	key	176	Ensanguined Trophy
+80D3	tza_cruel_trophy	KEY_ITEM	key	177	Cruel Trophy
+80D4	tza_adamantine_trophy	KEY_ITEM	key	178	Adamantine Trophy
+80D5	tza_reptilian_trophy	KEY_ITEM	key	179	Reptilian Trophy
+80D6	tza_vile_trophy	KEY_ITEM	key	180	Vile Trophy
+3000	magick_cure	MAGICK_WHITE	spell	1	Cure
+3001	tza_blindna	MAGICK_WHITE	spell	2	Blindna
+3002	tza_vox	MAGICK_WHITE	spell	3	Vox
+3003	tza_poisona	MAGICK_WHITE	spell	4	Poisona
+3004	magick_cura	MAGICK_WHITE	spell	5	Cura
+3005	tza_raise	MAGICK_WHITE	spell	6	Raise
+3006	tza_curaga	MAGICK_WHITE	spell	7	Curaga
+3007	tza_stona	MAGICK_WHITE	spell	8	Stona
+3008	tza_regen	MAGICK_WHITE	spell	9	Regen
+3009	tza_cleanse	MAGICK_WHITE	spell	10	Cleanse
+300A	tza_esuna	MAGICK_WHITE	spell	11	Esuna
+300B	tza_curaja	MAGICK_WHITE	spell	12	Curaja
+300C	tza_dispel	MAGICK_WHITE	spell	13	Dispel
+300D	tza_dispelga	MAGICK_WHITE	spell	14	Dispelga
+300E	tza_renew	MAGICK_WHITE	spell	15	Renew
+300F	tza_arise	MAGICK_WHITE	spell	16	Arise
+3010	tza_esunaga	MAGICK_WHITE	spell	17	Esunaga
+3011	tza_holy	MAGICK_WHITE	spell	18	Holy
+3012	magick_fire	MAGICK_WHITE	spell	19	Fire
+3013	magick_thunder	MAGICK_WHITE	spell	20	Thunder
+3014	magick_blizzard	MAGICK_BLACK	spell	1	Blizzard
+3015	tza_aqua	MAGICK_BLACK	spell	2	Aqua
+3016	tza_aero	MAGICK_BLACK	spell	3	Aero
+3017	tza_fira	MAGICK_BLACK	spell	4	Fira
+3018	tza_thundara	MAGICK_BLACK	spell	5	Thundara
+3019	tza_blizzara	MAGICK_BLACK	spell	6	Blizzara
+301A	tza_bio	MAGICK_BLACK	spell	7	Bio
+301B	tza_aeroga	MAGICK_BLACK	spell	8	Aeroga
+301C	tza_firaga	MAGICK_BLACK	spell	9	Firaga
+301D	tza_thundaga	MAGICK_BLACK	spell	10	Thundaga
+301E	tza_blizzaga	MAGICK_BLACK	spell	11	Blizzaga
+301F	tza_shock	MAGICK_BLACK	spell	12	Shock
+3020	tza_scourge	MAGICK_BLACK	spell	13	Scourge
+3021	tza_flare	MAGICK_BLACK	spell	14	Flare
+3022	tza_ardor	MAGICK_BLACK	spell	15	Ardor
+3023	tza_scathe	MAGICK_BLACK	spell	16	Scathe
+3024	tza_haste	MAGICK_BLACK	spell	17	Haste
+3025	tza_float	MAGICK_BLACK	spell	18	Float
+3026	magick_hastega	MAGICK_BLACK	spell	19	Hastega
+3027	tza_slow	MAGICK_BLACK	spell	20	Slow
+3028	tza_immobilize	MAGICK_BLACK	spell	21	Immobilize
+3029	tza_disable	MAGICK_BLACK	spell	22	Disable
+302A	tza_bleed	MAGICK_BLACK	spell	23	Bleed
+302B	tza_break	MAGICK_TIME_ARCANE	spell	1	Break
+302C	tza_stop	MAGICK_TIME_ARCANE	spell	2	Stop
+302D	tza_slowga	MAGICK_TIME_ARCANE	spell	3	Slowga
+302E	tza_countdown	MAGICK_TIME_ARCANE	spell	4	Countdown
+302F	tza_reflect	MAGICK_TIME_ARCANE	spell	5	Reflect
+3030	tza_reflectga	MAGICK_TIME_ARCANE	spell	6	Reflectga
+3031	tza_balance	MAGICK_TIME_ARCANE	spell	7	Balance
+3032	tza_warp	MAGICK_TIME_ARCANE	spell	8	Warp
+3033	tza_protect	MAGICK_TIME_ARCANE	spell	9	Protect
+3034	tza_shell	MAGICK_TIME_ARCANE	spell	10	Shell
+3035	tza_bravery	MAGICK_TIME_ARCANE	spell	11	Bravery
+3036	tza_faith	MAGICK_TIME_ARCANE	spell	12	Faith
+3037	tza_protectga	MAGICK_TIME_ARCANE	spell	13	Protectga
+3038	tza_shellga	MAGICK_TIME_ARCANE	spell	14	Shellga
+3039	tza_blind	MAGICK_TIME_ARCANE	spell	15	Blind
+303A	tza_oil	MAGICK_TIME_ARCANE	spell	16	Oil
+303B	tza_poison	MAGICK_TIME_ARCANE	spell	17	Poison
+303C	tza_silence	MAGICK_TIME_ARCANE	spell	18	Silence
+303D	tza_sleep	MAGICK_TIME_ARCANE	spell	19	Sleep
+303E	tza_blindga	MAGICK_TIME_ARCANE	spell	20	Blindga
+303F	tza_toxify	MAGICK_TIME_ARCANE	spell	21	Toxify
+3040	tza_silencega	MAGICK_WHITE	spell	21	Silencega
+3041	tza_sleepga	MAGICK_WHITE	spell	22	Sleepga
+3042	tza_reverse	MAGICK_WHITE	spell	23	Reverse
+3043	tza_berserk	MAGICK_WHITE	spell	24	Berserk
+3044	tza_death	MAGICK_WHITE	spell	25	Death
+3045	tza_confuse	MAGICK_WHITE	spell	26	Confuse
+3046	tza_decoy	MAGICK_TIME_ARCANE	spell	22	Decoy
+3047	tza_vanish	MAGICK_TIME_ARCANE	spell	23	Vanish
+3048	tza_vanishga	MAGICK_TIME_ARCANE	spell	24	Vanishga
+3049	tza_drain	MAGICK_TIME_ARCANE	spell	25	Drain
+304A	tza_syphon	MAGICK_TIME_ARCANE	spell	26	Syphon
+304B	tza_bubble	MAGICK_TIME_ARCANE	spell	27	Bubble
+304C	tza_dark	MAGICK_BLACK	spell	24	Dark
+304D	tza_darkra	MAGICK_BLACK	spell	25	Darkra
+304E	tza_darkga	MAGICK_BLACK	spell	26	Darkga
+304F	tza_gravity	MAGICK_TIME_ARCANE	spell	28	Gravity
+3050	tza_graviga	MAGICK_TIME_ARCANE	spell	29	Graviga
+4000	tza_first_aid	TECHNICK	technick	1	First Aid
+4001	tza_shades_of_black	TECHNICK	technick	2	Shades of Black
+4002	tza_horology	TECHNICK	technick	3	Horology
+4003	tza_stamp	TECHNICK	technick	4	Stamp
+4004	tza_achilles	TECHNICK	technick	5	Achilles
+4005	tza_charge	TECHNICK	technick	6	Charge
+4006	tza_infuse	TECHNICK	technick	7	Infuse
+4007	tza_souleater	TECHNICK	technick	8	Souleater
+4008	tza_wither	TECHNICK	technick	9	Wither
+4009	tza_addle	TECHNICK	technick	10	Addle
+400A	tza_bonecrusher	TECHNICK	technick	11	Bonecrusher
+400B	technick_steal	TECHNICK	technick	12	Steal
+400C	tza_telekinesis	TECHNICK	technick	13	Telekinesis
+400D	tza_expose	TECHNICK	technick	14	Expose
+400E	tza_shear	TECHNICK	technick	15	Shear
+400F	tza_charm	TECHNICK	technick	16	Charm
+4010	tza_revive	TECHNICK	technick	17	Revive
+4011	tza_sight_unseeing	TECHNICK	technick	18	Sight Unseeing
+4012	tza_numerology	TECHNICK	technick	19	Numerology
+4013	technick_libra	TECHNICK	technick	20	Libra
+4014	tza_poach	TECHNICK	technick	21	Poach
+4015	tza_1000_needles	TECHNICK	technick	22	1000 Needles
+4016	tza_traveler	TECHNICK	technick	23	Traveler
+4017	tza_gil_toss	TECHNICK	technick	24	Gil Toss
+5000	tza_gambit_foe_party_leader_s_target	KEY_ITEM	gambit	181	Gambit Foe: party leader's target
+5001	tza_gambit_foe_nearest_visible	KEY_ITEM	gambit	182	Gambit Foe: nearest visible
+5002	tza_gambit_foe_any	KEY_ITEM	gambit	183	Gambit Foe: any
+5003	tza_gambit_foe_targeting_leader	KEY_ITEM	gambit	184	Gambit Foe: targeting leader
+5004	tza_gambit_foe_targeting_self	KEY_ITEM	gambit	185	Gambit Foe: targeting self
+5005	tza_gambit_foe_targeting_ally	KEY_ITEM	gambit	186	Gambit Foe: targeting ally
+5006	tza_gambit_foe_furthest	KEY_ITEM	gambit	187	Gambit Foe: furthest
+5007	tza_gambit_foe_nearest	KEY_ITEM	gambit	188	Gambit Foe: nearest
+5008	tza_gambit_foe_highest_hp	KEY_ITEM	gambit	189	Gambit Foe: highest HP
+5009	tza_gambit_foe_lowest_hp	KEY_ITEM	gambit	190	Gambit Foe: lowest HP
+500A	tza_gambit_foe_highest_max_hp	KEY_ITEM	gambit	191	Gambit Foe: highest max HP
+500B	tza_gambit_foe_lowest_max_hp	KEY_ITEM	gambit	192	Gambit Foe: lowest max HP
+500C	tza_gambit_foe_highest_mp	KEY_ITEM	gambit	193	Gambit Foe: highest MP
+500D	tza_gambit_foe_lowest_mp	KEY_ITEM	gambit	194	Gambit Foe: lowest MP
+500E	tza_gambit_foe_highest_max_mp	KEY_ITEM	gambit	195	Gambit Foe: highest max MP
+500F	tza_gambit_foe_lowest_max_mp	KEY_ITEM	gambit	196	Gambit Foe: lowest max MP
+5010	tza_gambit_foe_highest_level	KEY_ITEM	gambit	197	Gambit Foe: highest level
+5011	tza_gambit_foe_lowest_level	KEY_ITEM	gambit	198	Gambit Foe: lowest level
+5012	tza_gambit_foe_highest_strength	KEY_ITEM	gambit	199	Gambit Foe: highest strength
+5013	tza_gambit_foe_lowest_strength	KEY_ITEM	gambit	200	Gambit Foe: lowest strength
+5014	tza_gambit_foe_highest_magick_power	KEY_ITEM	gambit	201	Gambit Foe: highest magick power
+5015	tza_gambit_foe_lowest_magick_power	KEY_ITEM	gambit	202	Gambit Foe: lowest magick power
+5016	tza_gambit_foe_highest_speed	KEY_ITEM	gambit	203	Gambit Foe: highest speed
+5017	tza_gambit_foe_lowest_speed	KEY_ITEM	gambit	204	Gambit Foe: lowest speed
+5018	tza_gambit_foe_highest_defence	KEY_ITEM	gambit	205	Gambit Foe: highest defence
+5019	tza_gambit_foe_highest_magick_resist	KEY_ITEM	gambit	206	Gambit Foe: highest magick resist
+501A	tza_gambit_foe_hp_100_000	KEY_ITEM	gambit	207	Gambit Foe: HP >= 100,000
+501B	tza_gambit_foe_hp_50_000	KEY_ITEM	gambit	208	Gambit Foe: HP >= 50,000
+501C	tza_gambit_foe_hp_10_000	KEY_ITEM	gambit	209	Gambit Foe: HP >= 10,000
+501D	tza_gambit_foe_hp_5_000	KEY_ITEM	gambit	210	Gambit Foe: HP >= 5,000
+501E	tza_gambit_foe_hp_3_000	KEY_ITEM	gambit	211	Gambit Foe: HP >= 3,000
+501F	tza_gambit_foe_hp_2_000	KEY_ITEM	gambit	212	Gambit Foe: HP >= 2,000
+5020	tza_gambit_foe_hp_1_000	KEY_ITEM	gambit	213	Gambit Foe: HP >= 1,000
+5021	tza_gambit_foe_hp_500	KEY_ITEM	gambit	214	Gambit Foe: HP >= 500
+5022	tza_gambit_foe_hp_100_000_5022	KEY_ITEM	gambit	215	Gambit Foe: HP < 100,000
+5023	tza_gambit_foe_hp_50_000_5023	KEY_ITEM	gambit	216	Gambit Foe: HP < 50,000
+5024	tza_gambit_foe_hp_10_000_5024	KEY_ITEM	gambit	217	Gambit Foe: HP < 10,000
+5025	tza_gambit_foe_hp_5_000_5025	KEY_ITEM	gambit	218	Gambit Foe: HP < 5,000
+5026	tza_gambit_foe_hp_3_000_5026	KEY_ITEM	gambit	219	Gambit Foe: HP < 3,000
+5027	tza_gambit_foe_hp_2_000_5027	KEY_ITEM	gambit	220	Gambit Foe: HP < 2,000
+5028	tza_gambit_foe_hp_1_000_5028	KEY_ITEM	gambit	221	Gambit Foe: HP < 1,000
+5029	tza_gambit_foe_hp_500_5029	KEY_ITEM	gambit	222	Gambit Foe: HP < 500
+502A	tza_gambit_foe_hp_100	KEY_ITEM	gambit	223	Gambit Foe: HP = 100%
+502B	tza_gambit_foe_hp_70	KEY_ITEM	gambit	224	Gambit Foe: HP >= 70%
+502C	tza_gambit_foe_hp_50	KEY_ITEM	gambit	225	Gambit Foe: HP >= 50%
+502D	tza_gambit_foe_hp_30	KEY_ITEM	gambit	226	Gambit Foe: HP >= 30%
+502E	tza_gambit_foe_status_petrify	KEY_ITEM	gambit	227	Gambit Foe: status = Petrify
+502F	tza_gambit_foe_status_stop	KEY_ITEM	gambit	228	Gambit Foe: status = Stop
+5030	tza_gambit_foe_status_sleep	KEY_ITEM	gambit	229	Gambit Foe: status = Sleep
+5031	tza_gambit_foe_status_confuse	KEY_ITEM	gambit	230	Gambit Foe: status = Confuse
+5032	tza_gambit_foe_status_doom	KEY_ITEM	gambit	231	Gambit Foe: status = Doom
+5033	tza_gambit_foe_status_blind	KEY_ITEM	gambit	232	Gambit Foe: status = Blind
+5034	tza_gambit_foe_status_poison	KEY_ITEM	gambit	233	Gambit Foe: status = Poison
+5035	tza_gambit_foe_status_silence	KEY_ITEM	gambit	234	Gambit Foe: status = Silence
+5036	tza_gambit_foe_status_sap	KEY_ITEM	gambit	235	Gambit Foe: status = Sap
+5037	tza_gambit_foe_status_oil	KEY_ITEM	gambit	236	Gambit Foe: status = Oil
+5038	tza_gambit_foe_status_reverse	KEY_ITEM	gambit	237	Gambit Foe: status = Reverse
+5039	tza_gambit_foe_status_disable	KEY_ITEM	gambit	238	Gambit Foe: status = Disable
+503A	tza_gambit_foe_status_immobilize	KEY_ITEM	gambit	239	Gambit Foe: status = Immobilize
+503B	tza_gambit_foe_status_slow	KEY_ITEM	gambit	240	Gambit Foe: status = Slow
+503C	tza_gambit_foe_status_disease	KEY_ITEM	gambit	241	Gambit Foe: status = Disease
+503D	tza_gambit_foe_status_protect	KEY_ITEM	gambit	242	Gambit Foe: status = Protect
+503E	tza_gambit_foe_status_shell	KEY_ITEM	gambit	243	Gambit Foe: status = Shell
+503F	tza_gambit_foe_status_haste	KEY_ITEM	gambit	244	Gambit Foe: status = Haste
+5040	tza_gambit_foe_status_bravery	KEY_ITEM	gambit	245	Gambit Foe: status = Bravery
+5041	tza_gambit_foe_status_faith	KEY_ITEM	gambit	246	Gambit Foe: status = Faith
+5042	tza_gambit_foe_status_reflect	KEY_ITEM	gambit	247	Gambit Foe: status = Reflect
+5043	tza_gambit_self_foe_targeting_ally	KEY_ITEM	gambit	248	Gambit Self: foe targeting ally
+5044	tza_gambit_foe_status_regen	KEY_ITEM	gambit	249	Gambit Foe: status = Regen
+5045	tza_gambit_self_targeted_by_foe	KEY_ITEM	gambit	250	Gambit Self: targeted by foe
+5046	tza_gambit_foe_status_berserk	KEY_ITEM	gambit	251	Gambit Foe: status = Berserk
+5047	tza_gambit_foe_distributed_attack	KEY_ITEM	gambit	252	Gambit Foe: Distributed Attack
+5048	tza_gambit_foe_status_hp_critical	KEY_ITEM	gambit	253	Gambit Foe: status = HP Critical
+5049	tza_gambit_foe_fire_weak	KEY_ITEM	gambit	254	Gambit Foe: fire-weak
+504A	tza_gambit_foe_lightning_weak	KEY_ITEM	gambit	255	Gambit Foe: lightning-weak
+504B	tza_gambit_foe_ice_weak	KEY_ITEM	gambit	256	Gambit Foe: ice-weak
+504C	tza_gambit_foe_earth_weak	KEY_ITEM	gambit	257	Gambit Foe: earth-weak
+504D	tza_gambit_foe_water_weak	KEY_ITEM	gambit	258	Gambit Foe: water-weak
+504E	tza_gambit_foe_wind_weak	KEY_ITEM	gambit	259	Gambit Foe: wind-weak
+504F	tza_gambit_foe_holy_weak	KEY_ITEM	gambit	260	Gambit Foe: holy-weak
+5050	tza_gambit_foe_dark_weak	KEY_ITEM	gambit	261	Gambit Foe: dark-weak
+5051	tza_gambit_foe_fire_vulnerable	KEY_ITEM	gambit	262	Gambit Foe: fire-vulnerable
+5052	tza_gambit_foe_lightning_vulnerable	KEY_ITEM	gambit	263	Gambit Foe: lightning-vulnerable
+5053	tza_gambit_foe_ice_vulnerable	KEY_ITEM	gambit	264	Gambit Foe: ice-vulnerable
+5054	tza_gambit_foe_earth_vulnerable	KEY_ITEM	gambit	265	Gambit Foe: earth-vulnerable
+5055	tza_gambit_foe_water_vulnerable	KEY_ITEM	gambit	266	Gambit Foe: water-vulnerable
+5056	tza_gambit_foe_wind_vulnerable	KEY_ITEM	gambit	267	Gambit Foe: wind-vulnerable
+5057	tza_gambit_foe_holy_vulnerable	KEY_ITEM	gambit	268	Gambit Foe: holy-vulnerable
+5058	tza_gambit_foe_dark_vulnerable	KEY_ITEM	gambit	269	Gambit Foe: dark-vulnerable
+5059	tza_gambit_foe_undead	KEY_ITEM	gambit	270	Gambit Foe: undead
+505A	tza_gambit_foe_flying	KEY_ITEM	gambit	271	Gambit Foe: flying
+505B	tza_gambit_ally_item_amt_10	KEY_ITEM	gambit	272	Gambit Ally: item AMT >= 10
+505C	tza_gambit_foe_character_hp_100	KEY_ITEM	gambit	273	Gambit Foe: character HP = 100%
+505D	tza_gambit_foe_item_amt_10	KEY_ITEM	gambit	274	Gambit Foe: item AMT >= 10
+505E	tza_gambit_foe_character_status_blind	KEY_ITEM	gambit	275	Gambit Foe: character status = Blind
+505F	tza_gambit_foe_character_status_silence	KEY_ITEM	gambit	276	Gambit Foe: character status = Silence
+5060	tza_gambit_foe_character_status_bravery	KEY_ITEM	gambit	277	Gambit Foe: character status = Bravery
+5061	tza_gambit_foe_character_status_faith	KEY_ITEM	gambit	278	Gambit Foe: character status = Faith
+5062	tza_gambit_foe_character_status_hp_critical	KEY_ITEM	gambit	279	Gambit Foe: character status = HP Critical
+5063	tza_gambit_foe_character_mp_90	KEY_ITEM	gambit	280	Gambit Foe: character MP >= 90%
+5064	tza_gambit_foe_character_mp_70	KEY_ITEM	gambit	281	Gambit Foe: character MP >= 70%
+5065	tza_gambit_foe_character_mp_50	KEY_ITEM	gambit	282	Gambit Foe: character MP >= 50%
+5066	tza_gambit_foe_character_mp_30	KEY_ITEM	gambit	283	Gambit Foe: character MP >= 30%
+5067	tza_gambit_foe_character_mp_10	KEY_ITEM	gambit	284	Gambit Foe: character MP >= 10%
+5068	tza_gambit_foe_character_mp_90_5068	KEY_ITEM	gambit	285	Gambit Foe: character MP < 90%
+5069	tza_gambit_foe_character_mp_70_5069	KEY_ITEM	gambit	286	Gambit Foe: character MP < 70%
+506A	tza_gambit_foe_character_mp_50_506a	KEY_ITEM	gambit	287	Gambit Foe: character MP < 50%
+506B	tza_gambit_foe_character_mp_30_506b	KEY_ITEM	gambit	288	Gambit Foe: character MP < 30%
+506C	tza_gambit_foe_character_mp_10_506c	KEY_ITEM	gambit	289	Gambit Foe: character MP < 10%
+506D	tza_gambit_foe_character_hp_90	KEY_ITEM	gambit	290	Gambit Foe: character HP >= 90%
+506E	tza_gambit_foe_character_hp_70	KEY_ITEM	gambit	291	Gambit Foe: character HP >= 70%
+506F	tza_gambit_foe_character_hp_50	KEY_ITEM	gambit	292	Gambit Foe: character HP >= 50%
+5070	tza_gambit_foe_character_hp_30	KEY_ITEM	gambit	293	Gambit Foe: character HP >= 30%
+5071	tza_gambit_foe_character_hp_10	KEY_ITEM	gambit	294	Gambit Foe: character HP >= 10%
+5072	tza_gambit_foe_character_hp_90_5072	KEY_ITEM	gambit	295	Gambit Foe: character HP < 90%
+5073	tza_gambit_foe_character_hp_70_5073	KEY_ITEM	gambit	296	Gambit Foe: character HP < 70%
+5074	tza_gambit_foe_character_hp_50_5074	KEY_ITEM	gambit	297	Gambit Foe: character HP < 50%
+5075	tza_gambit_foe_character_hp_30_5075	KEY_ITEM	gambit	298	Gambit Foe: character HP < 30%
+5076	tza_gambit_foe_character_hp_10_5076	KEY_ITEM	gambit	299	Gambit Foe: character HP < 10%
+5077	tza_gambit_self	KEY_ITEM	gambit	300	Gambit Self
+5078	tza_gambit_self_hp_100	KEY_ITEM	gambit	301	Gambit Self: HP < 100%
+5079	tza_gambit_self_hp_90	KEY_ITEM	gambit	302	Gambit Self: HP < 90%
+507A	tza_gambit_self_hp_80	KEY_ITEM	gambit	303	Gambit Self: HP < 80%
+507B	tza_gambit_self_hp_70	KEY_ITEM	gambit	304	Gambit Self: HP < 70%
+507C	tza_gambit_self_hp_60	KEY_ITEM	gambit	305	Gambit Self: HP < 60%
+507D	tza_gambit_self_hp_50	KEY_ITEM	gambit	306	Gambit Self: HP < 50%
+507E	tza_gambit_self_hp_40	KEY_ITEM	gambit	307	Gambit Self: HP < 40%
+507F	tza_gambit_self_hp_30	KEY_ITEM	gambit	308	Gambit Self: HP < 30%
+5080	tza_gambit_self_hp_20	KEY_ITEM	gambit	309	Gambit Self: HP < 20%
+5081	tza_gambit_self_hp_10	KEY_ITEM	gambit	310	Gambit Self: HP < 10%
+5082	tza_gambit_self_mp_100	KEY_ITEM	gambit	311	Gambit Self: MP < 100%
+5083	tza_gambit_self_mp_90	KEY_ITEM	gambit	312	Gambit Self: MP < 90%
+5084	tza_gambit_self_mp_80	KEY_ITEM	gambit	313	Gambit Self: MP < 80%
+5085	tza_gambit_self_mp_70	KEY_ITEM	gambit	314	Gambit Self: MP < 70%
+5086	tza_gambit_self_mp_60	KEY_ITEM	gambit	315	Gambit Self: MP < 60%
+5087	tza_gambit_self_mp_50	KEY_ITEM	gambit	316	Gambit Self: MP < 50%
+5088	tza_gambit_self_mp_40	KEY_ITEM	gambit	317	Gambit Self: MP < 40%
+5089	tza_gambit_self_mp_30	KEY_ITEM	gambit	318	Gambit Self: MP < 30%
+508A	tza_gambit_self_mp_20	KEY_ITEM	gambit	319	Gambit Self: MP < 20%
+508B	tza_gambit_self_mp_10	KEY_ITEM	gambit	320	Gambit Self: MP < 10%
+508C	tza_gambit_self_status_petrify	KEY_ITEM	gambit	321	Gambit Self: status = Petrify
+508D	tza_gambit_self_status_doom	KEY_ITEM	gambit	322	Gambit Self: status = Doom
+508E	tza_gambit_self_status_blind	KEY_ITEM	gambit	323	Gambit Self: status = Blind
+508F	tza_gambit_self_status_poison	KEY_ITEM	gambit	324	Gambit Self: status = Poison
+5090	tza_gambit_self_status_silence	KEY_ITEM	gambit	325	Gambit Self: status = Silence
+5091	tza_gambit_self_status_sap	KEY_ITEM	gambit	326	Gambit Self: status = Sap
+5092	tza_gambit_self_status_oil	KEY_ITEM	gambit	327	Gambit Self: status = Oil
+5093	tza_gambit_self_status_reverse	KEY_ITEM	gambit	328	Gambit Self: status = Reverse
+5094	tza_gambit_self_status_immobilize	KEY_ITEM	gambit	329	Gambit Self: status = Immobilize
+5095	tza_gambit_self_status_slow	KEY_ITEM	gambit	330	Gambit Self: status = Slow
+5096	tza_gambit_self_status_disease	KEY_ITEM	gambit	331	Gambit Self: status = Disease
+5097	tza_gambit_self_status_lure	KEY_ITEM	gambit	332	Gambit Self: status = Lure
+5098	tza_gambit_self_status_protect	KEY_ITEM	gambit	333	Gambit Self: status = Protect
+5099	tza_gambit_self_status_shell	KEY_ITEM	gambit	334	Gambit Self: status = Shell
+509A	tza_gambit_self_status_haste	KEY_ITEM	gambit	335	Gambit Self: status = Haste
+509B	tza_gambit_self_status_bravery	KEY_ITEM	gambit	336	Gambit Self: status = Bravery
+509C	tza_gambit_self_status_faith	KEY_ITEM	gambit	337	Gambit Self: status = Faith
+509D	tza_gambit_self_status_reflect	KEY_ITEM	gambit	338	Gambit Self: status = Reflect
+509E	tza_gambit_self_status_invisible	KEY_ITEM	gambit	339	Gambit Self: status = Invisible
+509F	tza_gambit_self_status_regen	KEY_ITEM	gambit	340	Gambit Self: status = Regen
+50A0	tza_gambit_self_status_float	KEY_ITEM	gambit	341	Gambit Self: status = Float
+50A1	tza_gambit_self_status_bubble	KEY_ITEM	gambit	342	Gambit Self: status = Bubble
+50A2	tza_gambit_self_status_hp_critical	KEY_ITEM	gambit	343	Gambit Self: status = HP Critical
+50A3	tza_gambit_ally_any	KEY_ITEM	gambit	344	Gambit Ally: any
+50A4	tza_gambit_ally_party_leader	KEY_ITEM	gambit	345	Gambit Ally: party leader
+50A5	tza_gambit_ally_vaan	KEY_ITEM	gambit	346	Gambit Ally: Vaan
+50A6	tza_gambit_ally_ashe	KEY_ITEM	gambit	347	Gambit Ally: Ashe
+50A7	tza_gambit_ally_fran	KEY_ITEM	gambit	348	Gambit Ally: Fran
+50A8	tza_gambit_ally_balthier	KEY_ITEM	gambit	349	Gambit Ally: Balthier
+50A9	tza_gambit_ally_basch	KEY_ITEM	gambit	350	Gambit Ally: Basch
+50AA	tza_gambit_ally_penelo	KEY_ITEM	gambit	351	Gambit Ally: Penelo
+50AB	tza_gambit_ally_guest	KEY_ITEM	gambit	352	Gambit Ally: Guest
+50AC	tza_gambit_ally_lowest_hp	KEY_ITEM	gambit	353	Gambit Ally: lowest HP
+50AD	tza_gambit_ally_strongest_weapon	KEY_ITEM	gambit	354	Gambit Ally: strongest weapon
+50AE	tza_gambit_ally_lowest_defence	KEY_ITEM	gambit	355	Gambit Ally: lowest defence
+50AF	tza_gambit_ally_lowest_magick_resist	KEY_ITEM	gambit	356	Gambit Ally: lowest magick resist
+50B0	tza_gambit_ally_hp_100	KEY_ITEM	gambit	357	Gambit Ally: HP < 100%
+50B1	tza_gambit_ally_hp_90	KEY_ITEM	gambit	358	Gambit Ally: HP < 90%
+50B2	tza_gambit_ally_hp_80	KEY_ITEM	gambit	359	Gambit Ally: HP < 80%
+50B3	tza_gambit_ally_hp_70	KEY_ITEM	gambit	360	Gambit Ally: HP < 70%
+50B4	tza_gambit_ally_hp_60	KEY_ITEM	gambit	361	Gambit Ally: HP < 60%
+50B5	tza_gambit_ally_hp_50	KEY_ITEM	gambit	362	Gambit Ally: HP < 50%
+50B6	tza_gambit_ally_hp_40	KEY_ITEM	gambit	363	Gambit Ally: HP < 40%
+50B7	tza_gambit_ally_hp_30	KEY_ITEM	gambit	364	Gambit Ally: HP < 30%
+50B8	tza_gambit_ally_hp_20	KEY_ITEM	gambit	365	Gambit Ally: HP < 20%
+50B9	tza_gambit_ally_hp_10	KEY_ITEM	gambit	366	Gambit Ally: HP < 10%
+50BA	tza_gambit_ally_mp_100	KEY_ITEM	gambit	367	Gambit Ally: MP < 100%
+50BB	tza_gambit_ally_mp_90	KEY_ITEM	gambit	368	Gambit Ally: MP < 90%
+50BC	tza_gambit_ally_mp_80	KEY_ITEM	gambit	369	Gambit Ally: MP < 80%
+50BD	tza_gambit_ally_mp_70	KEY_ITEM	gambit	370	Gambit Ally: MP < 70%
+50BE	tza_gambit_ally_mp_60	KEY_ITEM	gambit	371	Gambit Ally: MP < 60%
+50BF	tza_gambit_ally_mp_50	KEY_ITEM	gambit	372	Gambit Ally: MP < 50%
+50C0	tza_gambit_ally_mp_40	KEY_ITEM	gambit	373	Gambit Ally: MP < 40%
+50C1	tza_gambit_ally_mp_30	KEY_ITEM	gambit	374	Gambit Ally: MP < 30%
+50C2	tza_gambit_ally_mp_20	KEY_ITEM	gambit	375	Gambit Ally: MP < 20%
+50C3	tza_gambit_ally_mp_10	KEY_ITEM	gambit	376	Gambit Ally: MP < 10%
+50C4	tza_gambit_ally_status_ko	KEY_ITEM	gambit	377	Gambit Ally: status = KO
+50C5	tza_gambit_ally_status_stone	KEY_ITEM	gambit	378	Gambit Ally: status = Stone
+50C6	tza_gambit_ally_status_petrify	KEY_ITEM	gambit	379	Gambit Ally: status = Petrify
+50C7	tza_gambit_ally_status_stop	KEY_ITEM	gambit	380	Gambit Ally: status = Stop
+50C8	tza_gambit_ally_status_sleep	KEY_ITEM	gambit	381	Gambit Ally: status = Sleep
+50C9	tza_gambit_ally_status_confuse	KEY_ITEM	gambit	382	Gambit Ally: status = Confuse
+50CA	tza_gambit_ally_status_doom	KEY_ITEM	gambit	383	Gambit Ally: status = Doom
+50CB	tza_gambit_ally_status_blind	KEY_ITEM	gambit	384	Gambit Ally: status = Blind
+50CC	tza_gambit_ally_status_poison	KEY_ITEM	gambit	385	Gambit Ally: status = Poison
+50CD	tza_gambit_ally_status_silence	KEY_ITEM	gambit	386	Gambit Ally: status = Silence
+50CE	tza_gambit_ally_status_sap	KEY_ITEM	gambit	387	Gambit Ally: status = Sap
+50CF	tza_gambit_ally_status_oil	KEY_ITEM	gambit	388	Gambit Ally: status = Oil
+50D0	tza_gambit_ally_status_reverse	KEY_ITEM	gambit	389	Gambit Ally: status = Reverse
+50D1	tza_gambit_ally_status_disable	KEY_ITEM	gambit	390	Gambit Ally: status = Disable
+50D2	tza_gambit_ally_status_immobilize	KEY_ITEM	gambit	391	Gambit Ally: status = Immobilize
+50D3	tza_gambit_ally_status_slow	KEY_ITEM	gambit	392	Gambit Ally: status = Slow
+50D4	tza_gambit_ally_status_disease	KEY_ITEM	gambit	393	Gambit Ally: status = Disease
+50D5	tza_gambit_ally_status_lure	KEY_ITEM	gambit	394	Gambit Ally: status = Lure
+50D6	tza_gambit_ally_status_protect	KEY_ITEM	gambit	395	Gambit Ally: status = Protect
+50D7	tza_gambit_ally_status_shell	KEY_ITEM	gambit	396	Gambit Ally: status = Shell
+50D8	tza_gambit_ally_status_haste	KEY_ITEM	gambit	397	Gambit Ally: status = Haste
+50D9	tza_gambit_ally_status_bravery	KEY_ITEM	gambit	398	Gambit Ally: status = Bravery
+50DA	tza_gambit_ally_status_faith	KEY_ITEM	gambit	399	Gambit Ally: status = Faith
+50DB	tza_gambit_ally_status_reflect	KEY_ITEM	gambit	400	Gambit Ally: status = Reflect
+50DC	tza_gambit_ally_status_invisible	KEY_ITEM	gambit	401	Gambit Ally: status = Invisible
+50DD	tza_gambit_ally_status_regen	KEY_ITEM	gambit	402	Gambit Ally: status = Regen
+50DE	tza_gambit_ally_status_float	KEY_ITEM	gambit	403	Gambit Ally: status = Float
+50DF	tza_gambit_ally_status_berserk	KEY_ITEM	gambit	404	Gambit Ally: status = Berserk
+50E0	tza_gambit_ally_status_bubble	KEY_ITEM	gambit	405	Gambit Ally: status = Bubble
+50E1	tza_gambit_ally_status_hp_critical	KEY_ITEM	gambit	406	Gambit Ally: status = HP Critical
+50E2	tza_gambit_foe_targeting_vaan	KEY_ITEM	gambit	407	Gambit Foe: targeting Vaan
+50E3	tza_gambit_foe_targeting_ashe	KEY_ITEM	gambit	408	Gambit Foe: targeting Ashe
+50E4	tza_gambit_foe_targeting_fran	KEY_ITEM	gambit	409	Gambit Foe: targeting Fran
+50E5	tza_gambit_foe_targeting_balthier	KEY_ITEM	gambit	410	Gambit Foe: targeting Balthier
+50E6	tza_gambit_foe_targeting_basch	KEY_ITEM	gambit	411	Gambit Foe: targeting Basch
+50E7	tza_gambit_foe_targeting_penelo	KEY_ITEM	gambit	412	Gambit Foe: targeting Penelo
+50E8	tza_gambit_self_foe_count_2	KEY_ITEM	gambit	413	Gambit Self: foe count >= 2
+50E9	tza_gambit_self_foe_count_3	KEY_ITEM	gambit	414	Gambit Self: foe count >= 3
+50EA	tza_gambit_self_foe_count_4	KEY_ITEM	gambit	415	Gambit Self: foe count >= 4
+50EB	tza_gambit_self_foe_count_5	KEY_ITEM	gambit	416	Gambit Self: foe count >= 5
+50EC	tza_gambit_ally_foe_count_2	KEY_ITEM	gambit	417	Gambit Ally: foe count >= 2
+50ED	tza_gambit_ally_foe_count_3	KEY_ITEM	gambit	418	Gambit Ally: foe count >= 3
+50EE	tza_gambit_ally_foe_count_4	KEY_ITEM	gambit	419	Gambit Ally: foe count >= 4
+50EF	tza_gambit_ally_foe_count_5	KEY_ITEM	gambit	420	Gambit Ally: foe count >= 5
+50F0	tza_gambit_foe_count_2	KEY_ITEM	gambit	421	Gambit Foe: count >= 2
+50F1	tza_gambit_foe_count_3	KEY_ITEM	gambit	422	Gambit Foe: count >= 3
+50F2	tza_gambit_foe_count_4	KEY_ITEM	gambit	423	Gambit Foe: count >= 4
+50F3	tza_gambit_foe_count_5	KEY_ITEM	gambit	424	Gambit Foe: count >= 5
+50F4	tza_gambit_foe_ally_count_2	KEY_ITEM	gambit	425	Gambit Foe: ally count >= 2
+50F5	tza_gambit_foe_ally_count_3	KEY_ITEM	gambit	426	Gambit Foe: ally count >= 3
+50F6	tza_gambit_self_item_amt_10	KEY_ITEM	gambit	427	Gambit Self: item AMT >= 10
+50F7	tza_gambit_foe_hp_90	KEY_ITEM	gambit	428	Gambit Foe: HP >= 90%
+50F8	tza_gambit_foe_hp_10	KEY_ITEM	gambit	429	Gambit Foe: HP >= 10%
+50F9	tza_gambit_foe_hp_90_50f9	KEY_ITEM	gambit	430	Gambit Foe: HP < 90%
+50FA	tza_gambit_foe_hp_70_50fa	KEY_ITEM	gambit	431	Gambit Foe: HP < 70%
+50FB	tza_gambit_foe_hp_50_50fb	KEY_ITEM	gambit	432	Gambit Foe: HP < 50%
+50FC	tza_gambit_foe_hp_30_50fc	KEY_ITEM	gambit	433	Gambit Foe: HP < 30%
+50FD	tza_gambit_foe_hp_10_50fd	KEY_ITEM	gambit	434	Gambit Foe: HP < 10%
+50FE	tza_gambit_foe_concentrated_attack	KEY_ITEM	gambit	435	Gambit Foe: Concentrated Attack
+50FF	tza_gambit_foe_daring_attack	KEY_ITEM	gambit	436	Gambit Foe: Daring Attack

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ivalice:item/catalog/blade",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -83334
+      }
+    ]
+  }
+}

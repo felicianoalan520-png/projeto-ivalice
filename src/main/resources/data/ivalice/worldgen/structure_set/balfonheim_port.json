@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 78,
+    "separation": 26,
+    "salt": 30926119
+  },
+  "structures": [
+    {
+      "structure": "ivalice:balfonheim_port",
+      "weight": 1
+    }
+  ]
+}

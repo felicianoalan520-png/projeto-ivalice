@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:glass"
+  },
+  "result": {
+    "id": "ivalice:archadian_imperial_glass",
+    "count": 4
+  }
+}

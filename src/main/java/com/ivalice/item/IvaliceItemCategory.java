@@ -18,6 +18,7 @@ public enum IvaliceItemCategory {
     WEAPON_AXE_HAMMER("Armas: Machado / Martelo (Axe & Hammer)", ChatFormatting.GOLD),
     WEAPON_STAFF("Armas: Cajado Arcano (Staff)", ChatFormatting.AQUA),
     WEAPON_ROD("Armas: Cetro Místico (Rod)", ChatFormatting.LIGHT_PURPLE),
+    WEAPON_MACE("Armas: Maça (Mace)", ChatFormatting.GOLD),
     WEAPON_MEASURE("Armas: Medida Tática (Measure)", ChatFormatting.AQUA),
     WEAPON_HAND_BOMB("Armas: Bomba de Mão (Hand-bomb)", ChatFormatting.RED),
 
@@ -27,6 +28,7 @@ public enum IvaliceItemCategory {
     DEFENSE_MYSTIC_ARMOR("Defesa: Armadura Mística (Mystic Armor)", ChatFormatting.LIGHT_PURPLE),
     DEFENSE_ACCESSORY("Defesa: Acessório (Accessory)", ChatFormatting.AQUA),
 
+    AMMUNITION("Munição", ChatFormatting.GRAY),
     CONSUMABLE("Consumível de Ivalice (Consumable)", ChatFormatting.GREEN),
     LOOT_MATERIAL("Espólio / Material de Monstro (Loot)", ChatFormatting.YELLOW),
     KEY_ITEM("Item Especial / Relíquia do Clã (Key Item)", ChatFormatting.GOLD),

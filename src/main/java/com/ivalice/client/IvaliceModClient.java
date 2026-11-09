@@ -31,7 +31,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 
 /**
- * Inicialização exclusiva do cliente (compatível com Iris Shaders e renderizadores 3D GeckoLib 5.5.7 para as 12 criaturas, Marks e Espers).
+ * Inicialização exclusiva do cliente (compatível com Iris Shaders e renderizadores 3D GeckoLib 5.5.7 para as criaturas, Marks e Espers).
  */
 @Mod(value = IvaliceMod.MODID, dist = Dist.CLIENT)
 public class IvaliceModClient {
@@ -94,6 +94,12 @@ public class IvaliceModClient {
         registerGeoMonster(event, IvaliceEntities.GIZA_RABBIT.get(), "giza_rabbit");
         registerGeoMonster(event, IvaliceEntities.COCKATRICE.get(), "cockatrice");
         registerGeoMonster(event, IvaliceEntities.ICHTHON.get(), "ichthon");
+        registerGeoMonster(event, IvaliceEntities.WILD_SAURIAN.get(), "wild_saurian");
+        registerGeoMonster(event, IvaliceEntities.MANDRAGORA.get(), "mandragora");
+        registerGeoMonster(event, IvaliceEntities.MALBORO.get(), "malboro");
+        registerGeoMonster(event, IvaliceEntities.YETI.get(), "yeti");
+        registerGeoMonster(event, IvaliceEntities.BOMB.get(), "bomb");
+        registerGeoMonster(event, IvaliceEntities.WHITE_WOLF.get(), "white_wolf");
 
         registerGeoMonster(event, IvaliceEntities.ROGUE_TOMATO.get(), "rogue_tomato");
         registerGeoMonster(event, IvaliceEntities.THEXTERA.get(), "thextera");
@@ -103,7 +109,34 @@ public class IvaliceModClient {
         registerGeoMonster(event, IvaliceEntities.BELIAS.get(), "belias");
         registerGeoMonster(event, IvaliceEntities.MATEUS.get(), "mateus");
 
-        IvaliceMod.LOGGER.info("[Projeto Ivalice] 12 Renderizadores 3D GeckoLib 5.5.7 registrados para criaturas, Marks e Espers de Ivalice.");
+        registerGeoMonster(event, IvaliceEntities.CHOCOBO.get(), "chocobo");
+        registerGeoMonster(event, IvaliceEntities.ALPHA_WOLF.get(), "alpha_wolf");
+        registerGeoMonster(event, IvaliceEntities.ALPHA_HYENA.get(), "alpha_hyena");
+        registerGeoMonster(event, IvaliceEntities.ALPHA_SAURIAN.get(), "alpha_saurian");
+        registerGeoMonster(event, IvaliceEntities.COEURL.get(), "coeurl");
+        registerGeoMonster(event, IvaliceEntities.BEHEMOTH.get(), "behemoth");
+        registerGeoMonster(event, IvaliceEntities.SKELETON_CRUSADER.get(), "skeleton_crusader");
+        registerGeoMonster(event, IvaliceEntities.FIREMANE.get(), "firemane");
+        registerGeoMonster(event, IvaliceEntities.JUDGE_GABRANTH.get(), "judge_gabranth");
+        registerGeoMonster(event, IvaliceEntities.GILGAMESH.get(), "gilgamesh");
+        registerGeoMonster(event, IvaliceEntities.ZODIARK.get(), "zodiark");
+        registerGeoMonster(event, IvaliceEntities.YIAZMAT.get(), "yiazmat");
+
+        registerGeoMonster(event, IvaliceEntities.MINDFLAYER.get(), "mindflayer");
+        registerGeoMonster(event, IvaliceEntities.RUBICANTE.get(), "rubicante");
+        registerGeoMonster(event, IvaliceEntities.IRON_GIANT.get(), "iron_giant");
+        registerGeoMonster(event, IvaliceEntities.GOLBEZ.get(), "golbez");
+        registerGeoMonster(event, IvaliceEntities.IFRIT_PYREBURNER.get(), "ifrit_pyreburner");
+        registerGeoMonster(event, IvaliceEntities.ADAMANTOISE.get(), "adamantoise");
+
+        registerGeoMonster(event, IvaliceEntities.ULTROS.get(), "ultros");
+        registerGeoMonster(event, IvaliceEntities.GIL_TURTLE.get(), "gil_turtle");
+        registerGeoMonster(event, IvaliceEntities.ATB_WEAPON.get(), "atb_weapon");
+        registerGeoMonster(event, IvaliceEntities.SHINRYU.get(), "shinryu");
+        registerGeoMonster(event, IvaliceEntities.OMEGA_MK.get(), "omega_mk");
+        registerGeoMonster(event, IvaliceEntities.KEFKA_GOD.get(), "kefka_god");
+
+        IvaliceMod.LOGGER.info("[Projeto Ivalice] Renderizadores 3D GeckoLib 5.5.7 registrados para criaturas, Marks e Espers de Ivalice.");
     }
 
     private static void registerGeoMonster(

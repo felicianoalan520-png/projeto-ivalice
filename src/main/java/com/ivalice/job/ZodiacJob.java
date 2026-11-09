@@ -15,7 +15,7 @@ public enum ZodiacJob {
     MACHINIST("Maquinista", "Armas de fogo, medidas e armadura leve", 0, 1, 0.01, 0,
             WEAPON_GUN, WEAPON_MEASURE, DEFENSE_LIGHT_ARMOR),
     RED_BATTLEMAGE("Mago de Batalha Vermelho", "Magia branca e negra, escudos e vestes místicas", 1, 0, 0, 1,
-            WEAPON_GREATSWORD, WEAPON_STAFF, MAGICK_WHITE, MAGICK_BLACK, DEFENSE_MYSTIC_ARMOR, DEFENSE_SHIELD),
+            WEAPON_GREATSWORD, WEAPON_STAFF, WEAPON_MACE, MAGICK_WHITE, MAGICK_BLACK, DEFENSE_MYSTIC_ARMOR, DEFENSE_SHIELD),
     WHITE_MAGE("Mago Branco", "Cetros, vestes místicas e magia branca", 0, 0, 0, 2,
             WEAPON_ROD, DEFENSE_MYSTIC_ARMOR, MAGICK_WHITE),
     BLACK_MAGE("Mago Negro", "Cajados, vestes místicas e magia negra", 0, 0, 0, 3,

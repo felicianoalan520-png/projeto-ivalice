@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:glowstone"
+  },
+  "result": {
+    "id": "ivalice:amber_lantern_tile",
+    "count": 4
+  }
+}

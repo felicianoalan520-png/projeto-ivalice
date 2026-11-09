@@ -22,7 +22,7 @@ public final class ZodiacJobs {
         var profile = IvalicePlayerData.get(player);
         if (profile.jobs.isEmpty() || category == null) return true;
         return switch (category) {
-            case CONSUMABLE, LOOT_MATERIAL, KEY_ITEM, DEFENSE_ACCESSORY, TECHNICK, ESPER_GLYPH -> true;
+            case AMMUNITION, CONSUMABLE, LOOT_MATERIAL, KEY_ITEM, DEFENSE_ACCESSORY, TECHNICK, ESPER_GLYPH -> true;
             default -> profile.jobs.stream().map(ZodiacJob::byId).anyMatch(job -> job != null && job.permits(category));
         };
     }

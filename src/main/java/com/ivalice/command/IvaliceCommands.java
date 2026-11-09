@@ -8,6 +8,7 @@ import com.ivalice.entity.IvaliceMonsterEntity;
 import com.ivalice.entity.IvaliceMonsterStats;
 import com.ivalice.registry.IvaliceEntities;
 import com.ivalice.registry.IvaliceItems;
+import com.ivalice.registry.IvaliceTzaCatalog;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -56,6 +57,15 @@ public class IvaliceCommands {
                 .then(Commands.literal("bestiary")
                         .executes(ctx -> showBestiary(ctx.getSource())))
 
+                .then(Commands.literal("catalog")
+                        .then(Commands.literal("search")
+                                .then(Commands.argument("query", StringArgumentType.greedyString())
+                                        .executes(ctx -> IvaliceTzaCatalog.search(ctx.getSource().getPlayerOrException(),
+                                                StringArgumentType.getString(ctx, "query")))))
+                        .then(Commands.literal("buy")
+                                .then(Commands.argument("id", StringArgumentType.word())
+                                        .executes(ctx -> IvaliceTzaCatalog.buy(ctx.getSource().getPlayerOrException(),
+                                                StringArgumentType.getString(ctx, "id"))))))
                 .then(Commands.literal("job")
                         .then(Commands.literal("choose")
                                 .then(Commands.argument("id", StringArgumentType.word())

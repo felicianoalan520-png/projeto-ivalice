@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:mossy_cobblestone"
+  },
+  "result": {
+    "id": "ivalice:nabreus_ancient_ruin_stone",
+    "count": 4
+  }
+}

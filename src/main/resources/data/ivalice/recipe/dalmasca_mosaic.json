@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:cyan_terracotta"
+  },
+  "result": {
+    "id": "ivalice:dalmasca_mosaic",
+    "count": 4
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": [
+    "ivalice:dalmasca_estersand",
+    "ivalice:dalmasca_westersand"
+  ],
+  "start_pool": "ivalice:rabanastre",
+  "start_height": {
+    "absolute": -4
+  },
+  "size": 1,
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "terrain_adaptation": "beard_thin",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "max_distance_from_center": 80,
+  "use_expansion_hack": false
+}

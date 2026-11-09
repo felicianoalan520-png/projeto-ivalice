@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "ivalice:block/feywood_runed_marble"
+  }
+}

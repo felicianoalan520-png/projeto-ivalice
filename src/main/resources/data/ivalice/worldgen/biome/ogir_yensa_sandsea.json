@@ -131,7 +131,8 @@
     ],
     [
       "minecraft:patch_dead_bush_badlands",
-      "ivalice:patch_estersand_scrub"
+      "ivalice:patch_estersand_scrub",
+      "ivalice:patch_yensa_salt_reed"
     ],
     [
       "minecraft:freeze_top_layer"

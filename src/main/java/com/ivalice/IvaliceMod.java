@@ -78,6 +78,7 @@ public class IvaliceMod {
         NeoForge.EVENT_BUS.addListener(GizaSeasonManager::onLevelTickPost);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onPotentialSpawns);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onEntityJoin);
+        NeoForge.EVENT_BUS.addListener(IvaliceVillagers::onEntityInteract);
 
         // Registro do arquivo de configuração
         modContainer.registerConfig(ModConfig.Type.LOCAL, IvaliceConfig.SPEC);

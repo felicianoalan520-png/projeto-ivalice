@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "ivalice:block/paramina_frost_bell"
+  }
+}

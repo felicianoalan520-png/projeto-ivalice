@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "ivalice:archadian_steel_plate",
+    "count": 4
+  }
+}

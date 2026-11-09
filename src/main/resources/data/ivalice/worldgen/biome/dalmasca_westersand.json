@@ -135,7 +135,8 @@
       "minecraft:patch_dead_bush_2",
       "minecraft:patch_cactus_desert",
       "ivalice:patch_estersand_scrub",
-      "ivalice:patch_dalmasca_emberbloom"
+      "ivalice:patch_dalmasca_emberbloom",
+      "ivalice:patch_yensa_salt_reed"
     ],
     [
       "minecraft:freeze_top_layer"

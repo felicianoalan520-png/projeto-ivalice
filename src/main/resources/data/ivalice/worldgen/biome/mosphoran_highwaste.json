@@ -119,7 +119,9 @@
       "minecraft:trees_windswept_hills",
       "minecraft:patch_grass_normal",
       "minecraft:patch_dead_bush",
-      "ivalice:patch_estersand_scrub"
+      "ivalice:patch_estersand_scrub",
+      "ivalice:patch_paramina_frost_bell",
+      "ivalice:patch_mosphoran_stonebloom"
     ],
     [
       "minecraft:freeze_top_layer"

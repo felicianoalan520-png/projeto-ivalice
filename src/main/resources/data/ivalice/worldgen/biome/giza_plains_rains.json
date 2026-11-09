@@ -119,7 +119,8 @@
       "minecraft:patch_waterlily",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:seagrass_swamp",
-      "ivalice:patch_gysahl_greens"
+      "ivalice:patch_gysahl_greens",
+      "ivalice:patch_giza_rain_reed"
     ],
     [
       "minecraft:freeze_top_layer"

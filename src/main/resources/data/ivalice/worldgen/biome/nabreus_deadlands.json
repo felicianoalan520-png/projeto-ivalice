@@ -122,13 +122,14 @@
       "minecraft:spring_water"
     ],
     [
-      "minecraft:trees_swamp",
       "minecraft:patch_dead_bush",
       "minecraft:patch_waterlily",
       "minecraft:brown_mushroom_swamp",
       "minecraft:red_mushroom_swamp",
       "minecraft:seagrass_swamp",
-      "ivalice:patch_feywood_white_lily"
+      "ivalice:nabreus_mire_grove",
+      "ivalice:patch_feywood_white_lily",
+      "ivalice:patch_nabreus_mist_bell"
     ],
     [
       "minecraft:freeze_top_layer"
