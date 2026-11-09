@@ -164,7 +164,8 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
             }
             case BAZAAR -> {
                 for (var pack : IvalicePlayerData.BAZAAR_PACKAGES) {
-                    entries.add(new Entry(pack.rewardItemId().replace('_', ' ') + " • " + pack.gilCost() + " Gil",
+                    String cost = pack.requiresLoot() ? "Espólios" : pack.gilCost() + " Gil";
+                    entries.add(new Entry(pack.rewardItemId().replace('_', ' ') + " • " + cost,
                             () -> run("ivalice bazaar buy " + pack.id())));
                 }
             }

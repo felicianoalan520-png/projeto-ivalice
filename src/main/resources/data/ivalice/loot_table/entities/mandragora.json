@@ -9,12 +9,10 @@
           "name": "ivalice:tza_succulent_fruit"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.4
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.4
+      }
     },
     {
       "rolls": 1,
@@ -24,12 +22,10 @@
           "name": "ivalice:tza_water_magicite"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.25
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.25
+      }
     },
     {
       "rolls": 1,
@@ -39,12 +35,10 @@
           "name": "ivalice:tza_vanishga_mote"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.05
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.05
+      }
     },
     {
       "rolls": 1,
@@ -54,12 +48,10 @@
           "name": "ivalice:tza_platinum_sword"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.01
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.01
+      }
     }
   ]
 }

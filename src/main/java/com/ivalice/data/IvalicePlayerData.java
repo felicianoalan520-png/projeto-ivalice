@@ -493,7 +493,11 @@ public class IvalicePlayerData {
             int gilCost,
             Map<String, Integer> requiredLoot,
             String description
-    ) {}
+    ) {
+        public boolean requiresLoot() {
+            return id.startsWith("grimoire_") || id.endsWith("_blade");
+        }
+    }
 
     public static final List<BazaarPackage> BAZAAR_PACKAGES = List.of(
             new BazaarPackage(
@@ -511,8 +515,8 @@ public class IvalicePlayerData {
                     "x_potion",
                     4,
                     480,
-                    Map.of("giza_rabbit_fur", 2, "water_stone", 2),
-                    "2x Giza Rabbit Fur + 2x Water Stone -> Sintetiza 4x X-Potions."
+                    Map.of("tza_drab_wool", 2, "water_stone", 2),
+                    "2x Drab Wool + 2x Water Stone -> Sintetiza 4x X-Potions."
             ),
             new BazaarPackage(
                     "ether_alchemy",
@@ -601,8 +605,8 @@ public class IvalicePlayerData {
                     "tza_curaga",
                     1,
                     2600,
-                    Map.of("water_stone", 3, "giza_rabbit_fur", 3),
-                    "3x Water Stone + 3x Giza Rabbit Fur -> Fabricar Curaga (Nv. 38+)."
+                    Map.of("water_stone", 3, "tza_drab_wool", 3),
+                    "3x Water Stone + 3x Drab Wool -> Fabricar Curaga (Nv. 38+)."
             ),
             new BazaarPackage(
                     "grimoire_hastega",

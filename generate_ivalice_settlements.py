@@ -706,7 +706,7 @@ def block_assets(name, plant):
     save_json(DATA / f"loot_table/blocks/{name}.json", {
         "type": "minecraft:block",
         "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": f"ivalice:{name}"}],
-                   "conditions": [{"condition": "minecraft:survives_explosion"}]}],
+                   "condition": {"type": "minecraft:survives_explosion"}}],
     })
 
 
@@ -717,7 +717,7 @@ def flora_and_blocks():
         plant_px = plant_pixels(index, petals, bright)
         save_png(ASSETS / f"textures/block/{name}.png", plant_px)
         # Also write flat LabPBR _n.png and _s.png for plants so shaders never sample missing PBR maps
-        plant_n = [[(128, 128, 255, 255 if plant_px[y][x][3] > 0 else 0) for x in range(32)] for y in range(32)]
+        plant_n = [[(128, 128, 255, 255) for x in range(32)] for y in range(32)]
         plant_s = [[(45, 25, 180, 0) for x in range(32)] for y in range(32)]
         save_png(ASSETS / f"textures/block/{name}_n.png", plant_n)
         save_png(ASSETS / f"textures/block/{name}_s.png", plant_s)

@@ -12,30 +12,19 @@ BASE_DIR = Path(__file__).resolve().parent
 DEST_PATHS = [
     BASE_DIR / "shaderpacks/Ivalice-Realism-PBR.zip",
     BASE_DIR / "run/shaderpacks/Ivalice-Realism-PBR.zip",
+    BASE_DIR / "instancia_pronta/shaderpacks/Ivalice-Realism-PBR.zip",
 ]
 
 SHADERS_PROPERTIES = """# Ivalice Realism PBR Shaderpack
 # Designed for Iris Shaders & OptiFine (Minecraft 26.3 NeoForge - Projeto Ivalice)
 # LabPBR 1.3 Material Pipeline + Warm Ivalice Tonemapping + Parallax Occlusion Mapping
 
-screen.main=MAIN
-screen.MAIN.comment=Ivalice Realism PBR Engine Settings
-screen.MAIN.columns=2
-
-option.NORMAL_MAP=true
-option.SPECULAR_MAP=true
-option.POM=true
-option.POM_DEPTH=0.095
-option.WARM_IVALICE_TONE=true
-option.MIST_DENSITY=0.0035
-
-profile.LOW=NORMAL_MAP,SPECULAR_MAP,POM:false
-profile.MEDIUM=NORMAL_MAP,SPECULAR_MAP,POM:true
-profile.HIGH=NORMAL_MAP,SPECULAR_MAP,POM:true
-profile.default=MEDIUM
+screen = IVALICE_PARALLAX POM_DEPTH
+screen.columns = 2
+sliders = POM_DEPTH
 """
 
-GBUFFERS_TERRAIN_VSH = """#version 120
+GBUFFERS_TERRAIN_VSH = """#version 130
 
 /*
  * Ivalice Realism PBR - Terrain Vertex Shader
@@ -54,7 +43,7 @@ varying vec4 tileBounds;   // xy = tile origin in atlas, zw = tile size in atlas
 varying vec2 localCoord;   // 0..1 inside the sprite
 
 attribute vec4 at_tangent;
-attribute vec4 mc_midTexCoord;
+attribute vec2 mc_midTexCoord;
 
 uniform vec3 sunPosition;
 
@@ -63,7 +52,7 @@ void main() {
     lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
     color = gl_Color;
 
-    vec2 midCoord = (gl_TextureMatrix[0] * vec4(mc_midTexCoord.xy, 0.0, 1.0)).xy;
+    vec2 midCoord = (gl_TextureMatrix[0] * vec4(mc_midTexCoord, 0.0, 1.0)).xy;
     vec2 halfSize = texcoord - midCoord;
     tileBounds.zw = max(abs(halfSize) * 2.0, vec2(1.0e-6));
     tileBounds.xy = min(texcoord, midCoord - halfSize);
@@ -92,16 +81,16 @@ void main() {
 }
 """
 
-GBUFFERS_TERRAIN_FSH = """#version 120
+GBUFFERS_TERRAIN_FSH = """#version 130
 
 /*
  * Ivalice Realism PBR - Terrain Fragment Shader
  * LabPBR 1.3: _n.png (R/G normal, B AO, A height) + _s.png (R smooth, G F0, A emissive)
- * Parallax Occlusion Mapping is computed in sprite-local space and wrapped inside the
- * atlas tile, so it can never leak into other sprites (fixes the "grid / see-through" bug).
+ * The parallax ray is confined to the original quad's atlas footprint. Coverage is
+ * always read from the original atlas UV, including cutouts and vegetation.
  */
 
-uniform sampler2D texture;
+uniform sampler2D gtexture;
 uniform sampler2D normals;
 uniform sampler2D specular;
 uniform sampler2D lightmap;
@@ -116,95 +105,88 @@ varying mat3 tbnMatrix;
 varying vec4 tileBounds;
 varying vec2 localCoord;
 
-#define POM_DEPTH 0.18
-#define POM_DISTANCE 24.0
+#define IVALICE_PARALLAX 0 // [0 1]
+#define POM_DEPTH 0.06 // [0.03 0.06 0.09]
 
 /* DRAWBUFFERS:0 */
 
-vec2 toAtlas(vec2 local) {
-    return tileBounds.xy + fract(local) * tileBounds.zw;
+#if IVALICE_PARALLAX == 1
+vec2 toAtlas(vec2 local, vec2 inset) {
+    return tileBounds.xy + clamp(local, inset, 1.0 - inset) * tileBounds.zw;
 }
 
-float heightAt(vec2 local) {
-    return texture2D(normals, toAtlas(local)).a;
+float heightAt(vec2 local, vec2 inset, vec2 uvDx, vec2 uvDy) {
+    return textureGrad(normals, toAtlas(local, inset), uvDx, uvDy).a;
 }
 
-vec2 parallaxLocal(vec2 local, vec3 viewTS, out float outHeight) {
+vec2 parallaxLocal(vec2 local, vec3 viewTS, float fade, vec2 inset, vec2 uvDx, vec2 uvDy) {
     const int steps = 12;
     float layer = 1.0 / float(steps);
-    vec2 delta = -viewTS.xy / max(viewTS.z, 0.25) * POM_DEPTH * layer;
+    vec2 delta = -viewTS.xy / max(viewTS.z, 0.35) * POM_DEPTH * fade * layer;
 
     float depth = 0.0;
-    float h = 1.0 - heightAt(local);
-    vec2 prevLocal = local;
-    float prevH = h;
+    float surface = 1.0 - heightAt(local, inset, uvDx, uvDy);
+    vec2 previous = local;
+    float previousGap = 0.0;
     for (int i = 0; i < steps; i++) {
-        if (depth >= h) break;
-        prevLocal = local;
-        prevH = h;
+        if (depth >= surface) break;
+        previous = local;
+        previousGap = surface - depth;
         local += delta;
         depth += layer;
-        h = 1.0 - heightAt(local);
+        surface = 1.0 - heightAt(local, inset, uvDx, uvDy);
     }
-    float after = h - depth;
-    float before = prevH - (depth - layer);
-    float w = clamp(after / (after - before + 1.0e-4), 0.0, 1.0);
-    outHeight = 1.0 - (depth - w * layer);
-    return mix(local, prevLocal, w);
+    float overshoot = max(0.0, depth - surface);
+    float blend = overshoot / max(overshoot + previousGap, 1.0e-4);
+    return mix(local, previous, blend);
 }
-
-float pomShadow(vec2 local, vec3 lightTS, float h0) {
-    if (lightTS.z <= 0.0) return 0.55;
-    const int steps = 6;
-    vec2 delta = lightTS.xy / max(lightTS.z, 0.3) * POM_DEPTH / float(steps);
-    float shadow = 1.0;
-    for (int i = 1; i <= steps; i++) {
-        float rayH = h0 + float(i) / float(steps) * (1.0 - h0);
-        if (heightAt(local + delta * float(i)) > rayH + 0.04) {
-            shadow = 0.6;
-            break;
-        }
-    }
-    return shadow;
-}
+#endif
 
 void main() {
+    vec4 baseColor = texture2D(gtexture, texcoord);
+    float coverage = baseColor.a * color.a;
+    if (coverage < 0.1) discard;
+
+    vec4 nSample = texture2D(normals, texcoord);
+    vec4 sSample = texture2D(specular, texcoord);
     vec3 V = normalize(viewVector);
+    vec3 L = normalize(lightVector);
+
+    #if IVALICE_PARALLAX == 1
+    vec2 uvDx = dFdx(texcoord);
+    vec2 uvDy = dFdy(texcoord);
+    vec2 atlasPixels = vec2(textureSize(gtexture, 0));
+    vec2 quadPixels = tileBounds.zw * atlasPixels;
+    vec4 drift = (abs(dFdx(tileBounds)) + abs(dFdy(tileBounds))) * atlasPixels.xyxy;
+    vec2 edge = min(localCoord, 1.0 - localCoord);
     vec3 viewTS = normalize(V * tbnMatrix);
-
-    vec2 local = localCoord;
-    float pHeight = 1.0;
-    bool usePom = false;
-
-    vec4 nRaw = texture2D(normals, texcoord);
-    float dist = length(viewVector);
-    if (dist < POM_DISTANCE && nRaw.a > 0.02 && nRaw.a < 0.98) {
-        local = parallaxLocal(localCoord, viewTS, pHeight);
-        usePom = true;
+    float fade = (1.0 - smoothstep(12.0, 20.0, length(viewVector))) *
+                 smoothstep(0.04, 0.16, min(edge.x, edge.y)) *
+                 smoothstep(0.35, 0.60, viewTS.z);
+    if (fade > 0.0 && coverage > 0.99 && nSample.a < 0.995 &&
+            min(quadPixels.x, quadPixels.y) >= 8.0 &&
+            max(max(drift.x, drift.y), max(drift.z, drift.w)) < 0.10) {
+        vec2 mipFootprint = max(abs(uvDx), abs(uvDy)) * atlasPixels;
+        vec2 inset = clamp((0.5 + mipFootprint) / quadPixels, vec2(0.02), vec2(0.4));
+        vec2 local = parallaxLocal(localCoord, viewTS, fade, inset, uvDx, uvDy);
+        vec2 uv = toAtlas(local, inset);
+        vec4 displaced = textureGrad(gtexture, uv, uvDx, uvDy);
+        if (displaced.a > 0.99) {
+            baseColor.rgb = displaced.rgb;
+            nSample = textureGrad(normals, uv, uvDx, uvDy);
+            sSample = textureGrad(specular, uv, uvDx, uvDy);
+        }
     }
+    #endif
 
-    // Only remap the atlas lookup when POM actually moved the coordinate;
-    // otherwise keep the hardware-filtered original texcoord (no seams, no mip issues).
-    vec2 uv = usePom ? toAtlas(local) : texcoord;
-
-    vec4 albedo = texture2D(texture, uv) * color;
-    if (albedo.a < 0.1) discard;
-
-    vec4 nSample = usePom ? texture2D(normals, uv) : nRaw;
-    vec3 N = normal;
-    // Vanilla blocks without a _n.png get Iris' flat default; only apply real maps.
-    if (nSample.a > 0.0 && abs(nSample.r - 0.5) + abs(nSample.g - 0.5) > 0.004) {
-        vec3 nTS = vec3(nSample.rg * 2.0 - 1.0, 0.0);
-        nTS.xy *= 1.4;
-        nTS.z = sqrt(max(0.0, 1.0 - dot(nTS.xy, nTS.xy)));
-        N = normalize(tbnMatrix * normalize(nTS));
+    vec4 albedo = vec4(baseColor.rgb * color.rgb, coverage);
+    vec3 N = normalize(normal);
+    vec2 normalXY = nSample.rg * 2.0 - 1.0;
+    if (length(normalXY) > 0.012) {
+        vec3 nTS = vec3(normalXY, sqrt(max(0.0, 1.0 - dot(normalXY, normalXY))));
+        N = normalize(tbnMatrix * nTS);
     }
     float ao = clamp(nSample.b, 0.35, 1.0);
-
-    vec3 L = normalize(lightVector);
-    float shadow = usePom ? pomShadow(local, normalize(L * tbnMatrix), pHeight) : 1.0;
-
-    vec4 sSample = texture2D(specular, uv);
     float smoothness = sSample.r;
     float f0 = sSample.g;
     float emissive = sSample.a < 0.999 ? sSample.a : 0.0;
@@ -222,13 +204,12 @@ void main() {
     }
 
     // Keep vanilla brightness as baseline (lightmap), add directional relief on top.
-    float sky = lm.b > 0.0 ? 1.0 : 1.0;
-    float relief = mix(0.82, 1.12, NdotL) * shadow;
+    float relief = mix(0.82, 1.12, NdotL);
     vec3 finalColor = albedo.rgb * lm.rgb * relief * mix(0.85, 1.0, ao);
-    finalColor += spec * specColor * lm.rgb * shadow;
+    finalColor += spec * specColor * lm.rgb;
     if (emissive > 0.25) finalColor += albedo.rgb * emissive * 1.6;
 
-    gl_FragData[0] = vec4(finalColor * sky, albedo.a);
+    gl_FragData[0] = vec4(finalColor, albedo.a);
 }
 """
 
@@ -349,8 +330,8 @@ FEATURES:
    - Atmospheric regional haze/mist.
 
 3. Compatibility:
-   - Iris Shaders & OptiFine on OpenGL 2.1+ / GLSL #version 120.
-   - Fully optimized for NeoForge 26.3.
+   - Iris Shaders on NeoForge 26.3.
+   - Parallax is off by default. Enable it in Shader Pack Settings.
 
 INSTALLATION:
 Place 'Ivalice-Realism-PBR.zip' into your '.minecraft/shaderpacks' directory
@@ -479,6 +460,8 @@ void main() {
 
 FILES = {
     "shaders/shaders.properties": SHADERS_PROPERTIES,
+    "shaders/lang/en_us.lang": "option.IVALICE_PARALLAX=Parallax relief\noption.POM_DEPTH=Parallax depth\n",
+    "shaders/lang/pt_br.lang": "option.IVALICE_PARALLAX=Relevo por paralaxe\noption.POM_DEPTH=Profundidade do relevo\n",
     "shaders/gbuffers_terrain.vsh": GBUFFERS_TERRAIN_VSH,
     "shaders/gbuffers_terrain.fsh": GBUFFERS_TERRAIN_FSH,
     "shaders/gbuffers_entities.vsh": GBUFFERS_ENTITIES_VSH,
@@ -499,7 +482,8 @@ def build_shaderpack_zip():
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         for filename, content in FILES.items():
-            zf.writestr(filename, content.encode("utf-8"))
+            entry = zipfile.ZipInfo(filename)
+            zf.writestr(entry, content.encode("utf-8"), compress_type=zipfile.ZIP_DEFLATED)
     return buf.getvalue()
 
 

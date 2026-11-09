@@ -1,20 +1,18 @@
-﻿{
+{
   "type": "minecraft:block",
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "ivalice:feywood_white_lily"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      }
     }
   ]
 }

@@ -64,6 +64,8 @@ public final class IvaliceTzaCatalog {
         }
     }
 
+    public record Order(int minimumLevel, int gil, String ingredient, int quantity) {}
+
     private static final Map<String, Entry> ITEMS = new LinkedHashMap<>();
     private static final List<Entry> RECORDS = new ArrayList<>();
 
@@ -95,9 +97,15 @@ public final class IvaliceTzaCatalog {
             return 0;
         }
         for (Entry item : matches) {
-            String availability = item.isSoldInRegionalShops()
-                    ? item.price() + " Gil [Loja Regional]"
-                    : "Exclusivo [Drop de Mob / Alquimia / Boss]";
+            var pack = bazaarPackage(item.id);
+            String availability;
+            if (item.isSoldInRegionalShops()) {
+                availability = item.price() + " Gil [Loja Regional]";
+            } else if (pack != null) {
+                availability = "Alquimia [pacote " + pack.id() + "]";
+            } else {
+                availability = "Encomenda do Bazaar [nível " + orderFor(item).minimumLevel() + "]";
+            }
             player.sendSystemMessage(Component.literal("• " + item.name + " • " + availability + " • ID: " + item.id)
                     .withStyle(item.isSoldInRegionalShops() ? ChatFormatting.YELLOW : ChatFormatting.LIGHT_PURPLE));
         }
@@ -112,10 +120,10 @@ public final class IvaliceTzaCatalog {
             return 0;
         }
         if (!entry.isSoldInRegionalShops()) {
-            player.sendSystemMessage(Component.literal(String.format(
-                    "⚠ [PROGRESSÃO DE IVALICE] '%s' é um item raro/avançado e NÃO é vendido em mercadores comuns! Obtenha-o derrotando Monstros/Alfas, concluindo Caçadas de Bosses ou criando com Alquimia no Bazaar!",
-                    entry.name
-            )).withStyle(ChatFormatting.RED));
+            var pack = bazaarPackage(id);
+            String route = pack == null ? "/ivalice catalog recipe " + id : "/ivalice bazaar buy " + pack.id();
+            player.sendSystemMessage(Component.literal("Consulte a obtenção de " + entry.name + " em " + route + ".")
+                    .withStyle(ChatFormatting.YELLOW));
             return 0;
         }
         var profile = IvalicePlayerData.get(player);
@@ -129,6 +137,25 @@ public final class IvaliceTzaCatalog {
         player.sendSystemMessage(Component.literal("Comprou " + entry.name + " por " + entry.price() + " Gil.")
                 .withStyle(ChatFormatting.GREEN));
         return 1;
+    }
+
+    public static IvalicePlayerData.BazaarPackage bazaarPackage(String itemId) {
+        for (var pack : IvalicePlayerData.BAZAAR_PACKAGES) {
+            if (pack.rewardItemId().equals(itemId)) return pack;
+        }
+        return null;
+    }
+
+    public static Order orderFor(Entry entry) {
+        int level = switch (entry.kind) {
+            case "loot", "ammo", "consumable" -> entry.rank <= 75 ? 5 : 18;
+            case "key", "map", "gambit", "technick" -> 12;
+            case "esper" -> 45;
+            default -> Math.min(65, Math.max(12, entry.rank * 2));
+        };
+        String material = level >= 45 ? "dark_magicite" : level >= 18 ? "wind_stone" : "wolf_pelt";
+        if (entry.id.equals(material)) material = "fire_stone";
+        return new Order(level, entry.price(), material, Math.min(6, 2 + level / 15));
     }
 
     public static Entry getEntry(String id) {

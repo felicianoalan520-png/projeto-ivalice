@@ -26,6 +26,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -65,7 +66,15 @@ public class IvaliceCommands {
                         .then(Commands.literal("buy")
                                 .then(Commands.argument("id", StringArgumentType.word())
                                         .executes(ctx -> IvaliceTzaCatalog.buy(ctx.getSource().getPlayerOrException(),
-                                                StringArgumentType.getString(ctx, "id"))))))
+                                                StringArgumentType.getString(ctx, "id")))))
+                        .then(Commands.literal("recipe")
+                                .then(Commands.argument("id", StringArgumentType.word())
+                                        .executes(ctx -> catalogOrder(ctx.getSource().getPlayerOrException(),
+                                                StringArgumentType.getString(ctx, "id"), false))))
+                        .then(Commands.literal("order")
+                                .then(Commands.argument("id", StringArgumentType.word())
+                                        .executes(ctx -> catalogOrder(ctx.getSource().getPlayerOrException(),
+                                                StringArgumentType.getString(ctx, "id"), true)))))
                 .then(Commands.literal("job")
                         .then(Commands.literal("choose")
                                 .then(Commands.argument("id", StringArgumentType.word())
@@ -301,6 +310,44 @@ public class IvaliceCommands {
         return 1;
     }
 
+
+    private static int catalogOrder(ServerPlayer player, String id, boolean placeOrder) {
+        var entry = IvaliceTzaCatalog.getEntry(id);
+        Item item = IvaliceItems.getItemById(id);
+        if (entry == null || item == null) {
+            player.sendSystemMessage(Component.literal("Item desconhecido. Use /ivalice catalog search <nome>."));
+            return 0;
+        }
+        if (entry.isSoldInRegionalShops()) {
+            player.sendSystemMessage(Component.literal(entry.name() + " custa " + entry.price()
+                    + " Gil. Use /ivalice catalog buy " + id + "."));
+            return 1;
+        }
+        var pack = IvaliceTzaCatalog.bazaarPackage(id);
+        if (pack != null) {
+            player.sendSystemMessage(Component.literal(pack.description() + " Use /ivalice bazaar buy " + pack.id() + "."));
+            return 1;
+        }
+
+        var order = IvaliceTzaCatalog.orderFor(entry);
+        Item ingredient = IvaliceItems.getItemById(order.ingredient());
+        var profile = IvalicePlayerData.get(player);
+        String requirements = entry.name() + " • Nível " + order.minimumLevel() + " • " + order.gil() + " Gil • "
+                + order.quantity() + "× " + new ItemStack(ingredient).getHoverName().getString();
+        if (!placeOrder || profile.getBattleLevel() < order.minimumLevel() || profile.gil < order.gil()
+                || player.getInventory().countItem(ingredient) < order.quantity()) {
+            player.sendSystemMessage(Component.literal(requirements + " • /ivalice catalog order " + id));
+            return placeOrder ? 0 : 1;
+        }
+
+        removeItemsFromInventory(player, ingredient, order.quantity());
+        profile.gil -= order.gil();
+        player.getInventory().placeItemBackInInventory(new ItemStack(item), Prediction.SERVER_ONLY);
+        IvalicePlayerData.save(player);
+        player.sendSystemMessage(Component.literal("Encomenda concluída • " + entry.name()).withStyle(ChatFormatting.GOLD));
+        return 1;
+    }
+
     private static int buyBazaarPackage(CommandSourceStack source, String packageId) {
         ServerPlayer player = source.getPlayer();
         if (player == null) return 0;
@@ -308,7 +355,6 @@ public class IvaliceCommands {
 
         for (IvalicePlayerData.BazaarPackage pack : IvalicePlayerData.BAZAAR_PACKAGES) {
             if (pack.id().equalsIgnoreCase(packageId)) {
-                // Verifica se o jogador possui os materiais no inventário OU Gil suficiente
                 boolean hasLoot = true;
                 for (Map.Entry<String, Integer> req : pack.requiredLoot().entrySet()) {
                     Item reqItem = IvaliceItems.getItemById(req.getKey());
@@ -316,6 +362,11 @@ public class IvaliceCommands {
                         hasLoot = false;
                         break;
                     }
+                }
+
+                if (!hasLoot && pack.requiresLoot()) {
+                    player.sendSystemMessage(Component.literal(pack.description()).withStyle(ChatFormatting.RED));
+                    return 0;
                 }
 
                 if (!hasLoot && profile.gil < pack.gilCost()) {
@@ -339,7 +390,7 @@ public class IvaliceCommands {
 
                 Item reward = IvaliceItems.getItemById(pack.rewardItemId());
                 if (reward != null) {
-                    player.getInventory().add(new ItemStack(reward, pack.rewardCount()));
+                    player.getInventory().placeItemBackInInventory(new ItemStack(reward, pack.rewardCount()), Prediction.SERVER_ONLY);
                 }
                 profile.bazaarPurchased.add(pack.id());
                 IvalicePlayerData.save(player);

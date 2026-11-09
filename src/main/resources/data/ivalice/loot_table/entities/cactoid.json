@@ -9,12 +9,10 @@
           "name": "ivalice:cactus_fruit"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.4
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.4
+      }
     },
     {
       "rolls": 1,
@@ -24,12 +22,10 @@
           "name": "ivalice:earth_stone"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.25
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.25
+      }
     },
     {
       "rolls": 1,
@@ -39,12 +35,10 @@
           "name": "ivalice:potion"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.05
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.05
+      }
     },
     {
       "rolls": 1,
@@ -54,12 +48,10 @@
           "name": "ivalice:tza_virgo_gem"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.01
-        }
-      ]
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.01
+      }
     }
   ]
 }

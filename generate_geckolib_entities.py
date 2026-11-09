@@ -43984,9 +43984,29 @@ def generate_texture(name, entity_def, packed_uvs):
 # 5. GEOMETRY & ANIMATION BUILDERS
 # ==============================================================================
 
+def separate_coplanar_cube(cube, earlier_boxes):
+    """Bias overlapping faces apart without changing the dimensions used by box UVs."""
+    origin, size = cube["origin"], cube["size"]
+    inflate = 0.0
+    while True:
+        lo = [coord - inflate for coord in origin]
+        hi = [coord + length + inflate for coord, length in zip(origin, size)]
+        overlaps = any(
+            all(max(lo[side], other_lo[side]) < min(hi[side], other_hi[side])
+                for side in range(3) if side != axis)
+            and (abs(lo[axis] - other_lo[axis]) < 1.0e-6 or abs(hi[axis] - other_hi[axis]) < 1.0e-6)
+            for other_lo, other_hi in earlier_boxes for axis in range(3)
+        )
+        if not overlaps:
+            earlier_boxes.append((lo, hi))
+            return inflate
+        inflate = round(inflate + 0.04, 2)
+
+
 def build_geometry_json(name, entity_def, packed_uvs):
     """Builds valid Bedrock/GeckoLib 1.12.0 geometry dict."""
     bones = []
+    earlier_boxes = []
     for b in entity_def["bones"]:
         bname = b["name"]
         bone_dict = {
@@ -44004,11 +44024,11 @@ def build_geometry_json(name, entity_def, packed_uvs):
             for idx, c in enumerate(raw_cubes):
                 ckey = f"{bname}_{idx}"
                 uv = list(packed_uvs[ckey])
-                cubes_arr.append({
-                    "origin": c["origin"],
-                    "size": c["size"],
-                    "uv": uv
-                })
+                cube = {"origin": c["origin"], "size": c["size"], "uv": uv}
+                inflate = separate_coplanar_cube(cube, earlier_boxes)
+                if inflate:
+                    cube["inflate"] = inflate
+                cubes_arr.append(cube)
             bone_dict["cubes"] = cubes_arr
 
         bones.append(bone_dict)

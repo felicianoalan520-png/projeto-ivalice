@@ -48,9 +48,9 @@ Todas as **42 criaturas** possuem modelos 3D `.geo.json`, texturas 64x64 e **6 a
 
 ---
 
-### 3. 📈 Progressão Linear do Nível 1 ao 99, 12 Profissões e Catálogo Completo (1.246 Itens)
+### 3. 📈 Progressão Linear do Nível 1 ao 99, 12 Profissões e Catálogo de The Zodiac Age
 - **Nível 1 ao Nível 99**: Cada nível ganho aumenta automaticamente a Vida Máxima, Ataque Físico, Defesa e MP do personagem, além de destravar a 2ª profissão no Nível 5 e os graus superiores de magia.
-- **1.246 Itens de The Zodiac Age (`tza_catalog.tsv`)**: Todas as 16 categorias de armas, armaduras leves/pesadas/místicas, escudos, acessórios, consumíveis e espólios escalonados por *Rank* (`WOOD` → `STONE` → `IRON`/`CHAINMAIL` → `DIAMOND` → `NETHERITE`), com sprites **32x32 HD** detalhados.
+- **1.246 registros de The Zodiac Age (`tza_catalog.tsv`)**: Todas as 16 categorias de armas, armaduras leves/pesadas/místicas, escudos, acessórios, consumíveis e espólios escalonados por *Rank* (`WOOD` → `STONE` → `IRON`/`CHAINMAIL` → `DIAMOND` → `NETHERITE`), com sprites de inventário. Dois itens compartilham o ID entre as listas de acessórios e itens-chave.
 - **Comércio Regional vs. Alquimia & Bazaar**:
   - Aldeões mercadores vendem apenas itens básicos/regionais e pergaminhos de magia **até o Tier 2**.
   - Armas lendárias (`Tournesol`, `Zodiac Spear`, `Wyrmhero Blade`, `Masamune`, `Excalibur`), armaduras supremas (`Grand Armor`, `Maximilian`) e magias **Tier 3 (`-ga`)** e **Tier 4** exigem espólios de monstros/chefes e síntese em **Alquimia & Bazaar**.
@@ -79,7 +79,9 @@ Para usar novas magias no combate por turnos (`Num 2`) ou em campo, o jogador de
 - Todos os blocos arquitetônicos, terrenos e plantas de Ivalice possuem texturas **32x32 HD** com mapas **LabPBR 1.3**:
   - `_n.png`: Normal Map de alto relevo (`5.5x`), Ambient Occlusion nas fendas (`Blue`) e Heightmap POM (`Alpha 18..255`).
   - `_s.png`: Smoothness (`Red`), Metalness/F0 (`Green`), Porosity (`Blue`) e Emissive (`Alpha`) para veios de ouro, runas de Feywood, Sunstone e magma.
-- O shaderpack **`shaderpacks/Ivalice-Realism-PBR.zip`** (compatível com **Iris Shaders** e **OptiFine**) implementa **Raymarched Parallax Occlusion Mapping (POM) de 12 passos com auto-sombreamento (`computePomShadow`)**, iluminação de borda para as 42 criaturas 3D, reflexos Fresnel em águas/vitrais e tone mapping solar dourado inspirado em Dalmasca.
+- O shaderpack **`shaderpacks/Ivalice-Realism-PBR.zip`** mantém a cobertura das texturas ao aplicar relevo, além de iluminação de borda, reflexos Fresnel e cores quentes. O relevo por paralaxe pode ser ativado nas opções do shaderpack e começa desligado.
+
+Para Minecraft 26.3 / NeoForge 26.3.0.101, a instalação local usa [Iris 1.11.7](https://modrinth.com/mod/iris) e [Sodium 0.9.3-beta.1](https://modrinth.com/mod/sodium/version/SS023RVV). O Sodium beta.3 muda o formato de dados do terreno que essa versão do Iris lê, causando a grade e as transparências indevidas.
 
 ---
 
@@ -98,13 +100,15 @@ Para usar novas magias no combate por turnos (`Num 2`) ou em campo, o jogador de
 - `/ivalice kit` — Entrega o kit inicial de aventureiro.
 - `/ivalice tp <bioma>` — Teleporta para qualquer uma das 15 regiões de Ivalice.
 - `/ivalice hunt spawn <id>` — Invoca o alvo da caçada (ex.: `rogue_tomato`, `belias`, `yiazmat`, `rubicante_nether`, `kefka_god_end`).
-- `/ivalice catalog search <termo>` — Pesquisa entre os 1.246 itens canônicos de The Zodiac Age.
+- `/ivalice catalog search <termo>` — Pesquisa o catálogo e mostra a forma de obtenção.
+- `/ivalice catalog recipe <id>` — Consulta o preço ou os materiais.
+- `/ivalice catalog order <id>` — Encomenda pelo Bazaar quando o item tem essa opção. A encomenda exige nível, Gil e espólios.
 
 ---
 
 ## 🛠️ Compilação e Execução
 
-Requisitos: **JDK 25** (baixado automaticamente pelo Gradle Foojay Toolchain se necessário).
+Requisitos de desenvolvimento: **JDK 25** (baixado automaticamente pelo Gradle Foojay Toolchain se necessário). O JAR gerado já inclui TerraBlender e GeckoLib.
 
 ```powershell
 # Compilar e gerar o pacote .jar em build/libs/ivalice-1.0.0-stage1.jar
