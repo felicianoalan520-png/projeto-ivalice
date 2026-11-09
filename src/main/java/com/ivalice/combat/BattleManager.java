@@ -112,7 +112,7 @@ public class BattleManager {
                 float dmg = calculateFieldDamage(player, monster, (float) (baseAtk + 4.0));
                 session.addLog(String.format("Turno %d: Você atacou %s causando %.1f de dano!", session.turnNumber, stats.displayName(), dmg));
                 addClientLog(String.format("Turno %d: Ataque físico causou %.1f de dano!", session.turnNumber, dmg));
-                monster.hurtServer(level, level.damageSources().playerAttack(player), dmg);
+                monster.hurtWithCalculatedDamage(level, level.damageSources().playerAttack(player), dmg);
                 level.playSound(null, player.blockPosition(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.PLAYERS, 1.0F, 1.0F);
             }
             case "fire" -> {
@@ -122,7 +122,7 @@ public class BattleManager {
                 session.addLog(String.format("Black Magick [Fire]: %.1f de dano de Fogo!%s", dmg, note));
                 addClientLog(String.format("Black Magick [Fire]: %.1f de dano!%s", dmg, note));
                 monster.setRemainingFireTicks(80);
-                monster.hurtServer(level, level.damageSources().magic(), dmg);
+                monster.hurtWithCalculatedDamage(level, level.damageSources().indirectMagic(player, player), dmg);
                 level.playSound(null, player.blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.9F, 1.1F);
             }
             case "blizzard" -> {
@@ -132,7 +132,7 @@ public class BattleManager {
                 session.addLog(String.format("Black Magick [Blizzard]: %.1f de dano de Gelo!%s", dmg, note));
                 addClientLog(String.format("Black Magick [Blizzard]: %.1f de dano!%s", dmg, note));
                 monster.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 1));
-                monster.hurtServer(level, level.damageSources().magic(), dmg);
+                monster.hurtWithCalculatedDamage(level, level.damageSources().indirectMagic(player, player), dmg);
                 level.playSound(null, player.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 0.9F, 1.3F);
             }
             case "thunder" -> {
@@ -141,7 +141,7 @@ public class BattleManager {
                 String note = mult > 1.0F ? " [FRAQUEZA ELEMENTAL 2x!]" : (mult < 1.0F ? " [Resistiu!]" : "");
                 session.addLog(String.format("Black Magick [Thunder]: %.1f de dano de Trovão!%s", dmg, note));
                 addClientLog(String.format("Black Magick [Thunder]: %.1f de dano!%s", dmg, note));
-                monster.hurtServer(level, level.damageSources().magic(), dmg);
+                monster.hurtWithCalculatedDamage(level, level.damageSources().indirectMagic(player, player), dmg);
                 level.playSound(null, player.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 0.7F, 1.4F);
             }
             case "water_magic" -> {
@@ -150,7 +150,7 @@ public class BattleManager {
                 String note = mult > 1.0F ? " [FRAQUEZA ELEMENTAL 2x!]" : (mult < 1.0F ? " [Resistiu!]" : "");
                 session.addLog(String.format("Green Magick [Aqua]: %.1f de dano de Água!%s", dmg, note));
                 addClientLog(String.format("Green Magick [Aqua]: %.1f de dano!%s", dmg, note));
-                monster.hurtServer(level, level.damageSources().magic(), dmg);
+                monster.hurtWithCalculatedDamage(level, level.damageSources().indirectMagic(player, player), dmg);
             }
             case "aero" -> {
                 float mult = getElementalMultiplier(stats, "Wind");
@@ -158,7 +158,7 @@ public class BattleManager {
                 String note = mult > 1.0F ? " [FRAQUEZA ELEMENTAL 2x!]" : (mult < 1.0F ? " [Resistiu!]" : "");
                 session.addLog(String.format("Time Magick [Aero]: %.1f de dano de Vento!%s", dmg, note));
                 addClientLog(String.format("Time Magick [Aero]: %.1f de dano!%s", dmg, note));
-                monster.hurtServer(level, level.damageSources().magic(), dmg);
+                monster.hurtWithCalculatedDamage(level, level.damageSources().indirectMagic(player, player), dmg);
             }
             case "cure" -> {
                 float heal = (float) (10.0 * magBonus);

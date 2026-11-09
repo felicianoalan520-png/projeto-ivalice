@@ -26,13 +26,13 @@ Projeto Ivalice — Recriação modular e fiel do universo de Final Fantasy XII:
 [[dependencies.${mod_id}]]
     modId="terrablender"
     type="required"
-    versionRange="[26.3.0.0.0,)"
+    versionRange="[26.3.0.0.9,)"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="geckolib"
-    type="optional"
-    versionRange="[5.5.0,)"
+    type="required"
+    versionRange="[5.5.7,)"
     ordering="AFTER"
     side="BOTH"

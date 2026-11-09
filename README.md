@@ -12,7 +12,7 @@ Recriação modular e progressiva do universo de **Final Fantasy XII: The Zodiac
   - NeoForge `26.3.0.101` (`ModDevGradle 2.0.148`)
   - Java `25` (provisionado automaticamente via Foojay Toolchain)
   - TerraBlender `26.3.0.0.9`
-  - GeckoLib `5.5.7` (preparado para a Etapa 3)
+  - GeckoLib `5.5.7`
   - Compatibilidade total com pipeline nativo de renderização e Iris Shaders.
 - **15 Biomas Canônicos de Ivalice Gerados no Overworld (`IvaliceBiomes` & `IvaliceOverworldRegion`)**:
   1. `ivalice:dalmasca_estersand` — *Dalmasca Estersand* (Desertos rochosos, ravinas áridas, Areia e Arenito de Dalmasca, Arbustos de Estersand)
@@ -35,11 +35,12 @@ Recriação modular e progressiva do universo de **Final Fantasy XII: The Zodiac
 - **Blocos Naturais e Flora (`IvaliceBlocks`)**:
   - `dalmasca_sand`, `dalmasca_sandstone`, `yensa_fine_sand`, `sunstone_ore`, `golmore_darkwood_log`, `golmore_moss_stone`, `feywood_mist_soil`, `paramina_permafrost`, `mosphoran_slate`, `nabreus_mire`, `estersand_scrub`, `gysahl_greens_wild`, `feywood_white_lily`.
 
-### Próximas Etapas Planejadas
-- **Etapa 2**: Catálogo estruturado de Itens e Equipamentos de FFXII (Consumíveis, Loot/Espólios, Armas, Armaduras, Acessórios, Magicks/Technicks).
-- **Etapa 3**: Infraestrutura de Monstros (modelos/animações GeckoLib, atributos, fraquezas elementais) + Sistema de Combate por Turnos.
-- **Etapa 4**: Bestiário (Enciclopédia de Ivalice) + Clã Centurio e Quadro de Caçadas (*Hunts*).
-- **Etapa 5**: Expansão (Espers, Bazaar, License Board, Estruturas e Masmorras).
+### Etapas 2 a 5 — Recursos disponíveis
+
+- **Etapa 2** — Itens, equipamentos, consumíveis, espólios, magias e técnicas.
+- **Etapa 3** — Criaturas com modelos e animações GeckoLib e combate por turnos.
+- **Etapa 4** — Bestiário, perfil do Clã Centurio, caçadas e recompensas.
+- **Etapa 5** — Belias e Mateus como alvos, Bazaar, licenças e Gambits. Estruturas e masmorras personalizadas seguem pendentes.
 
 ---
 
@@ -48,7 +49,7 @@ Recriação modular e progressiva do universo de **Final Fantasy XII: The Zodiac
 No diretório `c:\Users\Pichau\Downloads\Projeto_Game\ivalice`:
 
 ```powershell
-# Compilar e gerar o arquivo .jar em build/libs/ivalice-0.1.0-alpha.jar
+# Compilar e gerar o arquivo .jar em build/libs/ivalice-1.0.0-stage1.jar
 .\gradlew.bat build
 
 # Iniciar o Cliente do Minecraft 26.3 com o mod carregado
@@ -58,14 +59,12 @@ No diretório `c:\Users\Pichau\Downloads\Projeto_Game\ivalice`:
 .\gradlew.bat runServer
 ```
 
-Dentro do jogo, você pode localizar qualquer bioma de Final Fantasy XII usando:
-```mcfunction
-/locate biome ivalice:dalmasca_estersand
-/locate biome ivalice:giza_plains_dry
-/locate biome ivalice:golmore_jungle
-/locate biome ivalice:feywood
-/locate biome ivalice:paramina_rift
-/locate biome ivalice:phon_coast
-/locate biome ivalice:nabreus_deadlands
-/locate biome ivalice:ogir_yensa_sandsea
-```
+Para instalar o `.jar` fora do ambiente de desenvolvimento, coloque-o na pasta `mods` do cliente e do servidor junto com TerraBlender 26.3.0.0.9 e GeckoLib 5.5.7.
+
+Comandos de teste no jogo
+
+- `/ivalice kit` entrega o kit de aventureiro.
+- `/ivalice tp feywood` e `/ivalice tp ivalice:feywood` procuram a região num raio de 6.400 blocos na dimensão atual.
+- `/ivalice status` mostra Gil, LP, rank do clã, caçadas, licenças e Gambits.
+- `/ivalice bestiary` mostra os registros e a contagem de abates.
+- `/ivalice hunt spawn rogue_tomato` inicia a caçada ao Rogue Tomato. Também há alvos como `thextera`, `flowering_cactoid`, `white_mousse`, `belias` e `mateus`.

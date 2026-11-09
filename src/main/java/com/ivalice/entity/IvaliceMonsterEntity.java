@@ -50,6 +50,9 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         this.speciesId = speciesId;
         IvaliceMonsterStats stats = getStats();
         this.xpReward = stats.xpReward();
+        if (!"Neutral".equalsIgnoreCase(stats.behavior())) {
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        }
     }
 
     public String getSpeciesId() {
@@ -77,10 +80,6 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        // Criaturas Hostis e Bosses atacam à vista; Neutras (Cactoid, Giza Rabbit) só reagem quando provocadas!
-        if (!"Neutral".equalsIgnoreCase(getStats().behavior())) {
-            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        }
     }
 
     public static AttributeSupplier.Builder createAttributes(String speciesId) {
@@ -158,6 +157,10 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
             updateCustomNameplate();
             return hit;
         }
+        return hurtWithCalculatedDamage(level, source, amount);
+    }
+
+    public boolean hurtWithCalculatedDamage(ServerLevel level, DamageSource source, float amount) {
         boolean hit = super.hurtServer(level, source, amount);
         updateCustomNameplate();
         return hit;

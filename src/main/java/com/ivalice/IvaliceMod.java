@@ -146,7 +146,7 @@ public class IvaliceMod {
                 foundBiomes++;
                 BlockPos pos = result.getFirst();
                 ChunkAccess chunk = overworld.getChunk(pos);
-                int surfaceY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX() & 15, pos.getZ() & 15);
+                int surfaceY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX() & 15, pos.getZ() & 15);
                 BlockPos surfacePos = new BlockPos(pos.getX(), surfaceY, pos.getZ());
                 BlockState topState = chunk.getBlockState(surfacePos);
                 BlockState underState = chunk.getBlockState(surfacePos.below());

@@ -45,7 +45,7 @@ public class IvaliceCommands {
         dispatcher.register(Commands.literal("ivalice")
                 // 1. /ivalice tp <biome> — Localiza o bioma em qualquer seed e teleporta o jogador para a superfície segura!
                 .then(Commands.literal("tp")
-                        .then(Commands.argument("biome", StringArgumentType.word())
+                        .then(Commands.argument("biome", StringArgumentType.greedyString())
                                 .executes(ctx -> teleportToBiome(ctx.getSource(), StringArgumentType.getString(ctx, "biome")))))
 
                 // 2. /ivalice status — Mostra Gil, LP, Rank do Clã Centurio, Licenças e Bestiário
@@ -99,14 +99,19 @@ public class IvaliceCommands {
         ServerPlayer player = source.getPlayer();
         if (player == null) return 0;
 
-        String cleanName = rawBiomeName.contains(":") ? rawBiomeName.split(":")[1] : rawBiomeName;
-        Identifier biomeId = Identifier.fromNamespaceAndPath(IvaliceMod.MODID, cleanName);
-        ResourceKey<Biome> targetKey = ResourceKey.create(Registries.BIOME, biomeId);
+        String biomeName = rawBiomeName.strip();
+        Identifier biomeId = Identifier.tryParse(biomeName.contains(":")
+                ? biomeName : IvaliceMod.MODID + ":" + biomeName);
+        ServerLevel level = player.level();
+        if (biomeId == null || !level.registryAccess().lookupOrThrow(Registries.BIOME).containsKey(biomeId)) {
+            source.sendFailure(Component.literal("[Gate Crystal] Bioma desconhecido: " + biomeName));
+            return 0;
+        }
 
-        ServerLevel level = (ServerLevel) player.level();
+        ResourceKey<Biome> targetKey = ResourceKey.create(Registries.BIOME, biomeId);
         BlockPos origin = player.blockPosition();
 
-        player.sendSystemMessage(Component.literal("[Gate Crystal] Sintonizando Mist para localizar a região '" + cleanName + "'...")
+        player.sendSystemMessage(Component.literal("[Gate Crystal] Sintonizando Mist para localizar a região '" + biomeId + "'...")
                 .withStyle(ChatFormatting.AQUA));
 
         Pair<BlockPos, Holder<Biome>> found = level.findClosestBiome3d(
@@ -136,7 +141,7 @@ public class IvaliceCommands {
 
         player.sendSystemMessage(Component.literal(String.format(
                 "✦ [GATE CRYSTAL] Teleportado para %s em [X=%d, Y=%d, Z=%d]!",
-                cleanName.toUpperCase(), pos.getX(), surfaceY + 1, pos.getZ()
+                biomeId, pos.getX(), surfaceY + 1, pos.getZ()
         )).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
         return 1;
     }
