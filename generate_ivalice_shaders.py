@@ -39,7 +39,8 @@ GBUFFERS_TERRAIN_VSH = """#version 120
 
 /*
  * Ivalice Realism PBR - Terrain Vertex Shader
- * Computes View-space TBN matrix, light vectors, and lightmap coordinates.
+ * Computes view-space TBN, light vector and the atlas tile bounds (mc_midTexCoord)
+ * so Parallax Occlusion Mapping never samples neighbouring atlas sprites.
  */
 
 varying vec4 color;
@@ -49,8 +50,11 @@ varying vec3 normal;
 varying vec3 viewVector;
 varying vec3 lightVector;
 varying mat3 tbnMatrix;
+varying vec4 tileBounds;   // xy = tile origin in atlas, zw = tile size in atlas
+varying vec2 localCoord;   // 0..1 inside the sprite
 
 attribute vec4 at_tangent;
+attribute vec4 mc_midTexCoord;
 
 uniform vec3 sunPosition;
 
@@ -58,6 +62,12 @@ void main() {
     texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
     lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
     color = gl_Color;
+
+    vec2 midCoord = (gl_TextureMatrix[0] * vec4(mc_midTexCoord.xy, 0.0, 1.0)).xy;
+    vec2 halfSize = texcoord - midCoord;
+    tileBounds.zw = max(abs(halfSize) * 2.0, vec2(1.0e-6));
+    tileBounds.xy = min(texcoord, midCoord - halfSize);
+    localCoord = sign(halfSize) * 0.5 + 0.5;
 
     vec4 viewPos = gl_ModelViewMatrix * gl_Vertex;
     viewVector = -viewPos.xyz;
@@ -69,12 +79,12 @@ void main() {
     } else {
         t = normalize(abs(n.y) < 0.99 ? cross(n, vec3(0.0, 1.0, 0.0)) : cross(n, vec3(1.0, 0.0, 0.0)));
     }
-    vec3 b = cross(t, n) * (at_tangent.w != 0.0 ? at_tangent.w : 1.0);
+    vec3 b = cross(t, n) * (at_tangent.w < 0.0 ? -1.0 : 1.0);
     tbnMatrix = mat3(t, b, n);
     normal = n;
 
     lightVector = normalize(sunPosition);
-    if (length(lightVector) < 0.1) {
+    if (length(sunPosition) < 0.1) {
         lightVector = normalize(vec3(0.3, 0.8, 0.5));
     }
 
@@ -86,10 +96,9 @@ GBUFFERS_TERRAIN_FSH = """#version 120
 
 /*
  * Ivalice Realism PBR - Terrain Fragment Shader
- * Full LabPBR 1.3 specification:
- * - Normal map (_n.png): R=nx, G=ny, B=AO, A=height
- * - Specular map (_s.png): R=smoothness, G=F0/metalness, B=porosity, A=emissive
- * - Parallax Occlusion Mapping (POM)
+ * LabPBR 1.3: _n.png (R/G normal, B AO, A height) + _s.png (R smooth, G F0, A emissive)
+ * Parallax Occlusion Mapping is computed in sprite-local space and wrapped inside the
+ * atlas tile, so it can never leak into other sprites (fixes the "grid / see-through" bug).
  */
 
 uniform sampler2D texture;
@@ -104,133 +113,122 @@ varying vec3 normal;
 varying vec3 viewVector;
 varying vec3 lightVector;
 varying mat3 tbnMatrix;
+varying vec4 tileBounds;
+varying vec2 localCoord;
+
+#define POM_DEPTH 0.18
+#define POM_DISTANCE 24.0
 
 /* DRAWBUFFERS:0 */
 
-vec2 getParallaxCoord(vec2 uv, vec3 viewDirTS, out float outHeight) {
-    float depthScale = 0.095;
-    const int numSteps = 12;
-    float stepSize = 1.0 / float(numSteps);
-    vec2 deltaUV = -viewDirTS.xy * depthScale * stepSize / max(viewDirTS.z, 0.12);
-
-    vec2 currUV = uv;
-    vec2 prevUV = uv;
-    float currLayerDepth = 0.0;
-    float prevLayerDepth = 0.0;
-    float currHeight = 1.0 - texture2D(normals, currUV).a;
-    float prevHeight = currHeight;
-
-    for (int i = 0; i < numSteps; i++) {
-        if (currLayerDepth >= currHeight) {
-            float afterDepth = currHeight - currLayerDepth;
-            float beforeDepth = prevHeight - prevLayerDepth;
-            float weight = afterDepth / (afterDepth - beforeDepth + 0.0001);
-            vec2 finalUV = mix(currUV, prevUV, weight);
-            outHeight = 1.0 - mix(currLayerDepth, prevLayerDepth, weight);
-            return finalUV;
-        }
-        prevUV = currUV;
-        prevHeight = currHeight;
-        prevLayerDepth = currLayerDepth;
-
-        currUV += deltaUV;
-        currHeight = 1.0 - texture2D(normals, currUV).a;
-        currLayerDepth += stepSize;
-    }
-    outHeight = 1.0 - currLayerDepth;
-    return currUV;
+vec2 toAtlas(vec2 local) {
+    return tileBounds.xy + fract(local) * tileBounds.zw;
 }
 
-float computePomShadow(vec2 pcoord, vec3 lightDirTS, float pHeight) {
-    if (lightDirTS.z <= 0.0) return 0.25;
-    float depthScale = 0.095;
-    const int shadowSteps = 6;
-    float stepSize = 1.0 / float(shadowSteps);
-    vec2 deltaUV = lightDirTS.xy * depthScale * stepSize / max(lightDirTS.z, 0.15);
+float heightAt(vec2 local) {
+    return texture2D(normals, toAtlas(local)).a;
+}
 
-    float currentLayerDepth = 1.0 - pHeight;
-    vec2 currUV = pcoord;
+vec2 parallaxLocal(vec2 local, vec3 viewTS, out float outHeight) {
+    const int steps = 12;
+    float layer = 1.0 / float(steps);
+    vec2 delta = -viewTS.xy / max(viewTS.z, 0.25) * POM_DEPTH * layer;
+
+    float depth = 0.0;
+    float h = 1.0 - heightAt(local);
+    vec2 prevLocal = local;
+    float prevH = h;
+    for (int i = 0; i < steps; i++) {
+        if (depth >= h) break;
+        prevLocal = local;
+        prevH = h;
+        local += delta;
+        depth += layer;
+        h = 1.0 - heightAt(local);
+    }
+    float after = h - depth;
+    float before = prevH - (depth - layer);
+    float w = clamp(after / (after - before + 1.0e-4), 0.0, 1.0);
+    outHeight = 1.0 - (depth - w * layer);
+    return mix(local, prevLocal, w);
+}
+
+float pomShadow(vec2 local, vec3 lightTS, float h0) {
+    if (lightTS.z <= 0.0) return 0.55;
+    const int steps = 6;
+    vec2 delta = lightTS.xy / max(lightTS.z, 0.3) * POM_DEPTH / float(steps);
     float shadow = 1.0;
-
-    for (int i = 0; i < shadowSteps; i++) {
-        currUV += deltaUV;
-        currentLayerDepth -= stepSize;
-        if (currentLayerDepth <= 0.0) break;
-        float hSample = 1.0 - texture2D(normals, currUV).a;
-        if (hSample < currentLayerDepth - 0.03) {
-            shadow -= (1.0 - float(i) / float(shadowSteps)) * 0.45;
+    for (int i = 1; i <= steps; i++) {
+        float rayH = h0 + float(i) / float(steps) * (1.0 - h0);
+        if (heightAt(local + delta * float(i)) > rayH + 0.04) {
+            shadow = 0.6;
             break;
         }
     }
-    return clamp(shadow, 0.25, 1.0);
+    return shadow;
 }
 
 void main() {
     vec3 V = normalize(viewVector);
-    vec3 viewDirTS = normalize(V * tbnMatrix);
-    vec2 pcoord = texcoord;
+    vec3 viewTS = normalize(V * tbnMatrix);
+
+    vec2 local = localCoord;
     float pHeight = 1.0;
+    bool usePom = false;
 
-    vec4 nMapRaw = texture2D(normals, texcoord);
-    if (nMapRaw.a > 0.01 && nMapRaw.a < 0.99) {
-        pcoord = getParallaxCoord(texcoord, viewDirTS, pHeight);
-    } else {
-        pHeight = nMapRaw.a;
+    vec4 nRaw = texture2D(normals, texcoord);
+    float dist = length(viewVector);
+    if (dist < POM_DISTANCE && nRaw.a > 0.02 && nRaw.a < 0.98) {
+        local = parallaxLocal(localCoord, viewTS, pHeight);
+        usePom = true;
     }
 
-    vec4 albedo = texture2D(texture, pcoord) * color;
-    if (albedo.a < 0.1) {
-        discard;
-    }
+    // Only remap the atlas lookup when POM actually moved the coordinate;
+    // otherwise keep the hardware-filtered original texcoord (no seams, no mip issues).
+    vec2 uv = usePom ? toAtlas(local) : texcoord;
 
-    // Normal & AO from LabPBR _n.png
-    vec4 nSample = texture2D(normals, pcoord);
+    vec4 albedo = texture2D(texture, uv) * color;
+    if (albedo.a < 0.1) discard;
+
+    vec4 nSample = usePom ? texture2D(normals, uv) : nRaw;
     vec3 N = normal;
-    if (length(nSample.rgb) > 0.05) {
-        vec3 normalTS = nSample.xyz * 2.0 - 1.0;
-        normalTS.xy *= 2.2;
-        N = normalize(tbnMatrix * normalize(normalTS));
+    // Vanilla blocks without a _n.png get Iris' flat default; only apply real maps.
+    if (nSample.a > 0.0 && abs(nSample.r - 0.5) + abs(nSample.g - 0.5) > 0.004) {
+        vec3 nTS = vec3(nSample.rg * 2.0 - 1.0, 0.0);
+        nTS.xy *= 1.4;
+        nTS.z = sqrt(max(0.0, 1.0 - dot(nTS.xy, nTS.xy)));
+        N = normalize(tbnMatrix * normalize(nTS));
     }
-    float ao = clamp(nSample.b, 0.2, 1.0);
+    float ao = clamp(nSample.b, 0.35, 1.0);
 
-    // Light vectors & Parallax Self-Shadowing
     vec3 L = normalize(lightVector);
-    vec3 lightDirTS = normalize(L * tbnMatrix);
-    float pomShadow = computePomShadow(pcoord, lightDirTS, pHeight);
+    float shadow = usePom ? pomShadow(local, normalize(L * tbnMatrix), pHeight) : 1.0;
 
-    // Specular & Emission from LabPBR _s.png
-    vec4 sSample = texture2D(specular, pcoord);
+    vec4 sSample = texture2D(specular, uv);
     float smoothness = sSample.r;
-    float f0_metal = sSample.g;
-    float emissiveRaw = sSample.a;
+    float f0 = sSample.g;
+    float emissive = sSample.a < 0.999 ? sSample.a : 0.0;
 
-    vec3 H = normalize(L + V);
-    float NdotL = max(0.0, dot(N, L));
     vec4 lm = texture2D(lightmap, lmcoord);
-    vec3 ambient = lm.rgb * (0.60 + 0.40 * ao);
-
-    // Crisp microfacet Blinn-Phong specular highlight
-    float roughness = max(0.03, 1.0 - smoothness);
-    float specPower = 2.0 / (roughness * roughness + 0.0005);
-    float NdotH = max(0.0, dot(N, H));
-    float specHighlight = pow(NdotH, min(specPower, 512.0)) * smoothness;
+    float NdotL = max(0.0, dot(N, L));
+    vec3 H = normalize(L + V);
+    float roughness = max(0.05, 1.0 - smoothness);
+    float spec = pow(max(0.0, dot(N, H)), min(2.0 / (roughness * roughness), 256.0)) * smoothness * 0.6;
 
     vec3 specColor = vec3(1.0);
-    if (f0_metal > 0.88) { // Metallic (> 225 LabPBR)
-        specColor = mix(vec3(1.0), albedo.rgb, 0.90);
-        albedo.rgb *= 0.12 + 0.88 * (1.0 - smoothness);
+    if (f0 > 0.88) {
+        specColor = albedo.rgb;
+        albedo.rgb *= 0.35 + 0.65 * (1.0 - smoothness);
     }
 
-    vec3 directLight = vec3(1.20, 1.08, 0.95) * (NdotL * pomShadow * 0.80 + 0.20);
-    vec3 finalColor = albedo.rgb * (ambient * 0.65 + directLight * 0.70) + specHighlight * specColor * directLight * pomShadow;
+    // Keep vanilla brightness as baseline (lightmap), add directional relief on top.
+    float sky = lm.b > 0.0 ? 1.0 : 1.0;
+    float relief = mix(0.82, 1.12, NdotL) * shadow;
+    vec3 finalColor = albedo.rgb * lm.rgb * relief * mix(0.85, 1.0, ao);
+    finalColor += spec * specColor * lm.rgb * shadow;
+    if (emissive > 0.25) finalColor += albedo.rgb * emissive * 1.6;
 
-    // Glowing veins / runes / magma emission boost
-    if (emissiveRaw > 0.6) {
-        vec3 glowColor = albedo.rgb * (2.8 * emissiveRaw);
-        finalColor += glowColor;
-    }
-
-    gl_FragData[0] = vec4(finalColor, albedo.a);
+    gl_FragData[0] = vec4(finalColor * sky, albedo.a);
 }
 """
 
