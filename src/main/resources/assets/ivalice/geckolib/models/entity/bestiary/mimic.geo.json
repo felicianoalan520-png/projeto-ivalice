@@ -1,0 +1,164 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ivalice.bestiary_mimic",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            5,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -6.0,
+                3.0,
+                -4.0
+              ],
+              "size": [
+                12,
+                5,
+                8
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            9,
+            3
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -6.0,
+                8.0,
+                -4.0
+              ],
+              "size": [
+                12,
+                5,
+                8
+              ],
+              "uv": [
+                0,
+                13
+              ]
+            }
+          ]
+        },
+        {
+          "name": "fangs",
+          "pivot": [
+            0,
+            8,
+            -4
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -5.0,
+                7.0,
+                -5.0
+              ],
+              "size": [
+                10,
+                3,
+                1
+              ],
+              "uv": [
+                40,
+                22
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg_left",
+          "pivot": [
+            4,
+            5,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                4.0,
+                0.0,
+                -3.0
+              ],
+              "size": [
+                3,
+                5,
+                6
+              ],
+              "uv": [
+                40,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg_right",
+          "pivot": [
+            -4,
+            5,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -7.0,
+                0.0,
+                -3.0
+              ],
+              "size": [
+                3,
+                5,
+                6
+              ],
+              "uv": [
+                40,
+                11
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

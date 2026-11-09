@@ -23,6 +23,60 @@
               },
               "type": "ivalice:wolf",
               "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:banshee",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:crystalbug_red",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:emeralditan",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:leamonde_entite",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:leynir",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:shield_wyrm",
+              "weight": 4
             }
           ],
           "water_creature": [

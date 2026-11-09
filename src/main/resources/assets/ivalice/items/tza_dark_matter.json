@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/bottle",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": -543394
-      }
-    ]
+    "model": "ivalice:item/catalog/tza_dark_matter"
   }
 }

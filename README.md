@@ -6,7 +6,7 @@
 [![GeckoLib](https://img.shields.io/badge/GeckoLib_3D-5.5.7-a855f7?style=for-the-badge)](https://github.com/bernie-g/geckolib)
 [![Shaders](https://img.shields.io/badge/Iris_LabPBR_1.3-32x32_HD_POM-eab308?style=for-the-badge)](#shaders-pbr-e-texturas-32x32-hd)
 
-Recriação completa, modular e fiel do universo de **Final Fantasy XII: The Zodiac Age** no **Minecraft Java 26.3 (NeoForge)** — expandida com criaturas e chefes interdimensionais de **Final Fantasy IV, V, VI e XV**, sistema de combate por turnos com animações dinâmicas e destruição/transformação elemental de cenário, progressão do **Nível 1 ao 99**, **12 Profissões do Zodíaco**, **Alquimia & Bazaar**, texturas **32x32 HD com mapas LabPBR (`_n.png` / `_s.png`)** e o shaderpack incluso **`Ivalice-Realism-PBR.zip`**.
+Adaptação jogável do universo de **Final Fantasy XII: The Zodiac Age** no **Minecraft Java 26.3 (NeoForge)** — expandida com criaturas e chefes interdimensionais de **Final Fantasy IV, V, VI e XV**, sistema de combate por turnos com animações dinâmicas e destruição/transformação elemental de cenário, progressão do **Nível 1 ao 99**, **12 Profissões do Zodíaco**, **Alquimia & Bazaar**, texturas **32x32 HD com mapas LabPBR (`_n.png` / `_s.png`)** e o shaderpack incluso **`Ivalice-Realism-PBR.zip`**.
 
 ---
 
@@ -34,23 +34,19 @@ Inclui estruturas e blocos arquitetônicos para as grandes cidades (**Rabanastre
 
 ---
 
-### 2. 🐉 42 Criaturas, Líderes Alfa (`★ ALFA`), Marks, Espers e Chefes Interdimensionais (GeckoLib 3D)
-Todas as **42 criaturas** possuem modelos 3D `.geo.json`, texturas 64x64 e **6 animações dinâmicas** (`idle`, `walk`, `run`, `strike` com avanço físico real, `cast` e `flinch`):
+### 2. 🐉 Bestiário, Caçadas, Espers e Criaturas Interdimensionais
+- **453 criaturas** no mod. **439 formas de The Zodiac Age** cobrem os 384 grupos do índice numerado do Clan Primer. Formas próximas podem compartilhar uma silhueta, com texturas e estatísticas próprias.
+- A fauna se distribui pelos **15 biomas**. Monstros raros, chefes, Juízes e Espers podem ser enfrentados por contrato. Os inimigos de locais ainda sem geração própria são associados às regiões atuais de Ivalice.
+- O saque, o roubo, a captura com **Poach** e os bônus de sequência de abates usam as tabelas disponíveis. As variantes de **FFIV, FFV, FFVI e FFXV** continuam no Nether e no Fim.
+- Os modelos do GeckoLib têm animações de caminhada, ataque, conjuração e reação a dano. As texturas de criatura são de **256×256**, com materiais por família e detalhes pintados sobre as faces do modelo.
 
-- **Overworld (30 Criaturas de Final Fantasy XII)**:
-  - *Fauna Regional*: `wolf`, `cactoid`, `hyena`, `giza_rabbit`, `cockatrice`, `ichthon`, `wild_saurian`, `mandragora`, `malboro`, `yeti`, `bomb`, `white_wolf`, `chocobo`, `coeurl`, `behemoth`, `skeleton_crusader`.
-  - *Líderes de Bando Alfa (`★ ALFA`)*: `alpha_wolf`, `alpha_hyena`, `alpha_saurian` + sistema dinâmico em que 12% das criaturas de bando despertam como líderes `★ [ALFA]` (escala `1.32x`, `1.85x` HP, `1.45x` Ataque, aura flamejante e drops extras de pedras elementais).
-  - *Elite Marks, Juízes, Espers e Superboss*: `rogue_tomato`, `thextera`, `flowering_cactoid`, `white_mousse`, `firemane`, `belias`, `mateus`, `judge_gabranth`, `gilgamesh`, `zodiark` e o lendário **`yiazmat`** (Nv. 85).
-- **Dimensão do Nether (6 Criaturas de Final Fantasy IV & Final Fantasy XV)**:
-  - `mindflayer` (Nv. 36), `rubicante` (*Archfiend of Fire* • Nv. 46), `iron_giant` (Nv. 52), `golbez` (*Clad in Dark* • Nv. 62), `ifrit_pyreburner` (*Astral of Fire* • Nv. 78) e `adamantoise` (*Titan of Eos* • Nv. 92).
-- **Dimensão do Fim / The End (6 Criaturas de Final Fantasy V & Final Fantasy VI)**:
-  - `ultros` (*Octopus Royalty* • Nv. 48), `gil_turtle` (Nv. 56), `atb_weapon` (*Atma Weapon* • Nv. 86), `shinryu` (*Dragon of the Rift* • Nv. 90), `omega_mk` (*Ancient Warmachine* • Nv. 96) e **`kefka_god`** (*God of Magic* • **Nível 99 Máximo**).
+Referências do bestiário e dos contratos. [Índice do Clan Primer](https://jegged.com/Games/Final-Fantasy-XII/Clan-Primer/Bestiary/), [dados comunitários de IZJS](https://github.com/tzapp/tzapp.github.io/tree/4d17bc27651c50f2a0e0be44e0c6eb0e6a777791/src/database), [caçadas de The Zodiac Age](https://ffxii.us/hunts).
 
 ---
 
 ### 3. 📈 Progressão Linear do Nível 1 ao 99, 12 Profissões e Catálogo de The Zodiac Age
 - **Nível 1 ao Nível 99**: Cada nível ganho aumenta automaticamente a Vida Máxima, Ataque Físico, Defesa e MP do personagem, além de destravar a 2ª profissão no Nível 5 e os graus superiores de magia.
-- **1.246 registros de The Zodiac Age (`tza_catalog.tsv`)**: Todas as 16 categorias de armas, armaduras leves/pesadas/místicas, escudos, acessórios, consumíveis e espólios escalonados por *Rank* (`WOOD` → `STONE` → `IRON`/`CHAINMAIL` → `DIAMOND` → `NETHERITE`), com sprites de inventário. Dois itens compartilham o ID entre as listas de acessórios e itens-chave.
+- **1.246 registros de The Zodiac Age (`tza_catalog.tsv`)**: Todas as 16 categorias de armas, armaduras leves/pesadas/místicas, escudos, acessórios, consumíveis e espólios escalonados por *Rank* (`WOOD` → `STONE` → `IRON`/`CHAINMAIL` → `DIAMOND` → `NETHERITE`), com sprites de inventário. Dois itens compartilham o ID entre as listas de acessórios e itens-chave. Os ícones do catálogo usam imagens de 64×64, com ilustrações próprias para relíquias como Tournesol, Masamune e Zodiac Spear.
 - **Comércio Regional vs. Alquimia & Bazaar**:
   - Aldeões mercadores vendem apenas itens básicos/regionais e pergaminhos de magia **até o Tier 2**.
   - Armas lendárias (`Tournesol`, `Zodiac Spear`, `Wyrmhero Blade`, `Masamune`, `Excalibur`), armaduras supremas (`Grand Armor`, `Maximilian`) e magias **Tier 3 (`-ga`)** e **Tier 4** exigem espólios de monstros/chefes e síntese em **Alquimia & Bazaar**.
@@ -85,6 +81,8 @@ Para Minecraft 26.3 / NeoForge 26.3.0.101, a instalação local usa [Iris 1.11.7
 
 ---
 
+O menu de combate oferece alvo único e área para magias compatíveis, técnicas aprendidas, bolsa de consumíveis e até sete adversários. Escudos, acessórios e munições afetam a batalha. Depois de derrotar um Esper, sua relíquia permite invocá-lo como aliado temporário em campo.
+
 ## 🎮 Atalhos e Comandos
 
 | Tecla | Função |
@@ -92,14 +90,15 @@ Para Minecraft 26.3 / NeoForge 26.3.0.101, a instalação local usa [Iris 1.11.7
 | **`Num 1`** | Abre o Menu Principal (*Crônicas de Ivalice* + *Guia de Iniciante*) |
 | **`Num 2`** | Inicia o Combate por Turnos mirando em uma criatura (a tela oculta-se durante as animações!) |
 | **`Num 3`** | Quadro de Caçadas do Clã Centurio (*Mark Hunts* de Rank I a Rank S++) |
-| **`Num 4`** | Bestiário do Clã (*Clan Primer* — 42 espécies de FFXII, FFIV, FFV, FFVI e FFXV) |
+| **`Num 4`** | Bestiário do Clã (*Clan Primer* — 453 criaturas de FFXII, FFIV, FFV, FFVI e FFXV) |
 | **`Num 5`** | Personagem, 12 Profissões do Zodíaco, Licenças e Gambits |
 | **`Num 6`** | Inventário e Equipamentos |
 
 **Comandos úteis**:
 - `/ivalice kit` — Entrega o kit inicial de aventureiro.
 - `/ivalice tp <bioma>` — Teleporta para qualquer uma das 15 regiões de Ivalice.
-- `/ivalice hunt spawn <id>` — Invoca o alvo da caçada (ex.: `rogue_tomato`, `belias`, `yiazmat`, `rubicante_nether`, `kefka_god_end`).
+- `/ivalice hunt spawn <id>` — Inicia a caçada ou o contrato regional (ex.: `rogue_tomato`, `belias`, `yiazmat`, `rubicante_nether`, `kefka_god_end`).
+- `/ivalice gambit set <condição> <ação>` — Associa uma ação a um Gambit aprendido. Use `/ivalice gambit list` para consultar os IDs.
 - `/ivalice catalog search <termo>` — Pesquisa o catálogo e mostra a forma de obtenção.
 - `/ivalice catalog recipe <id>` — Consulta o preço ou os materiais.
 - `/ivalice catalog order <id>` — Encomenda pelo Bazaar quando o item tem essa opção. A encomenda exige nível, Gil e espólios.
@@ -120,3 +119,5 @@ Requisitos de desenvolvimento: **JDK 25** (baixado automaticamente pelo Gradle F
 # Executar o Servidor Dedicado
 .\gradlew.bat runServer
 ```
+
+Para regenerar a arte, instale Pillow no Python. As folhas-fonte ficam em `art/` e os PNGs de jogo são incluídos no JAR.

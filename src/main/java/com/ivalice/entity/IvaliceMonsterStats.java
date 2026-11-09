@@ -1,6 +1,8 @@
 package com.ivalice.entity;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Catálogo canônico de atributos, famílias, fraquezas elementais, habitats e espólios (Loot)
@@ -29,7 +31,7 @@ public record IvaliceMonsterStats(
         String bestiaryLore1,
         String bestiaryLore2
 ) {
-    public static final List<IvaliceMonsterStats> ALL_MONSTERS = List.of(
+    private static final List<IvaliceMonsterStats> LEGACY = List.of(
             // 1. Wolf (Dalmasca Estersand / Westersand / Giza Plains)
             new IvaliceMonsterStats(
                     "wolf",
@@ -944,12 +946,19 @@ public record IvaliceMonsterStats(
             )
     );
 
+    private static final Map<String, IvaliceMonsterStats> BY_ID = buildIndex();
+    public static final List<IvaliceMonsterStats> ALL_MONSTERS = List.copyOf(BY_ID.values());
+
+    private static Map<String, IvaliceMonsterStats> buildIndex() {
+        var index = new LinkedHashMap<String, IvaliceMonsterStats>();
+        LEGACY.forEach(stats -> index.put(stats.id, stats));
+        IvaliceBestiary.entries().forEach((id, entry) -> {
+            if (!entry.original()) index.put(id, entry.stats());
+        });
+        return index;
+    }
+
     public static IvaliceMonsterStats byId(String id) {
-        for (IvaliceMonsterStats stats : ALL_MONSTERS) {
-            if (stats.id().equalsIgnoreCase(id)) {
-                return stats;
-            }
-        }
-        return ALL_MONSTERS.getFirst();
+        return BY_ID.getOrDefault(id, LEGACY.getFirst());
     }
 }

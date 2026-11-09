@@ -14,7 +14,11 @@ import net.minecraft.world.phys.Vec3;
 
 public final class IvaliceIchthonEntity extends IvaliceMonsterEntity {
     public IvaliceIchthonEntity(EntityType<? extends IvaliceMonsterEntity> type, Level level) {
-        super(type, level, "ichthon");
+        this(type, level, "ichthon");
+    }
+
+    public IvaliceIchthonEntity(EntityType<? extends IvaliceMonsterEntity> type, Level level, String species) {
+        super(type, level, species);
         moveControl = new SmoothSwimmingMoveControl<>(this, 60, 15, 1.0F, 0.1F, false);
     }
 

@@ -1,0 +1,166 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ivalice.bestiary_snake",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            3,
+            3
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                0.0,
+                -3.0
+              ],
+              "size": [
+                6,
+                5,
+                10
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "neck",
+          "pivot": [
+            0,
+            4,
+            -3
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -2.0,
+                3.0,
+                -6.0
+              ],
+              "size": [
+                4,
+                10,
+                4
+              ],
+              "uv": [
+                32,
+                11
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            12,
+            -4
+          ],
+          "parent": "neck",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                11.0,
+                -9.0
+              ],
+              "size": [
+                6,
+                5,
+                6
+              ],
+              "uv": [
+                32,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "horns",
+          "pivot": [
+            0,
+            13,
+            -4
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                10.0,
+                -3.0
+              ],
+              "size": [
+                8,
+                6,
+                1
+              ],
+              "uv": [
+                0,
+                25
+              ],
+              "inflate": 0.04
+            }
+          ]
+        },
+        {
+          "name": "tail",
+          "pivot": [
+            0,
+            2,
+            6
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -2.0,
+                0.0,
+                6.0
+              ],
+              "size": [
+                4,
+                3,
+                7
+              ],
+              "uv": [
+                0,
+                15
+              ],
+              "inflate": 0.04
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

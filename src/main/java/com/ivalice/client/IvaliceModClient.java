@@ -4,6 +4,7 @@ import com.geckolib.model.DefaultedEntityGeoModel;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.ivalice.IvaliceMod;
 import com.ivalice.client.gui.BattleScreen;
+import com.ivalice.entity.IvaliceBestiary;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import com.ivalice.registry.IvaliceEntities;
 import com.ivalice.network.IvaliceStatePayload;
@@ -135,6 +136,13 @@ public class IvaliceModClient {
         registerGeoMonster(event, IvaliceEntities.SHINRYU.get(), "shinryu");
         registerGeoMonster(event, IvaliceEntities.OMEGA_MK.get(), "omega_mk");
         registerGeoMonster(event, IvaliceEntities.KEFKA_GOD.get(), "kefka_god");
+        IvaliceEntities.bestiaryTypes().forEach((id, holder) -> {
+            var entry = IvaliceBestiary.find(id);
+            Identifier model = Identifier.fromNamespaceAndPath(IvaliceMod.MODID, "bestiary/" + entry.model());
+            Identifier texture = Identifier.fromNamespaceAndPath(IvaliceMod.MODID, "bestiary/" + id);
+            event.registerEntityRenderer(holder.get(), ctx ->
+                    new GeoEntityRenderer<>(ctx, new DefaultedEntityGeoModel<IvaliceMonsterEntity>(model).withAltTexture(texture)));
+        });
 
         IvaliceMod.LOGGER.info("[Projeto Ivalice] Renderizadores 3D GeckoLib 5.5.7 registrados para criaturas, Marks e Espers de Ivalice.");
     }

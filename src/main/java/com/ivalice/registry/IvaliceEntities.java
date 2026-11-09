@@ -1,6 +1,8 @@
 package com.ivalice.registry;
 
 import com.ivalice.IvaliceMod;
+import com.ivalice.entity.IvaliceBestiary;
+import com.ivalice.entity.IvaliceFlyingEntity;
 import com.ivalice.entity.IvaliceIchthonEntity;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import net.minecraft.core.BlockPos;
@@ -20,6 +22,11 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Registro central de criaturas, Elite Marks e Espers de Final Fantasy XII (Etapa 3 e Etapa 5).
@@ -201,6 +208,29 @@ public class IvaliceEntities {
             ENTITIES.registerEntityType("kefka_god", (type, level) -> new IvaliceMonsterEntity(type, level, "kefka_god"),
                     MobCategory.MONSTER, b -> b.sized(2.25F, 3.45F).eyeHeight(2.90F).fireImmune());
 
+    private static final Map<String, DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>>> BESTIARY = registerBestiary();
+
+    private static Map<String, DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>>> registerBestiary() {
+        var entries = new LinkedHashMap<String, DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>>>();
+        IvaliceBestiary.entries().values().stream().filter(entry -> !entry.original()).forEach(entry -> {
+            MobCategory category = entry.aquatic() ? MobCategory.WATER_CREATURE
+                    : entry.neutral() ? MobCategory.CREATURE : MobCategory.MONSTER;
+            var entity = ENTITIES.<IvaliceMonsterEntity>registerEntityType(entry.id(),
+                    (type, level) -> {
+                        if (entry.aquatic()) return new IvaliceIchthonEntity(type, level, entry.id());
+                        if (entry.flying()) return new IvaliceFlyingEntity(type, level, entry.id());
+                        return new IvaliceMonsterEntity(type, level, entry.id());
+                    },
+                    category, builder -> builder.sized(entry.width(), entry.height()).eyeHeight(entry.height() * 0.8F));
+            entries.put(entry.id(), entity);
+        });
+        return Collections.unmodifiableMap(entries);
+    }
+
+    public static Map<String, DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>>> bestiaryTypes() {
+        return BESTIARY;
+    }
+
     public static void register(IEventBus modEventBus) {
         ENTITIES.register(modEventBus);
         modEventBus.addListener(IvaliceEntities::registerAttributes);
@@ -255,6 +285,7 @@ public class IvaliceEntities {
         event.put(SHINRYU.get(), IvaliceMonsterEntity.createAttributes("shinryu").build());
         event.put(OMEGA_MK.get(), IvaliceMonsterEntity.createAttributes("omega_mk").build());
         event.put(KEFKA_GOD.get(), IvaliceMonsterEntity.createAttributes("kefka_god").build());
+        BESTIARY.forEach((id, holder) -> event.put(holder.get(), IvaliceMonsterEntity.createAttributes(id).build()));
     }
 
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
@@ -304,6 +335,16 @@ public class IvaliceEntities {
         registerGroundSpawn(event, SHINRYU.get());
         registerGroundSpawn(event, OMEGA_MK.get());
         registerGroundSpawn(event, KEFKA_GOD.get());
+        BESTIARY.forEach((id, holder) -> {
+            if (IvaliceBestiary.find(id).aquatic()) {
+                event.register(holder.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                        (type, level, reason, pos, random) -> level.getFluidState(pos).is(FluidTags.WATER)
+                                && level.getFluidState(pos.below()).is(FluidTags.WATER),
+                        RegisterSpawnPlacementsEvent.Operation.REPLACE);
+            } else {
+                registerGroundSpawn(event, holder.get());
+            }
+        });
     }
 
     private static void registerGroundSpawn(RegisterSpawnPlacementsEvent event, EntityType<IvaliceMonsterEntity> entityType) {
@@ -351,7 +392,10 @@ public class IvaliceEntities {
     }
 
     public static EntityType<IvaliceMonsterEntity> getById(String id) {
-        return switch (id.toLowerCase()) {
+        String normalized = id.toLowerCase(Locale.ROOT);
+        var entry = BESTIARY.get(normalized);
+        if (entry != null) return entry.get();
+        return switch (normalized) {
             case "cactoid" -> CACTOID.get();
             case "hyena" -> HYENA.get();
             case "giza_rabbit" -> GIZA_RABBIT.get();

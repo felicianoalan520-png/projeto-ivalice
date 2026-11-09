@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/staff",
+    "model": "ivalice:item/catalog/wand",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -2756224
+        "value": -1049905
       }
     ]
   }

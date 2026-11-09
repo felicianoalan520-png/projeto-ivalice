@@ -14,6 +14,15 @@
               },
               "type": "ivalice:giza_rabbit",
               "weight": 18
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:ozmone_hare",
+              "weight": 6
             }
           ],
           "monster": [
@@ -43,6 +52,69 @@
               },
               "type": "ivalice:cockatrice",
               "weight": 12
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:hybrid_gator",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:mesmenir",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:sylphi_entite",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:viper",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:wu",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:zaghnal",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:zu",
+              "weight": 6
             }
           ],
           "water_creature": [],

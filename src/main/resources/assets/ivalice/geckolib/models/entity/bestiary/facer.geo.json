@@ -1,0 +1,138 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ivalice.bestiary_facer",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            10,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -5.0,
+                4.0,
+                -3.0
+              ],
+              "size": [
+                10,
+                14,
+                6
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            12,
+            -4
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                8.0,
+                -6.0
+              ],
+              "size": [
+                8,
+                9,
+                4
+              ],
+              "uv": [
+                32,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "horns",
+          "pivot": [
+            0,
+            15,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -7.0,
+                12.0,
+                -1.0
+              ],
+              "size": [
+                14,
+                4,
+                2
+              ],
+              "uv": [
+                32,
+                13
+              ]
+            }
+          ]
+        },
+        {
+          "name": "jaw",
+          "pivot": [
+            0,
+            7,
+            -3
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                4.0,
+                -5.0
+              ],
+              "size": [
+                6,
+                5,
+                3
+              ],
+              "uv": [
+                32,
+                19
+              ],
+              "inflate": 0.04
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

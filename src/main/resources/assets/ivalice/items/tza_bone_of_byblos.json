@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/axe",
+    "model": "ivalice:item/catalog/mace",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -6241026
+        "value": -2364929
       }
     ]
   }

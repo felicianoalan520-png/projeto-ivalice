@@ -21,6 +21,15 @@
               },
               "type": "ivalice:giza_rabbit",
               "weight": 18
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:wyrdhare",
+              "weight": 6
             }
           ],
           "monster": [
@@ -50,6 +59,42 @@
               },
               "type": "ivalice:cockatrice",
               "weight": 12
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:antares",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:malboro_king",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:pumpkin_head",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:sprinter",
+              "weight": 6
             }
           ],
           "water_creature": [],

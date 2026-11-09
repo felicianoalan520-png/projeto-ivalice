@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/bow",
+    "model": "ivalice:item/catalog/crossbow",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -10553388
+        "value": -3998482
       }
     ]
   }

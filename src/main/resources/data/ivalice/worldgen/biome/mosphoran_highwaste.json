@@ -5,7 +5,17 @@
         "spawn_costs": {},
         "spawns_by_category": {
           "ambient": [],
-          "creature": [],
+          "creature": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:slaven_wilder",
+              "weight": 6
+            }
+          ],
           "monster": [
             {
               "count": {
@@ -24,6 +34,60 @@
               },
               "type": "ivalice:cockatrice",
               "weight": 12
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:ash_wyrm",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:clay_golem",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:fire_elemental",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:humbaba",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:python",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:vulture",
+              "weight": 6
             }
           ],
           "water_creature": [],

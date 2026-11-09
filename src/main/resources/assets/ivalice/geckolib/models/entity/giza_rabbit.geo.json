@@ -101,6 +101,11 @@
             -5
           ],
           "parent": "head",
+          "rotation": [
+            13,
+            0,
+            -8
+          ],
           "cubes": [
             {
               "origin": [
@@ -128,6 +133,11 @@
             -5
           ],
           "parent": "head",
+          "rotation": [
+            13,
+            0,
+            8
+          ],
           "cubes": [
             {
               "origin": [

@@ -16,6 +16,141 @@
               },
               "type": "ivalice:wolf",
               "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:alraune_king",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:basilisk",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:cerberus",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:deadly_nightshade",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:giruveganus",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:golem",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:holy_elemental",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:mandragora_prince",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:mirrorknight",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:mu",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:onion_queen",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:preying_mantis",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:pumpkin_star",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:tartarus",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:topstalk",
+              "weight": 4
             }
           ],
           "creature": [],

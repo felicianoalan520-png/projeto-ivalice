@@ -3,6 +3,7 @@ package com.ivalice.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ivalice.IvaliceMod;
+import com.ivalice.entity.IvaliceBestiary;
 import com.ivalice.entity.IvaliceMonsterStats;
 import com.ivalice.job.ZodiacJob;
 import com.ivalice.network.IvaliceStatePayload;
@@ -40,14 +41,30 @@ public class IvalicePlayerData {
     public static class PlayerProfile {
         public int gil = 500;
         public int lp = 30;
+        public int rustCharge;
+        public long adjustedExperience;
         public String activeHuntId = "";
         public Set<String> jobs = new LinkedHashSet<>();
         public Set<String> encounteredMonsters = new LinkedHashSet<>();
         public Map<String, Integer> bestiaryKills = new LinkedHashMap<>();
+        private transient String lastChainFamily;
+        private transient long lastChainKill;
+        private transient int chainKills;
+
+        public int recordDropChain(String family, long gameTime) {
+            if (!family.equals(lastChainFamily) || gameTime < lastChainKill || gameTime - lastChainKill > 2400) {
+                chainKills = 0;
+            }
+            lastChainFamily = family;
+            lastChainKill = gameTime;
+            return Math.min(3, (chainKills++) / 5);
+        }
         public Set<String> completedHunts = new LinkedHashSet<>();
         public Set<String> unlockedLicenses = new LinkedHashSet<>();
         public Set<String> learnedSpells = new LinkedHashSet<>();
         public List<String> activeGambits = new ArrayList<>();
+        public Set<String> learnedGambits = new LinkedHashSet<>();
+        public List<String> gambitRules = new ArrayList<>();
         public Map<String, Integer> bazaarLootSold = new LinkedHashMap<>();
         public Set<String> bazaarPurchased = new LinkedHashSet<>();
 
@@ -79,9 +96,10 @@ public class IvalicePlayerData {
         }
 
         public int getBattleLevel() {
-            long xp = 0;
-            for (IvaliceMonsterStats monster : IvaliceMonsterStats.ALL_MONSTERS) {
-                xp += (long) getKills(monster.id()) * monster.xpReward();
+            long xp = adjustedExperience;
+            for (var entry : bestiaryKills.entrySet()) {
+                var monster = IvaliceMonsterStats.byId(entry.getKey());
+                if (monster.id().equals(entry.getKey())) xp += (long) entry.getValue() * monster.xpReward();
             }
             int level = 1;
             while (level < 99 && xp >= 100L * level * (level + 1) / 2) {
@@ -239,7 +257,7 @@ public class IvalicePlayerData {
             String description
     ) {}
 
-    public static final List<MarkHuntEntry> MARK_HUNTS = List.of(
+    private static final List<MarkHuntEntry> LEGACY_HUNTS = List.of(
             new MarkHuntEntry(
                     "rogue_tomato",
                     "Rogue Tomato (Tomate Perdido)",
@@ -483,6 +501,21 @@ public class IvalicePlayerData {
                     "O desafio máximo de Nível 99 na Dimensão do Fim: Kefka em sua forma divina alada!"
             )
     );
+
+    public static final List<MarkHuntEntry> MARK_HUNTS = buildHunts();
+
+    private static List<MarkHuntEntry> buildHunts() {
+        var hunts = new ArrayList<>(LEGACY_HUNTS);
+        for (var entry : IvaliceBestiary.entries().values()) {
+            if (!entry.isHunt() || entry.original()) continue;
+            var stats = IvaliceMonsterStats.byId(entry.id());
+            hunts.add(new MarkHuntEntry(entry.id(), entry.name(), entry.kind(), entry.id(), entry.regions().getFirst(),
+                    "Clã Centurio", Math.max(50, entry.gil() / 3), stats.lpReward(), "",
+                    "Habitat original: " + entry.displayHabitat() + ". Região do contrato: "
+                            + entry.regions().getFirst().replace('_', ' ') + " • Nível " + entry.minimumLevel() + "+."));
+        }
+        return List.copyOf(hunts);
+    }
 
     // Catálogo de Pacotes de Alquimia & Bazaar de Rabanastre
     public record BazaarPackage(

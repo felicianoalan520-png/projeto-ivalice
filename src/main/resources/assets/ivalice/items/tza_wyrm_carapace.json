@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/crystal",
+    "model": "ivalice:item/catalog/shell",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -6226264
+        "value": -2359330
       }
     ]
   }

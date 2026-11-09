@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/crystal",
+    "model": "ivalice:item/catalog/horn",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -9574146
+        "value": -3606785
       }
     ]
   }

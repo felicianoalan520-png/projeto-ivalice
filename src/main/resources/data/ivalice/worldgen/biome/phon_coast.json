@@ -14,6 +14,15 @@
               },
               "type": "ivalice:giza_rabbit",
               "weight": 18
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:iguion",
+              "weight": 4
             }
           ],
           "water_creature": [
@@ -25,6 +34,15 @@
               },
               "type": "ivalice:ichthon",
               "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:piranha",
+              "weight": 4
             }
           ],
           "water_ambient": [],
@@ -37,6 +55,60 @@
               },
               "type": "ivalice:hyena",
               "weight": 10
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:air_elemental",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:archaeosaur",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:bagoly",
+              "weight": 4
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:pyrolisk",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:silver_lobo",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 1
+              },
+              "type": "ivalice:white_chocobo",
+              "weight": 4
             }
           ],
           "underground_water_creature": [],

@@ -1,0 +1,164 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ivalice.bestiary_elemental",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            12,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                8.0,
+                -4.0
+              ],
+              "size": [
+                8,
+                8,
+                8
+              ],
+              "uv": [
+                0,
+                14
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            12,
+            -2
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                9.0,
+                -5.0
+              ],
+              "size": [
+                6,
+                6,
+                2
+              ],
+              "uv": [
+                32,
+                14
+              ]
+            }
+          ]
+        },
+        {
+          "name": "halo",
+          "pivot": [
+            0,
+            12,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -6.0,
+                11.0,
+                -6.0
+              ],
+              "size": [
+                12,
+                2,
+                12
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "crest",
+          "pivot": [
+            0,
+            17,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -2.0,
+                16.0,
+                -2.0
+              ],
+              "size": [
+                4,
+                5,
+                4
+              ],
+              "uv": [
+                48,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "tail",
+          "pivot": [
+            0,
+            8,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -2.0,
+                3.0,
+                -2.0
+              ],
+              "size": [
+                4,
+                5,
+                4
+              ],
+              "uv": [
+                48,
+                9
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

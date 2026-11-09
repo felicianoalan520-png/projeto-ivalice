@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/crystal",
+    "model": "ivalice:item/catalog/feather",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -553028
+        "value": -207386
       }
     ]
   }

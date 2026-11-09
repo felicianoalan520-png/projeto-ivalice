@@ -1,10 +1,12 @@
 package com.ivalice.combat;
 
 import com.ivalice.data.IvalicePlayerData;
+import com.ivalice.entity.IvaliceBestiary;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import com.ivalice.entity.IvaliceMonsterStats;
 import com.ivalice.item.IvaliceCatalogItem;
 import com.ivalice.item.IvaliceItemCategory;
+import com.ivalice.item.IvaliceUseItem;
 import com.ivalice.job.ZodiacJob;
 import com.ivalice.job.ZodiacJobs;
 import com.ivalice.network.IvaliceStatePayload;
@@ -12,6 +14,7 @@ import com.ivalice.registry.IvaliceItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
@@ -19,6 +22,7 @@ import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Prediction;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -68,6 +72,8 @@ public final class BattleManager {
             this.enemies = enemies;
             var profile = IvalicePlayerData.get(player);
             int baseMp = 90 + profile.getBattleLevel() * 4;
+            if (IvaliceEquipment.has(player, "tza_leather_gorget")) baseMp += 30;
+            if (IvaliceEquipment.has(player, "dawn_shard")) baseMp = 0;
             if (profile.unlockedLicenses.contains("MAGICK_LORE_1")) baseMp += 50;
             if (profile.unlockedLicenses.contains("MAGICK_LORE_2")) baseMp += 60;
             if (profile.unlockedLicenses.contains("ARCANE_SUPREMACY")) baseMp += 100;
@@ -124,7 +130,89 @@ public final class BattleManager {
         COLLAPSE(66, "Dark", 114, 4, 88, "Collapse", IvaliceItemCategory.MAGICK_TIME_ARCANE),
         SCATHE(68, "Holy", 125, 4, 95, "Scathe", IvaliceItemCategory.MAGICK_BLACK),
 
+        BLINDNA(5, null, 0, 1, 2, "Blindna", IvaliceItemCategory.MAGICK_WHITE),
+        VOX(5, null, 0, 1, 2, "Vox", IvaliceItemCategory.MAGICK_WHITE),
+        POISONA(5, null, 0, 1, 3, "Poisona", IvaliceItemCategory.MAGICK_WHITE),
+        RAISE(18, null, 0, 2, 13, "Raise", IvaliceItemCategory.MAGICK_WHITE),
+        STONA(8, null, 0, 1, 9, "Stona", IvaliceItemCategory.MAGICK_WHITE),
+        REGEN(12, null, 0, 1, 9, "Regen", IvaliceItemCategory.MAGICK_WHITE),
+        CLEANSE(10, null, 0, 1, 10, "Cleanse", IvaliceItemCategory.MAGICK_WHITE),
+        ESUNA(16, null, 0, 2, 15, "Esuna", IvaliceItemCategory.MAGICK_WHITE),
+        CURAJA(34, null, 0, 3, 44, "Curaja", IvaliceItemCategory.MAGICK_WHITE),
+        DISPEL(12, null, 0, 2, 18, "Dispel", IvaliceItemCategory.MAGICK_WHITE),
+        DISPELGA(24, null, 0, 3, 35, "Dispelga", IvaliceItemCategory.MAGICK_WHITE),
+        RENEW(40, null, 0, 4, 54, "Renew", IvaliceItemCategory.MAGICK_WHITE),
+        ARISE(36, null, 0, 4, 46, "Arise", IvaliceItemCategory.MAGICK_WHITE),
+        ESUNAGA(26, null, 0, 3, 34, "Esunaga", IvaliceItemCategory.MAGICK_WHITE),
+        BIO(20, null, 0, 2, 20, "Bio", IvaliceItemCategory.MAGICK_BLACK),
+        SHOCK(32, null, 0, 3, 40, "Shock", IvaliceItemCategory.MAGICK_BLACK),
+        SCOURGE(31, null, 0, 3, 42, "Scourge", IvaliceItemCategory.MAGICK_BLACK),
+        BLIND(7, null, 0, 1, 3, "Blind", IvaliceItemCategory.MAGICK_BLACK),
+        OIL(8, null, 0, 1, 6, "Oil", IvaliceItemCategory.MAGICK_BLACK),
+        POISON(8, null, 0, 1, 5, "Poison", IvaliceItemCategory.MAGICK_BLACK),
+        SILENCE(8, null, 0, 1, 5, "Silence", IvaliceItemCategory.MAGICK_BLACK),
+        SLEEP(9, null, 0, 1, 8, "Sleep", IvaliceItemCategory.MAGICK_BLACK),
+        BLINDGA(16, null, 0, 2, 22, "Blindga", IvaliceItemCategory.MAGICK_BLACK),
+        TOXIFY(20, null, 0, 2, 26, "Toxify", IvaliceItemCategory.MAGICK_BLACK),
+        SILENCEGA(18, null, 0, 2, 23, "Silencega", IvaliceItemCategory.MAGICK_BLACK),
+        SLEEPGA(18, null, 0, 2, 25, "Sleepga", IvaliceItemCategory.MAGICK_BLACK),
+        HASTE(11, null, 0, 1, 10, "Haste", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        FLOAT(9, null, 0, 1, 7, "Float", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        SLOW(8, null, 0, 1, 4, "Slow", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        IMMOBILIZE(9, null, 0, 1, 6, "Immobilize", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        DISABLE(10, null, 0, 1, 8, "Disable", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        BLEED(12, null, 0, 2, 12, "Bleed", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        BREAK(15, null, 0, 2, 15, "Break", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        STOP(18, null, 0, 2, 20, "Stop", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        SLOWGA(20, null, 0, 2, 25, "Slowga", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        COUNTDOWN(20, null, 0, 3, 30, "Countdown", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        REFLECT(14, null, 0, 2, 16, "Reflect", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        REFLECTGA(28, null, 0, 3, 32, "Reflectga", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        BALANCE(14, null, 0, 2, 12, "Balance", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        WARP(22, null, 0, 3, 29, "Warp", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        PROTECT(9, null, 0, 1, 6, "Protect", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        SHELL(9, null, 0, 1, 6, "Shell", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        BRAVERY(15, null, 0, 2, 14, "Bravery", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        FAITH(15, null, 0, 2, 14, "Faith", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        PROTECTGA(23, null, 0, 2, 26, "Protectga", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        SHELLGA(23, null, 0, 2, 26, "Shellga", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        REVERSE(25, null, 0, 3, 28, "Reverse", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        BERSERK(10, null, 0, 1, 8, "Berserk", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        DEATH(25, null, 0, 3, 34, "Death", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        CONFUSE(12, null, 0, 2, 13, "Confuse", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        DECOY(9, null, 0, 1, 7, "Decoy", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        VANISH(10, null, 0, 1, 9, "Vanish", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        VANISHGA(22, null, 0, 2, 25, "Vanishga", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        DRAIN(14, null, 0, 2, 12, "Drain", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        SYPHON(4, null, 0, 2, 14, "Syphon", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        BUBBLE(20, null, 0, 2, 18, "Bubble", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        GRAVITY(13, null, 0, 1, 10, "Gravity", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        GRAVIGA(26, null, 0, 2, 26, "Graviga", IvaliceItemCategory.MAGICK_TIME_ARCANE),
+        FIRST_AID(0, null, 0, 1, 1, "First Aid", IvaliceItemCategory.TECHNICK),
+        SHADES_OF_BLACK(0, null, 0, 1, 4, "Shades of Black", IvaliceItemCategory.TECHNICK),
+        HOROLOGY(0, null, 0, 1, 5, "Horology", IvaliceItemCategory.TECHNICK),
+        STAMP(0, null, 0, 1, 5, "Stamp", IvaliceItemCategory.TECHNICK),
+        ACHILLES(0, null, 0, 1, 6, "Achilles", IvaliceItemCategory.TECHNICK),
+        CHARGE(0, null, 0, 1, 6, "Charge", IvaliceItemCategory.TECHNICK),
+        INFUSE(0, null, 0, 1, 7, "Infuse", IvaliceItemCategory.TECHNICK),
+        SOULEATER(0, null, 0, 1, 7, "Souleater", IvaliceItemCategory.TECHNICK),
+        WITHER(0, null, 0, 1, 8, "Wither", IvaliceItemCategory.TECHNICK),
+        ADDLE(0, null, 0, 1, 8, "Addle", IvaliceItemCategory.TECHNICK),
+        BONECRUSHER(0, null, 0, 1, 9, "Bonecrusher", IvaliceItemCategory.TECHNICK),
+        TELEKINESIS(0, null, 0, 1, 9, "Telekinesis", IvaliceItemCategory.TECHNICK),
+        EXPOSE(0, null, 0, 1, 10, "Expose", IvaliceItemCategory.TECHNICK),
+        SHEAR(0, null, 0, 1, 10, "Shear", IvaliceItemCategory.TECHNICK),
+        CHARM(0, null, 0, 1, 11, "Charm", IvaliceItemCategory.TECHNICK),
+        REVIVE(0, null, 0, 1, 11, "Revive", IvaliceItemCategory.TECHNICK),
+        SIGHT_UNSEEING(0, null, 0, 2, 12, "Sight Unseeing", IvaliceItemCategory.TECHNICK),
+        NUMEROLOGY(0, null, 0, 2, 12, "Numerology", IvaliceItemCategory.TECHNICK),
+        POACH(0, null, 0, 2, 13, "Poach", IvaliceItemCategory.TECHNICK),
+        NEEDLES(0, null, 0, 2, 13, "1000 Needles", IvaliceItemCategory.TECHNICK),
+        TRAVELER(0, null, 0, 2, 14, "Traveler", IvaliceItemCategory.TECHNICK),
+        GIL_TOSS(0, null, 0, 2, 14, "Gil Toss", IvaliceItemCategory.TECHNICK),
+
         POTION(0, null, 0, 1, 1, "Hi-Potion", null),
+        ITEM_USE(0, null, 0, 1, 1, "Item", null),
         LIBRA(0, null, 0, 1, 1, "Libra", null),
         STEAL(0, null, 0, 1, 2, "Steal", null),
         GAMBIT(0, null, 0, 1, 1, "Gambit", null),
@@ -156,7 +244,16 @@ public final class BattleManager {
             return tier >= 3 && element != null;
         }
 
-        static Action fromId(String id) {
+        public boolean targetsSelf() {
+            return this == CURE || this == CURA || this == CURAGA || this == HASTEGA || this == POTION
+                    || IvaliceActionEffects.targetsSelf(this);
+        }
+
+        public boolean offersArea() {
+            return element != null || IvaliceActionEffects.isArea(this);
+        }
+
+        public static Action fromId(String id) {
             try {
                 return valueOf(id.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException ignored) {
@@ -166,6 +263,7 @@ public final class BattleManager {
     }
 
     public static boolean engage(ServerPlayer player, IvaliceMonsterEntity target) {
+        if (target.isSummoned()) return false;
         Session current = BATTLES.get(player.getUUID());
         if (current != null) {
             if (current.roundInProgress != null) sendAnimation(current, "Rodada em andamento");
@@ -181,7 +279,7 @@ public final class BattleManager {
         List<IvaliceMonsterEntity> enemies = new ArrayList<>();
         enemies.add(target);
         player.level().getEntitiesOfClass(IvaliceMonsterEntity.class, player.getBoundingBox().inflate(ENCOUNTER_RADIUS),
-                mob -> mob != target && mob.isAlive() && !isEngaged(mob)
+                mob -> mob != target && mob.isAlive() && !mob.isSummoned() && !isEngaged(mob)
                         && player.distanceToSqr(mob) <= ENCOUNTER_RADIUS * ENCOUNTER_RADIUS
                         && player.hasLineOfSight(mob)
                         && (!"Neutral".equalsIgnoreCase(mob.getStats().behavior()) || mob.getTarget() == player))
@@ -257,6 +355,7 @@ public final class BattleManager {
     }
 
     public static void onDamage(LivingIncomingDamageEvent event) {
+        if (event.getSource().is(DamageTypes.GENERIC_KILL)) return;
         if (event.getEntity() instanceof IvaliceMonsterEntity mob) {
             Session session = ENEMIES.get(mob.getUUID());
             if (session != null && (!session.resolving || event.getSource().getEntity() != session.player)) {
@@ -279,7 +378,8 @@ public final class BattleManager {
         }
         boolean area = actionId.endsWith("_area");
         String baseId = area ? actionId.substring(0, actionId.length() - "_area".length()) : actionId;
-        Action action = Action.fromId(baseId);
+        String itemId = baseId.startsWith("item_") ? baseId.substring(5) : null;
+        Action action = itemId == null ? Action.fromId(baseId) : Action.ITEM_USE;
         if (action == Action.FLEE && !area) {
             finish(session, "Você recuou.");
             return;
@@ -302,7 +402,7 @@ public final class BattleManager {
         if (action != null && action.isInnateArea()) {
             area = true;
         }
-        if (action == null || target == null || (area && action.element == null)) {
+        if (action == null || target == null || (area && !action.offersArea())) {
             sendState(session, "Escolha um alvo válido.");
             return;
         }
@@ -312,15 +412,32 @@ public final class BattleManager {
                 sendState(session, "Ative os Gambits no menu Personagem.");
                 return;
             }
-            action = chooseGambit(session, target);
+            var choice = IvaliceGambits.choose(player, session.enemies, target, session.mp, session.maxMp);
+            if (choice == null) {
+                action = chooseGambit(session, target);
+            } else {
+                action = choice.action();
+                target = choice.target();
+            }
             if (action.isInnateArea()) area = true;
+        }
+        if (IvaliceStatuses.unableToAct(player) || (action.mp > 0 && player.hasEffect(IvaliceStatuses.SILENCE))) {
+            sendState(session, "O estado do personagem impede esta ação.");
+            if (IvaliceStatuses.unableToAct(player)) planRound(session, null, target, false, 0);
+            return;
         }
         if (!canUse(player, action)) {
             sendState(session, "Você precisa da profissão correta e ter aprendido este pergaminho.");
             return;
         }
         int cost = action.mp + (area && !action.isInnateArea() ? AREA_MP_SURCHARGE : 0);
-        if (session.mp < cost) {
+        if (IvaliceEquipment.has(player, "tza_sage_s_ring")) cost = (cost + 1) / 2;
+        boolean useGil = cost > 0 && IvaliceEquipment.has(player, "tza_turtleshell_choker");
+        if (useGil && profile.gil < cost) {
+            sendState(session, "Gil insuficiente para conjurar com o Turtleshell Choker.");
+            return;
+        }
+        if (!useGil && session.mp < cost) {
             sendState(session, "MP insuficiente.");
             return;
         }
@@ -329,37 +446,70 @@ public final class BattleManager {
             return;
         }
 
+        if (action == Action.ITEM_USE) {
+            Item item = itemId == null ? null : IvaliceItems.getItemById(itemId);
+            if (!(item instanceof IvaliceUseItem consumable) || player.getInventory().countItem(item) < 1
+                    || !IvaliceConsumables.applicable(consumable.effect(), battleItemTargets(session, target, consumable.effect()))) {
+                sendState(session, "Item indisponível ou alvo incompatível.");
+                return;
+            }
+            session.revision = nextRevision++;
+            planRound(session, action, target, false, 0, consumable);
+            return;
+        }
         session.revision = nextRevision++;
-        planRound(session, action, target, area, cost);
+        planRound(session, action, target, area, useGil ? -cost : cost);
     }
 
     private static void planRound(Session session, Action action, IvaliceMonsterEntity target, boolean area, int cost) {
+        planRound(session, action, target, area, cost, null);
+    }
+
+    private static void planRound(Session session, Action action, IvaliceMonsterEntity target, boolean area, int cost,
+                                  IvaliceUseItem consumable) {
         Round round = new Round();
         session.roundInProgress = round;
         List<IvaliceMonsterEntity> order = session.enemies.stream()
                 .sorted(Comparator.comparingDouble(BattleManager::speed).reversed()).toList();
         double playerSpeed = session.player.getAttributeValue(Attributes.MOVEMENT_SPEED) * 3.0;
-        boolean doubleAttack = action == Action.ATTACK && playerSpeed >= speed(order.getFirst()) * 1.35;
+        boolean doubleAttack = action == Action.ATTACK
+                && (playerSpeed >= speed(order.getFirst()) * 1.35
+                || (IvaliceEquipment.has(session.player, "genji_gloves") && session.player.getRandom().nextFloat() < .45F));
         boolean queued = false;
         for (IvaliceMonsterEntity enemy : order) {
             if (!queued && playerSpeed >= speed(enemy)) {
-                addPlayerBeats(session, round, action, target, area, cost, doubleAttack);
+                if (action != null) addPlayerBeats(session, round, action, target, area, cost, doubleAttack, consumable);
                 queued = true;
             }
-            BattleVisual.Style style = enemyStyle(enemy);
+            BattleVisual.Style style = enemy.hasEffect(IvaliceStatuses.SILENCE) ? BattleVisual.Style.SLASH : enemyStyle(enemy, session.round);
             round.beats.add(new Beat(enemy, List.of(session.player), style, shortName(enemy) + " • " + enemyMove(enemy, style),
                     () -> applyCounter(session, enemy, style)));
         }
-        if (!queued) addPlayerBeats(session, round, action, target, area, cost, false);
+        if (!queued && action != null) addPlayerBeats(session, round, action, target, area, cost, false, consumable);
         sendAnimation(session, "Rodada " + session.round);
     }
 
     private static void addPlayerBeats(Session session, Round round, Action action, IvaliceMonsterEntity target,
-                                       boolean area, int cost, boolean doubleAttack) {
-        List<? extends LivingEntity> targets = switch (action) {
-            case CURE, CURA, CURAGA, HASTEGA, POTION -> List.of(session.player);
-            default -> area ? List.copyOf(session.enemies) : List.of(target);
-        };
+                                       boolean area, int cost, boolean doubleAttack, IvaliceUseItem consumable) {
+        if (consumable != null) {
+            var effect = consumable.effect();
+            var targets = battleItemTargets(session, target, effect);
+            round.beats.add(new Beat(session.player, targets, effect.style(), consumable.getCanonicalRef(), () -> {
+                var inventory = session.player.getInventory();
+                if (!IvaliceConsumables.applicable(effect, battleItemTargets(session, target, effect))) return;
+                for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+                    ItemStack stack = inventory.getItem(slot);
+                    if (!stack.is(consumable)) continue;
+                    if (!session.player.getAbilities().instabuild) stack.shrink(1);
+                    String result = IvaliceConsumables.apply(session.player, effect, battleItemTargets(session, target, effect));
+                    round.result = consumable.getCanonicalRef() + (result.isEmpty() ? "" : " • " + result);
+                    return;
+                }
+            }));
+            return;
+        }
+        List<? extends LivingEntity> targets = action.targetsSelf() ? List.of(session.player)
+                : area ? List.copyOf(session.enemies) : List.of(target);
         round.beats.add(new Beat(session.player, targets, style(action), actionLabel(action) + (area && !action.isInnateArea() ? " em área" : ""),
                 () -> {
                     round.result = act(session, action, target, area, cost);
@@ -375,6 +525,50 @@ public final class BattleManager {
                         }
                     }
                 }));
+    }
+
+    private static List<? extends LivingEntity> battleItemTargets(Session session, IvaliceMonsterEntity target,
+                                                                  IvaliceConsumables.Use effect) {
+        if (!effect.needsEnemy(session.player)) return supportTargets(session.player, effect);
+        return effect.area() ? session.enemies.stream().filter(LivingEntity::isAlive).toList()
+                : target.isAlive() ? List.of(target) : List.of();
+    }
+
+    private static List<ServerPlayer> supportTargets(ServerPlayer player, IvaliceConsumables.Use effect) {
+        boolean party = switch (effect) {
+            case MEGALIXIR, HASTEGA_MOTE, REFLECTGA_MOTE, VANISHGA_MOTE, FLOAT_MOTE, CURA_MOTE -> true;
+            default -> false;
+        };
+        return party ? player.level().getEntitiesOfClass(ServerPlayer.class, player.getBoundingBox().inflate(10),
+                ally -> ally.isAlive() && (ally == player || player.isAlliedTo(ally))) : List.of(player);
+    }
+
+    public static boolean useFieldItem(ServerPlayer player, ItemStack stack, IvaliceConsumables.Use effect) {
+        if (isInBattle(player) || effect == IvaliceConsumables.Use.ETHER || effect == IvaliceConsumables.Use.HI_ETHER) {
+            player.sendOverlayMessage(Component.literal("Use este item no menu da batalha."));
+            return false;
+        }
+        var target = effect.needsEnemy(player) ? aimedEnemy(player) : null;
+        List<? extends LivingEntity> targets;
+        if (!effect.needsEnemy(player)) {
+            targets = supportTargets(player, effect);
+        } else if (target == null) {
+            targets = List.of();
+        } else if (effect.area()) {
+            targets = player.level().getEntitiesOfClass(IvaliceMonsterEntity.class, target.getBoundingBox().inflate(4),
+                            mob -> mob.isAlive() && !isEngaged(mob) && player.hasLineOfSight(mob)).stream()
+                    .sorted(Comparator.comparingDouble(player::distanceToSqr)).limit(MAX_ENEMIES).toList();
+        } else {
+            targets = List.of(target);
+        }
+        if (!IvaliceConsumables.applicable(effect, targets)) {
+            player.sendOverlayMessage(Component.literal("Mire em um alvo que aceite este item."));
+            return false;
+        }
+        BattleVisual.begin(player.level(), player, effect.style());
+        IvaliceConsumables.apply(player, effect, targets);
+        player.sendOverlayMessage(stack.getHoverName());
+        return true;
     }
 
     private static void advanceRound(Session session) {
@@ -424,14 +618,47 @@ public final class BattleManager {
 
     private static void applyCounter(Session session, IvaliceMonsterEntity enemy, BattleVisual.Style style) {
         ServerPlayer player = session.player;
-        if (!player.isAlive() || ENEMIES.get(enemy.getUUID()) != session) return;
+        if (!player.isAlive() || ENEMIES.get(enemy.getUUID()) != session || IvaliceStatuses.unableToAct(enemy)) return;
+        if (enemy.hasEffect(IvaliceStatuses.CONFUSE) && enemy.getRandom().nextBoolean()) {
+            enemy.hurtWithCalculatedDamage(player.level(), player.level().damageSources().mobAttack(enemy),
+                    (float) enemy.getAttributeValue(Attributes.ATTACK_DAMAGE) * .4F);
+            return;
+        }
+        if (enemy.hasEffect(IvaliceStatuses.SILENCE)) style = BattleVisual.Style.SLASH;
+        if ((style == BattleVisual.Style.SLASH || style == BattleVisual.Style.CLEAVE)
+                && enemy.hasEffect(MobEffects.BLINDNESS) && enemy.getRandom().nextFloat() < .55F) return;
         player.damageCooldownTime = 0;
         ServerLevel level = player.level();
         var damage = (style == BattleVisual.Style.SLASH || style == BattleVisual.Style.CLEAVE)
                 ? level.damageSources().mobAttack(enemy)
                 : level.damageSources().indirectMagic(enemy, enemy);
         float mult = enemy.isAlphaLeader() ? 0.58F : 0.45F;
-        player.hurtServer(level, damage, (float) Math.max(1.5, enemy.getStats().attackDamage() * mult));
+        float amount = (float) Math.max(1.5, enemy.getAttributeValue(Attributes.ATTACK_DAMAGE) * mult);
+        if (IvaliceEquipment.has(player, "tza_jade_collar") && player.getRandom().nextFloat() < .20F) return;
+        if (IvaliceEquipment.has(player, "tza_diamond_armlet") && (style == BattleVisual.Style.THUNDER
+                || style == BattleVisual.Style.THUNDARA || style == BattleVisual.Style.THUNDAGA)) return;
+        if ((IvaliceEquipment.has(player, "tza_tourmaline_ring") || IvaliceEquipment.has(player, "tza_cat_ear_hood"))
+                && (style == BattleVisual.Style.ICE || style == BattleVisual.Style.BLIZZARA || style == BattleVisual.Style.BLIZZAGA)) amount *= .5F;
+        if ((IvaliceEquipment.has(player, "tza_agate_ring") || IvaliceEquipment.has(player, "tza_cat_ear_hood"))
+                && (style == BattleVisual.Style.WIND || style == BattleVisual.Style.AERORA || style == BattleVisual.Style.AEROGA)) amount *= .5F;
+        if (IvaliceEquipment.has(player, "tza_sash") && (style == BattleVisual.Style.FIRE
+                || style == BattleVisual.Style.FIRA || style == BattleVisual.Style.FIRAGA)) amount *= .5F;
+        if (IvaliceEquipment.has(player, "tza_sage_s_ring") && style == BattleVisual.Style.HOLY) {
+            player.heal(amount);
+            return;
+        }
+        if (damage.getDirectEntity() == enemy && player.hasEffect(IvaliceStatuses.REFLECT)
+                && style != BattleVisual.Style.SLASH && style != BattleVisual.Style.CLEAVE) {
+            strike(player, enemy, amount, true);
+        } else if (player.hasEffect(IvaliceStatuses.REVERSE)) {
+            player.heal(amount);
+        } else {
+            if (player.hasEffect(IvaliceStatuses.SHELL) && style != BattleVisual.Style.SLASH && style != BattleVisual.Style.CLEAVE) amount *= .65F;
+            player.hurtServer(level, damage, amount);
+        }
+        if (player.isAlive() && IvaliceEquipment.has(player, "tza_battle_harness") && player.getRandom().nextFloat() < .25F) {
+            strike(player, enemy, (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE), false);
+        }
         session.roundInProgress.counters++;
     }
 
@@ -454,7 +681,7 @@ public final class BattleManager {
         return annotation < 0 ? name : name.substring(0, annotation);
     }
 
-    private static BattleVisual.Style enemyStyle(IvaliceMonsterEntity enemy) {
+    private static BattleVisual.Style enemyStyle(IvaliceMonsterEntity enemy, int round) {
         return switch (enemy.getSpeciesId()) {
             case "white_mousse", "ultros", "shinryu" -> BattleVisual.Style.WATERGA;
             case "ichthon" -> BattleVisual.Style.WATER;
@@ -471,7 +698,11 @@ public final class BattleManager {
             case "atb_weapon", "kefka_god" -> BattleVisual.Style.SCATHE;
             case "yiazmat" -> BattleVisual.Style.AEROGA;
             case "judge_gabranth", "gilgamesh", "iron_giant", "adamantoise", "gil_turtle", "alpha_wolf", "alpha_hyena" -> BattleVisual.Style.CLEAVE;
-            default -> BattleVisual.Style.SLASH;
+            default -> {
+                var entry = IvaliceBestiary.find(enemy.getSpeciesId());
+                yield entry == null || entry.move().isEmpty() || (entry.kind().equals("Normal") && round % 3 == 0)
+                        ? BattleVisual.Style.SLASH : BattleVisual.Style.valueOf(entry.move());
+            }
         };
     }
 
@@ -505,7 +736,14 @@ public final class BattleManager {
             case "shinryu" -> "Tidal Wave (FFV)";
             case "omega_mk" -> "Wave Cannon (FFV)";
             case "kefka_god" -> "Forsaken Ultima (FFVI)";
-            default -> enemy.isAlphaLeader() ? "Investida Alfa" : "Ataque";
+            default -> switch (style) {
+                case SLASH, CLEAVE -> enemy.isAlphaLeader() ? "Investida Alfa" : "Ataque";
+                case ICE -> "Blizzard";
+                case WIND -> "Aero";
+                case WATER -> "Aqua";
+                case WATERGA -> "Aquaga";
+                default -> style.name().charAt(0) + style.name().substring(1).toLowerCase(Locale.ROOT);
+            };
         };
     }
 
@@ -539,7 +777,7 @@ public final class BattleManager {
             case CURAGA -> BattleVisual.Style.CURAGA;
             case HASTEGA -> BattleVisual.Style.HASTE;
             case POTION -> BattleVisual.Style.ITEM;
-            default -> BattleVisual.Style.TECHNIQUE;
+            default -> IvaliceActionEffects.style(action);
         };
     }
 
@@ -558,20 +796,36 @@ public final class BattleManager {
         ServerPlayer player = session.player;
         var profile = IvalicePlayerData.get(player);
         int level = profile.getBattleLevel();
-        session.mp -= cost;
+        if (cost < 0) {
+            profile.gil += cost;
+            IvalicePlayerData.save(player);
+        } else session.mp -= cost;
+        if (IvaliceActionEffects.hasEffect(action)) {
+            if (area && !action.targetsSelf()) {
+                for (var enemy : List.copyOf(session.enemies)) IvaliceActionEffects.apply(player, enemy, action);
+                return action.label + " em área";
+            }
+            return IvaliceActionEffects.apply(player, target, action);
+        }
         switch (action) {
             case ATTACK -> {
                 float base = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) + 3.0F + (level - 1) * 0.65F;
+                if (IvaliceEquipment.ranged(player.getMainHandItem())) {
+                    return IvaliceEquipment.fire(player, target, base, player.getMainHandItem()) ? "Disparo" : "Faltou munição.";
+                }
+                if (IvaliceEquipment.has(player, "tza_steel_gorget") && player.getHealth() < player.getMaxHealth() * .25F) base *= 2;
+                if (IvaliceEquipment.has(player, "tza_blazer_gloves") && player.getHealth() >= player.getMaxHealth()) base *= 1.25F;
+                if (IvaliceEquipment.has(player, "tza_amber_armlet") && player.getMainHandItem().isEmpty()) base += 6;
                 strike(player, target, calculateFieldDamage(player, target, base), false);
                 return "Ataque";
             }
-            case CURE -> player.heal(8.0F + (level - 1) * 0.35F);
+            case CURE -> IvaliceActionEffects.heal(player, player, 8.0F + (level - 1) * 0.35F);
             case CURA -> {
-                player.heal(18.0F + (level - 1) * 0.55F);
+                IvaliceActionEffects.heal(player, player, 18.0F + (level - 1) * 0.55F);
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 160, 0));
             }
             case CURAGA -> {
-                player.heal(36.0F + (level - 1) * 0.85F);
+                IvaliceActionEffects.heal(player, player, 36.0F + (level - 1) * 0.85F);
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 240, 1));
                 player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 400, 1));
             }
@@ -604,9 +858,13 @@ public final class BattleManager {
                         for (IvaliceMonsterEntity nearby : player.level().getEntitiesOfClass(IvaliceMonsterEntity.class,
                                 target.getBoundingBox().inflate(splashRadius),
                                 mob -> mob.isAlive() && !session.enemies.contains(mob))) {
-                            float base = action.damage + (level - 1) * 0.45F;
-                            float dmg = base * bonus * 0.75F * getElementalMultiplier(nearby.getStats(), action.element);
-                            nearby.hurtWithCalculatedDamage(player.level(), player.level().damageSources().indirectMagic(player, player), dmg);
+                            if (!isEngaged(nearby)) {
+                                float dmg = (action.damage + (level - 1) * 0.45F) * bonus * 0.75F
+                                        * getElementalMultiplier(nearby.getStats(), action.element);
+                                if (dmg < 0) nearby.heal(-dmg);
+                                if (dmg > 0) nearby.hurtWithCalculatedDamage(player.level(),
+                                        player.level().damageSources().indirectMagic(player, player), dmg);
+                            }
                         }
                     }
                     return spellName(action) + (action.isInnateArea() ? " [Cataclismo em Área]" : " em área");
@@ -635,9 +893,10 @@ public final class BattleManager {
             // Se o jogador tiver o pergaminho correspondente no inventário, aprende automaticamente!
             for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
                 ItemStack stack = player.getInventory().getItem(slot);
-                if (stack.getItem() instanceof com.ivalice.item.IvaliceSpellItem spellItem
+                if ((stack.getItem() instanceof com.ivalice.item.IvaliceSpellItem spellItem
                         && spellItem.getAction().battleId().equalsIgnoreCase(action.id())
-                        && profile.getBattleLevel() >= spellItem.getAction().minLevel) {
+                        && profile.getBattleLevel() >= spellItem.getAction().minLevel)
+                        || (stack.getItem() instanceof com.ivalice.item.IvaliceActionScroll scroll && scroll.action() == action)) {
                     profile.learnedSpells.add(action.id());
                     IvalicePlayerData.save(player);
                     return true;
@@ -685,6 +944,18 @@ public final class BattleManager {
     }
 
     private static String steal(ServerPlayer player, IvaliceMonsterEntity target) {
+        var entry = IvaliceBestiary.find(target.getSpeciesId());
+        if (entry != null) {
+            if (target.isStolenFrom() || entry.steal().isEmpty()) return "Nenhum espólio para roubar.";
+            boolean cuffs = player.getOffhandItem().is(IvaliceItems.getItemById("tza_thief_s_cuffs"));
+            String id = IvaliceBestiary.steal(entry, cuffs, player.getRandom());
+            if (id == null) return "O roubo falhou.";
+            String reward = giveLoot(player, id);
+            if (reward == null) return "Nenhum espólio para roubar.";
+            target.setStolenFrom(true);
+            IvalicePlayerData.save(player);
+            return "Roubou " + reward + ".";
+        }
         Item loot = IvaliceItems.getItemById(target.getStats().stealItemId());
         if (target.isStolenFrom() || loot == null) {
             return "Nenhum espólio para roubar.";
@@ -694,17 +965,49 @@ public final class BattleManager {
         return "Roubou " + target.getStats().stealItemId() + ".";
     }
 
+    static String giveLoot(ServerPlayer player, String id) {
+        if (id.startsWith("gil:")) {
+            int amount = Integer.parseInt(id.substring(4));
+            IvalicePlayerData.get(player).gil += amount;
+            return amount + " Gil";
+        }
+        Item loot = IvaliceItems.getItemById(id);
+        if (loot == null) return null;
+        ItemStack stack = new ItemStack(loot);
+        String name = stack.getHoverName().getString();
+        player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
+        return name;
+    }
+
     private static void castDamage(ServerPlayer player, IvaliceMonsterEntity target, Action spell, float bonus) {
         if (spell.element != null) {
             float base = spell.damage + (IvalicePlayerData.get(player).getBattleLevel() - 1) * 0.45F;
-            strike(player, target, base * bonus * getElementalMultiplier(target.getStats(), spell.element), true);
+            if (player.hasEffect(IvaliceStatuses.FAITH)) bonus *= 1.25F;
+            if (IvaliceEquipment.has(player, "tza_leather_gorget") && player.getHealth() < player.getMaxHealth() * .25F) bonus *= 2;
+            if (IvaliceEquipment.has(player, "tza_magick_gloves") && player.getHealth() >= player.getMaxHealth()) bonus *= 1.25F;
+            if ("Fire".equals(spell.element) && target.hasEffect(IvaliceStatuses.OIL)) bonus *= 2;
+            float damage = base * bonus * getElementalMultiplier(target.getStats(), spell.element);
+            if (damage > 0) strike(player, target, damage, true);
+            if (damage < 0) target.heal(-damage);
         }
     }
 
-    private static void strike(ServerPlayer player, IvaliceMonsterEntity target, float amount, boolean magic) {
+    static void strike(ServerPlayer player, IvaliceMonsterEntity target, float amount, boolean magic) {
         Session session = BATTLES.get(player.getUUID());
         if (target.isAlive() && target.level() == player.level()
                 && (session == null || ENEMIES.get(target.getUUID()) == session)) {
+            if (amount <= 0) return;
+            if (magic && target.hasEffect(IvaliceStatuses.REFLECT) && !IvaliceEquipment.has(player, "tza_opal_ring")) {
+                player.hurtServer(player.level(), player.level().damageSources().indirectMagic(target, target), amount);
+                return;
+            }
+            if (target.hasEffect(IvaliceStatuses.REVERSE)) {
+                target.heal(amount);
+                return;
+            }
+            if (magic && target.hasEffect(IvaliceStatuses.SHELL)) amount *= .65F;
+            if (!magic && target.hasEffect(IvaliceStatuses.DISEASE)) amount *= 1.20F;
+            target.removeEffect(IvaliceStatuses.SLEEP);
             if (session != null) target.damageCooldownTime = 0;
             ServerLevel level = player.level();
             target.hurtWithCalculatedDamage(level, magic ? level.damageSources().indirectMagic(player, player)
@@ -717,6 +1020,7 @@ public final class BattleManager {
             return;
         }
         Action spell = Action.fromId(id);
+        if (spell != null && spell.mp > 0 && player.hasEffect(IvaliceStatuses.SILENCE)) return;
         if (spell == Action.LIBRA) {
             player.sendSystemMessage(Component.literal("Libra • Fraqueza: " + target.getStats().weakness()));
         } else if (spell == Action.STEAL) {
@@ -759,6 +1063,50 @@ public final class BattleManager {
         sendClosed(session.player, message);
     }
 
+    public static int restoreMp(ServerPlayer player, int amount) {
+        Session session = BATTLES.get(player.getUUID());
+        if (session == null) return 0;
+        int restored = Math.min(amount, session.maxMp - session.mp);
+        session.mp += restored;
+        return restored;
+    }
+
+    static void exhaustMp(ServerPlayer player) {
+        drainMp(player);
+    }
+
+    static int drainMp(ServerPlayer player) {
+        Session session = BATTLES.get(player.getUUID());
+        if (session == null) return 0;
+        int mp = session.mp;
+        session.mp = 0;
+        return mp;
+    }
+
+    public static boolean castFieldAction(ServerPlayer player, Action action) {
+        if (isInBattle(player) || IvaliceStatuses.unableToAct(player)
+                || (action.mp > 0 && player.hasEffect(IvaliceStatuses.SILENCE))) return false;
+        var target = aimedEnemy(player);
+        if (!action.targetsSelf() && target == null) return false;
+        ServerLevel level = player.level();
+        BattleVisual.Style style = style(action);
+        BattleVisual.begin(level, player, style);
+        BattleVisual.impact(level, action.targetsSelf() ? player : target, style);
+        player.sendOverlayMessage(Component.literal(IvaliceActionEffects.apply(player, target, action)));
+        return true;
+    }
+
+    public static IvaliceMonsterEntity aimedEnemy(ServerPlayer player) {
+        var eye = player.getEyePosition();
+        var direction = player.getLookAngle();
+        return player.level().getEntitiesOfClass(IvaliceMonsterEntity.class, player.getBoundingBox().inflate(12),
+                        mob -> mob.isAlive() && !mob.isSummoned() && !isEngaged(mob) && player.hasLineOfSight(mob)).stream()
+                .filter(mob -> {
+                    var offset = mob.position().add(0, mob.getBbHeight() * .6, 0).subtract(eye);
+                    return offset.lengthSqr() <= 144 && offset.normalize().dot(direction) > .90;
+                }).min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null);
+    }
+
     private static void sendClosed(ServerPlayer player, String message) {
         CompoundTag state = new CompoundTag();
         state.putString("kind", "closed");
@@ -779,18 +1127,34 @@ public final class BattleManager {
         state.putBoolean("time", ZodiacJobs.permits(session.player, IvaliceItemCategory.MAGICK_TIME_ARCANE));
         ListTag availableSpells = new ListTag();
         for (Action act : Action.values()) {
-            if (act.school != null && canUse(session.player, act)) {
+            if ((act.school != null || act == Action.LIBRA || act == Action.STEAL) && canUse(session.player, act)) {
                 CompoundTag sp = new CompoundTag();
                 sp.putString("id", act.id());
                 sp.putString("label", act.label);
                 sp.putInt("mp", act.mp);
                 sp.putInt("tier", act.tier);
-                sp.putBoolean("self", act == Action.CURE || act == Action.CURA || act == Action.CURAGA || act == Action.HASTEGA);
+                sp.putBoolean("self", act.targetsSelf());
                 sp.putBoolean("areaOnly", act.isInnateArea());
+                sp.putBoolean("area", act.offersArea());
+                sp.putBoolean("technique", act.school == IvaliceItemCategory.TECHNICK || act == Action.LIBRA || act == Action.STEAL);
                 availableSpells.add(sp);
             }
         }
         state.put("availableSpells", availableSpells);
+        ListTag availableItems = new ListTag();
+        var seen = new HashSet<Item>();
+        var inventory = session.player.getInventory();
+        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+            ItemStack stack = inventory.getItem(slot);
+            if (!(stack.getItem() instanceof IvaliceUseItem consumable) || !seen.add(consumable)) continue;
+            var item = new CompoundTag();
+            item.putString("id", BuiltInRegistries.ITEM.getKey(consumable).getPath());
+            item.putString("label", stack.getHoverName().getString());
+            item.putInt("count", inventory.countItem(consumable));
+            item.putBoolean("self", !consumable.effect().needsEnemy(session.player) || consumable.effect().area());
+            availableItems.add(item);
+        }
+        state.put("availableItems", availableItems);
         ListTag enemies = new ListTag();
         for (IvaliceMonsterEntity mob : session.enemies) {
             CompoundTag enemy = new CompoundTag();
@@ -821,6 +1185,8 @@ public final class BattleManager {
     }
 
     public static float getElementalMultiplier(IvaliceMonsterStats stats, String element) {
+        var entry = IvaliceBestiary.find(stats.id());
+        if (entry != null && !entry.original()) return IvaliceBestiary.multiplier(stats.id(), element, 1.0F);
         if (stats.weakness().equalsIgnoreCase(element)) {
             return 2.0F;
         }
@@ -835,7 +1201,16 @@ public final class BattleManager {
         IvalicePlayerData.PlayerProfile profile = IvalicePlayerData.get(player);
 
         int prevLevel = profile.getBattleLevel();
-        profile.recordKill(stats.id(), stats.gilReward(), stats.lpReward());
+        int rewardGil = stats.gilReward();
+        int rewardLp = stats.lpReward();
+        if (IvaliceEquipment.has(player, "golden_amulet")) rewardLp *= 2;
+        if (IvaliceEquipment.has(player, "tza_cat_ear_hood")) {
+            rewardGil += rewardLp * 10;
+            rewardLp = 0;
+        }
+        if (IvaliceEquipment.has(player, "tza_firefly")) profile.adjustedExperience -= stats.xpReward();
+        if (IvaliceEquipment.has(player, "tza_embroidered_tippet")) profile.adjustedExperience += stats.xpReward();
+        profile.recordKill(stats.id(), rewardGil, rewardLp);
         int newLevel = profile.getBattleLevel();
         int kills = profile.getKills(stats.id());
 
@@ -850,7 +1225,7 @@ public final class BattleManager {
 
         player.sendSystemMessage(Component.literal(String.format(
                 "★ VITÓRIA! %s derrotado! Recompensas: +%d Gil | +%d LP | Bestiário: %d abate(s)",
-                stats.displayName(), stats.gilReward(), stats.lpReward(), kills
+                stats.displayName(), rewardGil, rewardLp, kills
         )).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD));
 
         if (kills == 1) {

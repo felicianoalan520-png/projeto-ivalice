@@ -2,8 +2,10 @@ package com.ivalice.command;
 
 import com.ivalice.IvaliceMod;
 import com.ivalice.combat.BattleManager;
+import com.ivalice.combat.IvaliceGambits;
 import com.ivalice.data.IvalicePlayerData;
 import com.ivalice.job.ZodiacJobs;
+import com.ivalice.entity.IvaliceBestiary;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import com.ivalice.entity.IvaliceMonsterStats;
 import com.ivalice.registry.IvaliceEntities;
@@ -26,6 +28,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -34,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,7 +60,9 @@ public class IvaliceCommands {
 
                 // 3. /ivalice bestiary — Mostra progresso completo do Bestiário (Clan Primer)
                 .then(Commands.literal("bestiary")
-                        .executes(ctx -> showBestiary(ctx.getSource())))
+                        .executes(ctx -> showBestiary(ctx.getSource(), ""))
+                        .then(Commands.argument("name", StringArgumentType.greedyString())
+                                .executes(ctx -> showBestiary(ctx.getSource(), StringArgumentType.getString(ctx, "name")))))
 
                 .then(Commands.literal("catalog")
                         .then(Commands.literal("search")
@@ -114,7 +120,16 @@ public class IvaliceCommands {
                 // 7. /ivalice gambit toggle — Alterna Gambits automáticos
                 .then(Commands.literal("gambit")
                         .then(Commands.literal("toggle")
-                                .executes(ctx -> toggleGambits(ctx.getSource()))))
+                                .executes(ctx -> toggleGambits(ctx.getSource())))
+                        .then(Commands.literal("list")
+                                .executes(ctx -> IvaliceGambits.list(ctx.getSource().getPlayerOrException(), false)))
+                        .then(Commands.literal("clear")
+                                .executes(ctx -> IvaliceGambits.list(ctx.getSource().getPlayerOrException(), true)))
+                        .then(Commands.literal("set")
+                                .then(Commands.argument("id", StringArgumentType.word())
+                                        .then(Commands.argument("action", StringArgumentType.word())
+                                                .executes(ctx -> IvaliceGambits.configure(ctx.getSource().getPlayerOrException(),
+                                                        StringArgumentType.getString(ctx, "id"), StringArgumentType.getString(ctx, "action")))))))
 
                 // 8. /ivalice bazaar buy <packageId> — Compra pacote no Bazaar de Rabanastre
                 .then(Commands.literal("bazaar")
@@ -194,21 +209,32 @@ public class IvaliceCommands {
         return 1;
     }
 
-    private static int showBestiary(CommandSourceStack source) {
+    private static int showBestiary(CommandSourceStack source, String query) {
         ServerPlayer player = source.getPlayer();
         if (player == null) return 0;
         IvalicePlayerData.PlayerProfile profile = IvalicePlayerData.get(player);
 
         player.sendSystemMessage(Component.literal("═══ [CLAN PRIMER — BESTIÁRIO DE IVALICE] ═══").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
-        for (IvaliceMonsterStats m : IvaliceMonsterStats.ALL_MONSTERS) {
+        String term = query.toLowerCase(Locale.ROOT);
+        var matches = IvaliceMonsterStats.ALL_MONSTERS.stream().filter(monster -> term.isEmpty()
+                ? profile.encounteredMonsters.contains(monster.id())
+                : monster.id().contains(term) || monster.displayName().toLowerCase(Locale.ROOT).contains(term)).limit(15).toList();
+        player.sendSystemMessage(Component.literal("Registros: " + profile.encounteredMonsters.size() + "/"
+                + IvaliceMonsterStats.ALL_MONSTERS.size() + " • /ivalice bestiary <nome>"));
+        for (IvaliceMonsterStats m : matches) {
             int kills = profile.getKills(m.id());
             ChatFormatting color = kills > 0 ? ChatFormatting.GREEN : ChatFormatting.GRAY;
             player.sendSystemMessage(Component.literal(String.format(
                     "• %s [Lv.%d | %s] — Abates: %d | Fraqueza: %s | Habitat: %s",
                     m.displayName(), m.level(), m.family(), kills, m.weakness(), m.habitat()
             )).withStyle(color));
+            var entry = IvaliceBestiary.find(m.id());
+            if (entry != null && !entry.original() && entry.isContract()) {
+                player.sendSystemMessage(Component.literal("  Contrato: " + String.join(", ", entry.regions())
+                        + " • /ivalice hunt spawn " + entry.id()));
+            }
         }
-        return 1;
+        return matches.size();
     }
 
     private static int engage(CommandSourceStack source, int entityId) {
@@ -232,6 +258,16 @@ public class IvaliceCommands {
         ServerLevel level = (ServerLevel) player.level();
         IvalicePlayerData.PlayerProfile profile = IvalicePlayerData.get(player);
 
+        var regional = IvaliceBestiary.find(markId.toLowerCase(Locale.ROOT));
+        if (regional != null && !regional.original()) {
+            if (!regional.isContract()) {
+                source.sendFailure(Component.literal(regional.name() + " aparece naturalmente em "
+                        + String.join(", ", regional.regions()) + "."));
+                return 0;
+            }
+            return startRegionalContract(player, level, regional, profile);
+        }
+
         for (IvalicePlayerData.MarkHuntEntry hunt : IvalicePlayerData.MARK_HUNTS) {
             if (hunt.id().equalsIgnoreCase(markId) || hunt.entityId().equalsIgnoreCase(markId)) {
                 profile.activeHuntId = hunt.id();
@@ -252,6 +288,42 @@ public class IvaliceCommands {
             }
         }
         player.sendSystemMessage(Component.literal("[Clã Centurio] Caçada não encontrada: " + markId).withStyle(ChatFormatting.RED));
+        return 0;
+    }
+
+    private static int startRegionalContract(ServerPlayer player, ServerLevel level, IvaliceBestiary.Entry entry,
+                                             IvalicePlayerData.PlayerProfile profile) {
+        if (BattleManager.isInBattle(player) || profile.getBattleLevel() < entry.minimumLevel()
+                || entry.regions().stream().noneMatch(region -> level.getBiome(player.blockPosition()).is(entry.regionKey(region)))) {
+            player.sendSystemMessage(Component.literal(entry.name() + " • Nível " + entry.minimumLevel()
+                    + "+ • Região: " + String.join(", ", entry.regions()) + "."));
+            return 0;
+        }
+        if (!level.getEntitiesOfClass(IvaliceMonsterEntity.class, player.getBoundingBox().inflate(32),
+                mob -> mob.isAlive() && mob.getSpeciesId().equals(entry.id())).isEmpty()) {
+            player.sendSystemMessage(Component.literal("Já há um alvo deste contrato nas proximidades."));
+            return 0;
+        }
+
+        var monster = IvaliceEntities.getById(entry.id()).create(level, EntitySpawnReason.EVENT);
+        if (monster == null) return 0;
+        BlockPos center = player.blockPosition().relative(player.getDirection(), 5);
+        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-4, -4, -4), center.offset(4, 3, 4))) {
+            if (pos.distSqr(player.blockPosition()) < 9 || !level.isLoaded(pos)) continue;
+            boolean suitable = entry.aquatic() ? level.getFluidState(pos).is(FluidTags.WATER)
+                    : level.getFluidState(pos).isEmpty() && level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), net.minecraft.core.Direction.UP);
+            if (!suitable) continue;
+            monster.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            if (!level.noCollision(monster) || !level.addFreshEntity(monster)) continue;
+            if (entry.isHunt()) {
+                profile.activeHuntId = entry.id();
+                IvalicePlayerData.save(player);
+            }
+            player.sendSystemMessage(Component.literal("Contrato regional • " + entry.name()).withStyle(ChatFormatting.GOLD));
+            return 1;
+        }
+        player.sendSystemMessage(Component.literal(entry.aquatic()
+                ? "Aproxime-se de água funda para iniciar o encontro." : "Procure um local aberto e plano para iniciar o encontro."));
         return 0;
     }
 

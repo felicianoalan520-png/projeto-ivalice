@@ -43,6 +43,51 @@
               },
               "type": "ivalice:cockatrice",
               "weight": 12
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:slaven",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:sleipnir",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:urstrix",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:werewolf",
+              "weight": 6
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "type": "ivalice:wildsnake",
+              "weight": 6
             }
           ],
           "water_creature": [],

@@ -1,6 +1,12 @@
 package com.ivalice.item;
 
+import com.ivalice.combat.IvaliceEquipment;
 import net.minecraft.ChatFormatting;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -65,6 +71,17 @@ public class IvaliceCatalogItem extends Item {
     }
 
     @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        var stack = player.getItemInHand(hand);
+        if (!IvaliceEquipment.ranged(stack)) return super.use(level, player, hand);
+        if (player instanceof ServerPlayer serverPlayer) {
+            if (!IvaliceEquipment.useRanged(serverPlayer, stack)) return InteractionResult.FAIL;
+            player.getCooldowns().addCooldown(stack, 18);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
     public void appendHoverText(
             ItemStack stack,
             TooltipContext context,
@@ -79,6 +96,12 @@ public class IvaliceCatalogItem extends Item {
         }
         if (obtainSource != null && !obtainSource.isEmpty()) {
             tooltipAdder.accept(Component.literal("Obtenção: " + obtainSource).withStyle(ChatFormatting.DARK_AQUA));
+        }
+        if (category == IvaliceItemCategory.DEFENSE_ACCESSORY || category == IvaliceItemCategory.DEFENSE_SHIELD) {
+            tooltipAdder.accept(Component.literal("Equipe na mão secundária.").withStyle(ChatFormatting.DARK_AQUA));
+        }
+        if (!IvaliceEquipment.ammoFamily(category).isEmpty()) {
+            tooltipAdder.accept(Component.literal("Use com munição compatível no inventário.").withStyle(ChatFormatting.DARK_AQUA));
         }
         if (gilValue > 0) {
             tooltipAdder.accept(Component.literal("Valor em Ivalice: " + gilValue + " Gil").withStyle(ChatFormatting.GOLD));

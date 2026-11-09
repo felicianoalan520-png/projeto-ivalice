@@ -1,6 +1,8 @@
 package com.ivalice;
 
 import com.ivalice.combat.BattleManager;
+import com.ivalice.combat.IvaliceEquipment;
+import com.ivalice.combat.IvaliceStatuses;
 import com.ivalice.command.IvaliceCommands;
 import com.ivalice.config.IvaliceConfig;
 import com.ivalice.data.IvalicePlayerData;
@@ -63,6 +65,7 @@ public class IvaliceMod {
 
         // Registro modular de blocos, itens, entidades e abas criativas
         IvaliceBlocks.register(modEventBus);
+        IvaliceStatuses.register(modEventBus);
         IvaliceItems.register(modEventBus);
         IvaliceEntities.register(modEventBus);
         IvaliceVillagers.register(modEventBus);
@@ -71,8 +74,10 @@ public class IvaliceMod {
         // Eventos do servidor e sistema sazonal de Giza Plains
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.addListener(BattleManager::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(IvaliceEquipment::onTick);
         NeoForge.EVENT_BUS.addListener(BattleManager::onLogout);
         NeoForge.EVENT_BUS.addListener(BattleManager::onDamage);
+        NeoForge.EVENT_BUS.addListener(IvaliceStatuses::onDeath);
         NeoForge.EVENT_BUS.addListener(ZodiacJobs::onAttack);
         NeoForge.EVENT_BUS.addListener(ZodiacJobs::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(GizaSeasonManager::onLevelTickPost);

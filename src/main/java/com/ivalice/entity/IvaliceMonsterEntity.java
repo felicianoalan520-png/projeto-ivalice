@@ -7,6 +7,7 @@ import com.geckolib.animation.AnimationController;
 import com.geckolib.animation.RawAnimation;
 import com.geckolib.util.GeckoLibUtil;
 import com.ivalice.combat.BattleManager;
+import com.ivalice.combat.IvaliceStatuses;
 import com.ivalice.data.IvalicePlayerData;
 import com.ivalice.registry.IvaliceItems;
 import net.minecraft.ChatFormatting;
@@ -28,9 +29,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Entidade base para todas as criaturas, Elite Marks (Caçadas do Clã Centurio) e Espers de Final Fantasy XII.
@@ -47,6 +51,29 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
     private boolean stolenFrom = false;
     private boolean alphaLeader = false;
     private boolean alphaInitialized = false;
+    private UUID summoner;
+    private int summonTime;
+
+    public boolean isSummoned() {
+        return summoner != null;
+    }
+
+    public boolean isSummonedBy(ServerPlayer player) {
+        return player.getUUID().equals(summoner);
+    }
+
+    public void bindSummoner(ServerPlayer player) {
+        summoner = player.getUUID();
+        summonTime = 400;
+        alphaInitialized = true;
+        targetSelector.removeAllGoals(goal -> true);
+        setTarget(null);
+    }
+
+    @Override
+    public boolean shouldBeSaved() {
+        return !isSummoned() && super.shouldBeSaved();
+    }
 
     public IvaliceMonsterEntity(EntityType<? extends IvaliceMonsterEntity> type, Level level, String speciesId) {
         super(type, level);
@@ -57,6 +84,13 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         if (!"Neutral".equalsIgnoreCase(stats.behavior()) || this.alphaLeader) {
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         }
+    }
+
+    private boolean isPackSpecies() {
+        return switch (speciesId) {
+            case "wolf", "hyena", "white_wolf", "wild_saurian", "coeurl" -> true;
+            default -> false;
+        };
     }
 
     public boolean isAlphaLeader() {
@@ -86,6 +120,22 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         return IvaliceMonsterStats.byId(speciesId);
     }
 
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("ivalice_stolen", stolenFrom);
+        output.putBoolean("ivalice_alpha", alphaLeader);
+        output.putBoolean("ivalice_alpha_initialized", alphaInitialized);
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        stolenFrom = input.getBooleanOr("ivalice_stolen", false);
+        alphaLeader = input.getBooleanOr("ivalice_alpha", alphaLeader);
+        alphaInitialized = input.getBooleanOr("ivalice_alpha_initialized", false);
+    }
+
     public boolean isStolenFrom() {
         return stolenFrom;
     }
@@ -111,20 +161,35 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
                 .add(Attributes.MAX_HEALTH, stats.maxHealth())
                 .add(Attributes.ATTACK_DAMAGE, stats.attackDamage())
                 .add(Attributes.MOVEMENT_SPEED, stats.moveSpeed())
+                .add(Attributes.FLYING_SPEED, stats.moveSpeed())
                 .add(Attributes.FOLLOW_RANGE, 28.0D)
                 .add(Attributes.ARMOR, stats.level() * 0.4D);
     }
 
     @Override
     public boolean canAttack(LivingEntity target) {
+        if (IvaliceStatuses.unableToAct(this)) return false;
+        if (isSummoned() && !(target instanceof IvaliceMonsterEntity mob && !mob.isSummoned())) return false;
         return !(target instanceof ServerPlayer player && BattleManager.isInBattle(player)) && super.canAttack(target);
     }
 
     @Override
     public void tick() {
+        if (summoner != null && level() instanceof ServerLevel server) {
+            var owner = server.getServer().getPlayerList().getPlayer(summoner);
+            if (owner == null || owner.level() != server || !owner.isAlive() || --summonTime <= 0
+                    || distanceToSqr(owner) > 48 * 48) {
+                discard();
+                return;
+            }
+            if (tickCount % 10 == 0) {
+                var aimed = BattleManager.aimedEnemy(owner);
+                setTarget(aimed != this ? aimed : null);
+            }
+        }
         if (!level().isClientSide() && !alphaInitialized) {
             alphaInitialized = true;
-            if (!alphaLeader && "Normal".equalsIgnoreCase(getStats().rankType()) && this.random.nextFloat() < 0.12F) {
+            if (!alphaLeader && isPackSpecies() && this.random.nextFloat() < 0.12F) {
                 promoteToAlpha();
             } else if (alphaLeader) {
                 var scaleAttr = this.getAttribute(Attributes.SCALE);
@@ -139,6 +204,7 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
                 serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.ENCHANT,
                         getX(), getY() + getBbHeight() * 0.5, getZ(), 6, 0.35, 0.35, 0.35, 0.02);
             }
+            super.baseTick();
             return;
         }
         super.tick();
@@ -202,9 +268,61 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
+        if (isSummoned()) return;
         super.dropCustomDeathLoot(level, damageSource, recentlyHit);
         IvaliceMonsterStats stats = getStats();
 
+        IvaliceBestiary.Entry entry = IvaliceBestiary.find(speciesId);
+        if (entry != null) {
+            int chain = damageSource.getEntity() instanceof ServerPlayer player
+                    ? IvalicePlayerData.get(player).recordDropChain(entry.family(), level.getGameTime()) : 0;
+            if (!entry.vanillaLoot() && !entry.drops().isEmpty()) {
+                var pool = entry.drops().get(Math.min(chain, entry.drops().size() - 1));
+                for (var roll : pool) {
+                    if (random.nextFloat() >= roll.chance()) continue;
+                    Item item = IvaliceItems.getItemById(roll.pick(random));
+                    if (item != null) spawnAtLocation(level, new ItemStack(item));
+                }
+            }
+        } else {
+            dropLegacyRewards(level, stats);
+        }
+        if (damageSource.getEntity() instanceof ServerPlayer player) dropMonographLoot(level, player, stats);
+        if (alphaLeader) {
+            String[] stones = {"fire_stone", "water_stone", "wind_stone", "earth_stone", "dark_magicite"};
+            Item bonusStone = IvaliceItems.getItemById(stones[random.nextInt(stones.length)]);
+            if (bonusStone != null) spawnAtLocation(level, new ItemStack(bonusStone, 1 + random.nextInt(2)));
+        }
+
+        if (("mateus".equals(speciesId) || "zodiark".equals(speciesId) || "yiazmat".equals(speciesId)
+                || "ifrit_pyreburner".equals(speciesId) || "shinryu".equals(speciesId)
+                || "omega_mk".equals(speciesId) || "kefka_god".equals(speciesId))
+                && damageSource.getEntity() instanceof ServerPlayer && random.nextFloat() < 0.35F) {
+            spawnAtLocation(level, new ItemStack(IvaliceItems.ZODIAC_RESET_SEAL.get()));
+        }
+        if (damageSource.getEntity() instanceof ServerPlayer player) BattleManager.onMonsterDefeated(player, this);
+    }
+
+    private void dropMonographLoot(ServerLevel level, ServerPlayer player, IvaliceMonsterStats stats) {
+        String family = stats.family().toLowerCase(java.util.Locale.ROOT);
+        String monograph = family.contains("beast") || family.contains("avion") ? "hunter"
+                : family.contains("dragon") || family.contains("plant") ? "dragoon"
+                : family.contains("undead") || family.contains("giant") ? "warmage"
+                : family.contains("insect") || family.contains("construct") ? "scholar"
+                : family.contains("fiend") ? "knight" : "mage";
+        Item knowledge = IvaliceItems.getItemById("tza_" + monograph + "_s_monograph");
+        Item canopicJar = IvaliceItems.getItemById("tza_canopic_jar");
+        if (knowledge != null && player.getInventory().countItem(knowledge) > 0 && random.nextFloat() < .10F) {
+            Item rare = IvaliceItems.getItemById("high_arcana");
+            if (rare != null) spawnAtLocation(level, new ItemStack(rare));
+        }
+        if (canopicJar != null && player.getInventory().countItem(canopicJar) > 0 && random.nextFloat() < .10F) {
+            Item arcana = IvaliceItems.getItemById("arcana");
+            if (arcana != null) spawnAtLocation(level, new ItemStack(arcana));
+        }
+    }
+
+    private void dropLegacyRewards(ServerLevel level, IvaliceMonsterStats stats) {
         Item primary = IvaliceItems.getItemById(stats.primaryLootId());
         if (primary != null && (!"Normal".equals(stats.rankType()) || alphaLeader || random.nextFloat() < 0.78F)) {
             int count = (!"Normal".equals(stats.rankType()) || alphaLeader) ? 2 + random.nextInt(2) : 1 + random.nextInt(2);
@@ -214,29 +332,11 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         if (rare != null && (!"Normal".equals(stats.rankType()) || alphaLeader || random.nextFloat() < 0.22F)) {
             spawnAtLocation(level, new ItemStack(rare));
         }
-        if (alphaLeader) {
-            String[] stones = {"fire_stone", "water_stone", "wind_stone", "earth_stone", "dark_magicite"};
-            Item bonusStone = IvaliceItems.getItemById(stones[random.nextInt(stones.length)]);
-            if (bonusStone != null) {
-                spawnAtLocation(level, new ItemStack(bonusStone, 1 + random.nextInt(2)));
-            }
-        }
-
-        if (("mateus".equals(speciesId) || "zodiark".equals(speciesId) || "yiazmat".equals(speciesId)
-                || "ifrit_pyreburner".equals(speciesId) || "shinryu".equals(speciesId)
-                || "omega_mk".equals(speciesId) || "kefka_god".equals(speciesId))
-                && damageSource.getEntity() instanceof ServerPlayer && random.nextFloat() < 0.35F) {
-            spawnAtLocation(level, new ItemStack(IvaliceItems.ZODIAC_RESET_SEAL.get()));
-        }
-
-        // Atualiza Bestiário, Gil, LP e verifica conclusão de Caçada (Mark Hunt) para o jogador!
-        if (damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
-            BattleManager.onMonsterDefeated(serverPlayer, this);
-        }
     }
 
     @Override
     public boolean doHurtTarget(ServerLevel level, Entity target) {
+        if (IvaliceStatuses.unableToAct(this)) return false;
         playBattleAnimation("strike");
         net.minecraft.world.phys.Vec3 dir = target.position().subtract(this.position()).normalize();
         this.push(dir.x * 0.35, 0.18, dir.z * 0.35);

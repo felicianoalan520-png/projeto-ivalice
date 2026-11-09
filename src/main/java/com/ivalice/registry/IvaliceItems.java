@@ -1,6 +1,9 @@
 package com.ivalice.registry;
 
 import com.ivalice.IvaliceMod;
+import com.ivalice.combat.BattleManager;
+import com.ivalice.combat.IvaliceConsumables;
+import com.ivalice.combat.IvaliceEquipment;
 import com.ivalice.item.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -463,7 +466,8 @@ public class IvaliceItems {
     ) {
         int stackSize = equipmentTab ? 1 : 64;
         DeferredItem<Item> item = ITEMS.registerItem(id, props -> new IvaliceCatalogItem(
-                props.rarity(rarity).stacksTo(stackSize), category, desc, gil, source, ref, rarity
+                IvaliceEquipment.configure(props.rarity(rarity).stacksTo(stackSize), id, category),
+                category, desc, gil, source, ref, rarity
         ));
         if (equipmentTab) {
             EQUIPMENT_TAB_ITEMS.add(item);
@@ -478,9 +482,20 @@ public class IvaliceItems {
             String id, String desc, int gil, String source, String ref, Rarity rarity,
             float healAmount, boolean curesNegative, List<MobEffectInstance> effects
     ) {
+        var effect = IvaliceConsumables.byId(id);
+        if (effect != null) return registerFunctionalConsumable(id, desc, gil, source, ref, rarity, effect);
         DeferredItem<Item> item = ITEMS.registerItem(id, props -> new IvaliceConsumableItem(
                 props.rarity(rarity).stacksTo(64), desc, gil, source, ref, rarity, healAmount, curesNegative, effects
         ));
+        LOOT_AND_CONSUMABLES_TAB_ITEMS.add(item);
+        BY_ID.put(id, item);
+        return item;
+    }
+
+    private static DeferredItem<Item> registerFunctionalConsumable(String id, String desc, int gil, String source,
+                                                                  String name, Rarity rarity, IvaliceConsumables.Use effect) {
+        DeferredItem<Item> item = ITEMS.registerItem(id, props ->
+                new IvaliceUseItem(props.rarity(rarity).stacksTo(64), desc, gil, source, name, rarity, effect));
         LOOT_AND_CONSUMABLES_TAB_ITEMS.add(item);
         BY_ID.put(id, item);
         return item;
@@ -546,6 +561,7 @@ public class IvaliceItems {
                         desc, entry.price(), source, reference, rarity);
             }
             case "spell" -> {
+                if (registerExtendedAction(entry, source, rarity)) break;
                 IvaliceSpellItem.SpellAction action = archiveSpell(reference);
                 if (action != null) {
                     int cd = switch (action.tier) {
@@ -564,18 +580,40 @@ public class IvaliceItems {
                     registerCatalog(entry.id(), entry.category(), desc, entry.price(), source, reference, rarity, true);
                 }
             }
-            case "consumable" -> {
-                if (List.of("Megalixir", "Elixir", "Hi-Ether").contains(reference)) {
-                    registerConsumable(entry.id(), desc, entry.price(), source, reference, rarity,
-                            reference.equals("Hi-Ether") ? 0F : 20F, reference.equals("Megalixir"),
-                            List.of(new MobEffectInstance(MobEffects.REGENERATION, 100, 1)));
-                } else {
-                    registerCatalog(entry.id(), entry.category(), desc, entry.price(), source, reference, rarity, false);
+            case "technick" -> {
+                if (!registerExtendedAction(entry, source, rarity)) {
+                    registerCatalog(entry.id(), entry.category(), desc, entry.price(), source, reference, rarity, true);
                 }
+            }
+            case "consumable" -> {
+                var effect = IvaliceConsumables.byId(entry.id());
+                if (effect == null) throw new IllegalStateException("Missing consumable effect for " + entry.id());
+                registerFunctionalConsumable(entry.id(), "Usável em campo ou pelo menu Itens", entry.price(), source,
+                        reference, rarity, effect);
+            }
+            case "key", "map", "gambit", "esper" -> {
+                DeferredItem<Item> item = ITEMS.registerItem(entry.id(), props ->
+                        new IvaliceReferenceItem(props.rarity(rarity).stacksTo(1), entry, rarity, source));
+                LOOT_AND_CONSUMABLES_TAB_ITEMS.add(item);
+                BY_ID.put(entry.id(), item);
             }
             default -> registerCatalog(entry.id(), entry.category(), desc, entry.price(), source, reference, rarity,
                     entry.kind().equals("shield") || entry.kind().equals("accessory") || entry.kind().equals("technick"));
         }
+    }
+
+    private static boolean registerExtendedAction(IvaliceTzaCatalog.Entry entry, String source, Rarity rarity) {
+        String id = entry.name().equals("1000 Needles") ? "needles"
+                : entry.name().toLowerCase(java.util.Locale.ROOT).replace(' ', '_');
+        var action = BattleManager.Action.fromId(id);
+        if (action == null || action.element != null || action.school == null
+                || action == BattleManager.Action.CURE || action == BattleManager.Action.CURA
+                || action == BattleManager.Action.CURAGA || action == BattleManager.Action.HASTEGA) return false;
+        DeferredItem<Item> item = ITEMS.registerItem(entry.id(), props ->
+                new IvaliceActionScroll(props.rarity(rarity).stacksTo(1), action.school, entry.price(), source, rarity, action));
+        EQUIPMENT_TAB_ITEMS.add(item);
+        BY_ID.put(entry.id(), item);
+        return true;
     }
 
     private static IvaliceSpellItem.SpellAction archiveSpell(String name) {

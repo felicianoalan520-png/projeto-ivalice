@@ -127,7 +127,9 @@ public final class BattleVisual {
         }
 
         if (age == style.impactTick) {
-            impact(level, target, style);
+            boolean changeTerrain = !(actor instanceof IvaliceMonsterEntity mob)
+                    || !mob.getStats().rankType().equals("Normal");
+            impact(level, target, style, changeTerrain);
             return;
         }
         if (age > style.impactTick) {
@@ -156,7 +158,7 @@ public final class BattleVisual {
                 double arc = Math.sin(time * Math.PI) * (style == Style.FIRA ? 1.1 : 0.45);
                 Vec3 pos = travel.add(0, arc, 0);
                 particles(level, ParticleTypes.FLAME, pos, style == Style.FIRA ? 12 : 6, 0.18, 0.02);
-                particles(level, ParticleTypes.LARGE_SMOKE, pos, 3, 0.12, 0.01);
+                if (age % 3 == 0) particles(level, ParticleTypes.SMOKE, pos, 2, 0.12, 0.01);
                 if (style == Style.FIRA) {
                     double spiral = age * 0.9;
                     particles(level, ParticleTypes.LAVA, pos.add(Math.cos(spiral) * 0.6, 0, Math.sin(spiral) * 0.6), 2, 0.08, 0.02);
@@ -227,6 +229,10 @@ public final class BattleVisual {
     }
 
     public static void impact(ServerLevel level, LivingEntity target, Style style) {
+        impact(level, target, style, true);
+    }
+
+    private static void impact(ServerLevel level, LivingEntity target, Style style, boolean changeTerrain) {
         Vec3 center = center(target);
         if (style == Style.SLASH || style == Style.CLEAVE) {
             particles(level, ParticleTypes.SWEEP_ATTACK, center, style == Style.CLEAVE ? 4 : 1, 0.25, 0.0);
@@ -280,7 +286,7 @@ public final class BattleVisual {
         }
 
         // Interação real com o mundo (fogo, gelo, crateras e transformação regional de blocos conforme o Tier!)
-        applyWorldImpact(level, target.blockPosition(), style);
+        if (changeTerrain) applyWorldImpact(level, target.blockPosition(), style);
     }
 
     private static void spawnVisualLightning(ServerLevel level, Vec3 pos) {

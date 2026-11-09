@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 public final class BattleScreen extends IvalicePanelScreen {
-    private enum Page { COMMANDS, MAGICK, CAST_MODE, TECHNICKS, TARGET }
+    private enum Page { COMMANDS, MAGICK, CAST_MODE, TECHNICKS, ITEMS, TARGET }
     private CompoundTag state;
     private Page page = Page.COMMANDS;
     private Page targetBack;
@@ -60,13 +60,19 @@ public final class BattleScreen extends IvalicePanelScreen {
                     spellsPage = 0;
                     open(Page.MAGICK);
                 });
-                option("Hi-Potion", 0, 1, () -> send("potion", firstTarget()));
-                option("Técnicas", 1, 1, () -> open(Page.TECHNICKS));
+                option("Itens", 0, 1, () -> {
+                    spellsPage = 0;
+                    open(Page.ITEMS);
+                });
+                option("Técnicas", 1, 1, () -> {
+                    spellsPage = 0;
+                    open(Page.TECHNICKS);
+                });
                 option("Gambit", 0, 2, () -> select("gambit"));
                 option("Fugir", 1, 2, () -> send("flee", firstTarget()));
             }
-            case MAGICK -> {
-                ListTag spells = availableSpells();
+            case MAGICK, TECHNICKS -> {
+                ListTag spells = availableSpells(page == Page.TECHNICKS);
                 int count = Math.max(1, (spells.size() + 5) / 6);
                 spellsPage = Math.clamp(spellsPage, 0, count - 1);
                 for (int i = spellsPage * 6; i < Math.min((spellsPage + 1) * 6, spells.size()); i++) {
@@ -77,14 +83,16 @@ public final class BattleScreen extends IvalicePanelScreen {
                     boolean self = sp.getBooleanOr("self", false);
                     boolean areaOnly = sp.getBooleanOr("areaOnly", false);
                     int slot = i % 6;
-                    String btnText = label + " • " + mp + " MP";
+                    String btnText = mp == 0 ? label : label + " • " + mp + " MP";
                     option(btnText, slot % 2, slot / 2, () -> {
                         if (self) {
                             send(id, firstTarget());
                         } else if (areaOnly) {
                             send(id + "_area", firstTarget());
-                        } else {
+                        } else if (sp.getBooleanOr("area", false)) {
                             spell(id, label, mp);
+                        } else {
+                            select(id);
                         }
                     });
                 }
@@ -95,14 +103,28 @@ public final class BattleScreen extends IvalicePanelScreen {
                     });
                 }
             }
+            case ITEMS -> {
+                var items = state.getListOrEmpty("availableItems");
+                int count = Math.max(1, (items.size() + 5) / 6);
+                spellsPage = Math.clamp(spellsPage, 0, count - 1);
+                for (int i = spellsPage * 6; i < Math.min((spellsPage + 1) * 6, items.size()); i++) {
+                    var item = items.getCompoundOrEmpty(i);
+                    String id = "item_" + item.getStringOr("id", "");
+                    int slot = i % 6;
+                    option(item.getStringOr("label", "") + " ×" + item.getIntOr("count", 0), slot % 2, slot / 2, () -> {
+                        if (item.getBooleanOr("self", false)) send(id, firstTarget());
+                        else select(id);
+                    });
+                }
+                if (count > 1) button("Mais ›", panelX + panelWidth - 134, panelY + 79, 60, () -> {
+                    spellsPage = (spellsPage + 1) % count;
+                    rebuildWidgets();
+                });
+            }
             case CAST_MODE -> {
                 option("Alvo único • " + spellCost + " MP", 0, 0, () -> select(action));
                 option("Em área • " + (spellCost + com.ivalice.combat.BattleManager.AREA_MP_SURCHARGE) + " MP",
                         1, 0, () -> send(action + "_area", firstTarget()));
-            }
-            case TECHNICKS -> {
-                option("Libra", 0, 0, () -> select("libra"));
-                option("Steal", 1, 0, () -> select("steal"));
             }
             case TARGET -> {
                 for (int i = targetsPage * 6; i < Math.min((targetsPage + 1) * 6, enemies().size()); i++) {
@@ -133,8 +155,14 @@ public final class BattleScreen extends IvalicePanelScreen {
         return state.getListOrEmpty("enemies");
     }
 
-    private ListTag availableSpells() {
-        return state.getListOrEmpty("availableSpells");
+    private ListTag availableSpells(boolean techniques) {
+        var result = new ListTag();
+        var available = state.getListOrEmpty("availableSpells");
+        for (int i = 0; i < available.size(); i++) {
+            var spell = available.getCompoundOrEmpty(i);
+            if (spell.getBooleanOr("technique", false) == techniques) result.add(spell);
+        }
+        return result;
     }
 
     public int targetNumber(int entityId) {
@@ -228,6 +256,7 @@ public final class BattleScreen extends IvalicePanelScreen {
             case MAGICK -> "Grimório de Magias";
             case CAST_MODE -> spellLabel;
             case TECHNICKS -> "Técnicas";
+            case ITEMS -> "Bolsa de batalha";
             case TARGET -> "Escolha o alvo";
         };
         int hp = minecraft.player == null ? 0 : (int) Math.ceil(minecraft.player.getHealth());
@@ -240,7 +269,7 @@ public final class BattleScreen extends IvalicePanelScreen {
         if (page == Page.CAST_MODE) {
             line(graphics, "Alvo único: dano completo.", 58, TEXT);
             line(graphics, "Em área: 60% de dano por inimigo.", 70, MUTED);
-        } else if (page == Page.MAGICK && availableSpells().isEmpty()) {
+        } else if (page == Page.MAGICK && availableSpells(false).isEmpty()) {
             line(graphics, "Compre ou use Pergaminhos de Magia com uma profissão mágica.", 52, TEXT);
         } else if (page == Page.TARGET && enemies().size() > 6) {
             line(graphics, "Esc para voltar", 105, MUTED);

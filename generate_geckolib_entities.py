@@ -9,7 +9,7 @@ Generates:
 2. GeckoLib 1.8.0 animation JSONs (idle, walk, run, strike, cast, flinch) for all 42 entities at BOTH:
    - src/main/resources/assets/ivalice/geckolib/animations/entity/<name>.animation.json
    - src/main/resources/assets/ivalice/animations/entity/<name>.animation.json
-3. 64x64 RGBA PNG textures with rich canonical shading at:
+3. 256x256 RGBA PNG textures at:
    - src/main/resources/assets/ivalice/textures/entity/<name>.png
 4. Updates all 15 biome JSONs in:
    - src/main/resources/data/ivalice/worldgen/biome/*.json
@@ -22,6 +22,9 @@ import json
 import struct
 import zlib
 import glob
+from pathlib import Path
+
+from ivalice_texture_atlas import write_entity_texture
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(BASE_DIR, "src", "main", "resources", "assets", "ivalice")
@@ -43769,6 +43772,51 @@ ENTITIES_DATA = {
 }
 
 # ==============================================================================
+# Preserve the animated pivots while giving the common animals distinct silhouettes.
+
+def detail_animal_shapes():
+    def part(entity, name):
+        return next(bone for bone in ENTITIES_DATA[entity]["bones"] if bone["name"] == name)
+
+    def cube(origin, size):
+        return {"origin": origin, "size": size}
+
+    def add(entity, name, parent, pivot, rotation, origin, size):
+        ENTITIES_DATA[entity]["bones"].append({
+            "name": name, "parent": parent, "pivot": pivot, "rotation": rotation,
+            "cubes": [cube(origin, size)],
+        })
+
+    for entity in ("hyena", "alpha_hyena"):
+        part(entity, "head")["cubes"][1] = cube([-2, 10, -14], [4, 3, 4])
+        add(entity, "nose", "head", [0, 11, -14], [0, 0, 0], [-1.5, 10.75, -15], [3, 2, 1])
+        add(entity, "jaw", "head", [0, 10, -11], [7, 0, 0], [-1.5, 9, -14], [3, 1, 4])
+        for side, sign in (("left", 1), ("right", -1)):
+            ear = part(entity, f"ear_{side}")
+            ear["rotation"] = [0, 8 * -sign, 17 * -sign]
+            origin = [2 if sign == 1 else -3, 16.5, -8.5]
+            ear["cubes"].append(cube(origin, [1, 1, 1]))
+
+    for entity in ("wolf", "white_wolf", "alpha_wolf"):
+        part(entity, "head")["cubes"][1] = cube([-1.5, 9, -13.75], [3, 2, 4])
+        add(entity, "nose", "head", [0, 10, -14], [0, 0, 0], [-1, 9.5, -14.5], [2, 1, 1])
+        add(entity, "jaw", "head", [0, 9, -11], [9, 0, 0], [-1, 8.25, -13.75], [2, 1, 4])
+        for side, sign in (("left", 1), ("right", -1)):
+            part(entity, f"ear_{side}")["rotation"] = [9, 0, 10 * -sign]
+
+    for side, sign in (("left", 1), ("right", -1)):
+        part("giza_rabbit", f"ear_{side}")["rotation"] = [13, 0, 8 * -sign]
+        part("ichthon", f"fin_{side}")["rotation"] = [0, 13 * sign, 16 * -sign]
+    tail = part("ichthon", "tail_2")
+    tail["cubes"][1:] = [cube([-.5, 8.5, 12], [1, 4, 3]), cube([-.5, 3, 12], [1, 4, 3])]
+    add("ichthon", "tail_upper_ray", "tail_2", [0, 10, 13], [-24, 0, 0], [-.5, 10, 13], [1, 1, 4])
+    add("ichthon", "tail_lower_ray", "tail_2", [0, 4, 13], [24, 0, 0], [-.5, 4, 13], [1, 1, 4])
+
+
+detail_animal_shapes()
+
+
+# ==============================================================================
 # 4. PROCEDURAL 64x64 TEXTURE PAINTER
 # ==============================================================================
 
@@ -43832,10 +43880,14 @@ def generate_texture(name, entity_def, packed_uvs):
                 cube_base = hex_rgba(c_map["crown"])
             elif "mane" in bname:
                 cube_base = hex_rgba(c_map["mane"])
-            elif name == "ichthon" and ("fin" in bname or bname == "tail_2"):
+            elif name == "ichthon" and ("fin" in bname or bname.startswith("tail_") and bname != "tail_1"):
                 cube_base = hex_rgba(c_map.get("fins", c_map["base"]))
+            elif bname == "nose":
+                cube_base = hex_rgba(c_map.get("nose", "#352722"))
+            elif bname == "jaw":
+                cube_base = blend_colors(base_rgba, shadow_rgba, 0.45)
             elif name in ("hyena", "alpha_hyena") and bname == "head" and idx == 1:
-                cube_base = hex_rgba(c_map.get("muzzle", c_map["base"]))
+                cube_base = blend_colors(base_rgba, hex_rgba(c_map["muzzle"]), 0.52)
             elif name in ("hyena", "alpha_hyena") and bname.startswith("ear_"):
                 cube_base = hex_rgba(c_map.get("ear_inner", c_map["base"]))
 
@@ -43866,7 +43918,7 @@ def generate_texture(name, entity_def, packed_uvs):
                                 elif bname == "head" and idx == 1:
                                     nose_key = "nose" if (fname == "front" and y == 0) else "muzzle"
                                     if nose_key in c_map:
-                                        col = shade_color(hex_rgba(c_map[nose_key]), lum)
+                                        col = blend_colors(col, shade_color(hex_rgba(c_map[nose_key]), lum), 0.50)
                                 elif bname == "head" and fname in ("left", "right") and y == 1 and x in (1, fw - 2):
                                     col = eye_rgba
                             elif name in ("cactoid", "flowering_cactoid"):
@@ -44180,21 +44232,20 @@ def main():
                 json.dump(anim_dict, f, indent=2, ensure_ascii=False)
                 f.write("\n")
 
-        # 5. Build & Save 64x64 RGBA Texture
+        # Bake the selected materials into the model's box UVs.
         pixels = generate_texture(name, entity_def, packed_uvs)
-        tex_path = os.path.join(TEXTURES_DIR, f"{name}.png")
-        save_png_64x64(tex_path, pixels)
+        tex_path = Path(TEXTURES_DIR) / f"{name}.png"
+        write_entity_texture(tex_path, pixels, packed_uvs, entity_def["bones"], name)
 
         generated_entities.append(name)
-        print(f"  -> Generated {name}: geo, anim ({len(anim_dict['animations'])} anims), tex (64x64)")
+        print(f"  -> Generated {name}: geo, anim ({len(anim_dict['animations'])} anims), tex (256x256)")
 
-    # 6. Update Biomes
-    print("\nUpdating Biome JSON files...")
-    biomes_updated = update_biome_spawns()
+    # Bestiary generation owns the regional spawn tables.
+    if "--legacy-spawns" in sys.argv:
+        print(f"Updated {update_biome_spawns()} legacy biome tables.")
 
     print("\n================================================================")
     print(f" Successfully generated assets for all {len(generated_entities)} entities!")
-    print(f" Successfully updated {biomes_updated} biome JSON files!")
     print("================================================================")
 
 if __name__ == "__main__":

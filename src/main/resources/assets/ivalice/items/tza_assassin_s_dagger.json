@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/blade",
+    "model": "ivalice:item/catalog/dagger",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -7017557
+        "value": -2689057
       }
     ]
   }

@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/ring",
+    "model": "ivalice:item/catalog/boots",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": -9113105
+        "value": -3474695
       }
     ]
   }

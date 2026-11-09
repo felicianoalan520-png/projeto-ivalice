@@ -7,7 +7,8 @@ from pathlib import Path
 import re
 import unicodedata
 
-from generate_ivalice_settlements import ASSETS, RESOURCES, blank, save_json, save_png
+from generate_ivalice_settlements import ASSETS, RESOURCES, save_json
+from ivalice_texture_atlas import RELIC_ORDER, inventory_icon, relic_icon
 
 WEAPONS = {
     "Sword": "SWORD", "Greatsword": "GREATSWORD", "Ninja Sword": "DAGGER", "Dagger": "DAGGER",
@@ -27,103 +28,36 @@ def table(source, name):
     return [json.loads(value) for value in re.findall(r'"(?:\\.|[^"\\])*"', body)]
 
 
-def icon_for(kind, category):
+WEAPON_ICONS = {
+    "BOW": "bow", "CROSSBOW": "crossbow", "STAFF": "wand", "ROD": "wand", "MEASURE": "wand",
+    "SPEAR": "staff", "POLE": "staff", "AXE_HAMMER": "axe", "MACE": "mace",
+    "DAGGER": "dagger", "GUN": "gun", "HAND_BOMB": "orb",
+}
+LOOT_ICONS = {
+    "pelt": "pelt fur skin hide wool leather fleece", "fang": "fang tooth teeth talon claw",
+    "bone": "bone skull", "horn": "horn antler tusk", "shell": "shell carapace scale husk",
+    "feather": "feather plumage wing", "ore": "ore metal steel ingot iron silver gold electrum mythril",
+    "herb": "grass leaf leaves flower root seed fruit moss greens onion tomato vegetable",
+    "coin": "coin coins gil", "silk": "silk thread cotton cloth yarn linen",
+}
+
+
+def icon_for(name, kind, category):
     if kind == "weapon":
-        if category in ("WEAPON_BOW", "WEAPON_CROSSBOW"):
-            return "bow"
-        if category in ("WEAPON_STAFF", "WEAPON_ROD", "WEAPON_MEASURE", "WEAPON_SPEAR", "WEAPON_POLE"):
-            return "staff"
-        if category in ("WEAPON_AXE_HAMMER", "WEAPON_MACE"):
-            return "axe"
-        if category == "WEAPON_GUN":
-            return "gun"
-        if category == "WEAPON_HAND_BOMB":
-            return "orb"
-        return "blade"
+        return WEAPON_ICONS.get(category.removeprefix("WEAPON_"), "blade")
+    words = set(slug(name).split("_"))
+    if kind == "loot":
+        return next((icon for icon, group in LOOT_ICONS.items() if words.intersection(group.split())), "crystal")
+    if kind == "accessory":
+        if words.intersection(("boots", "sandals", "shoes", "anklet")):
+            return "boots"
+        if words.intersection(("glove", "gloves", "cuffs", "gauntlets", "armguard")):
+            return "glove"
+    if kind == "consumable" and words.intersection(("fang", "bone", "sand", "meteorite", "stone", "mote")):
+        return "fang" if "fang" in words else "crystal"
     return {"head": "helm", "chest": "armor", "shield": "shield", "accessory": "ring", "ammo": "arrow",
-            "consumable": "bottle", "loot": "crystal", "key": "key", "map": "scroll", "spell": "book",
+            "consumable": "bottle", "key": "key", "map": "scroll", "spell": "book",
             "technick": "scroll", "gambit": "scroll", "esper": "orb"}[kind]
-
-
-def icon_pixels(shape):
-    pixels = blank(16)
-
-    def point(x, y, gray):
-        if 0 <= x < 16 and 0 <= y < 16:
-            pixels[y][x] = (gray, gray, gray, 255)
-
-    def line(x0, y0, x1, y1, size=1):
-        n = max(abs(x1 - x0), abs(y1 - y0), 1)
-        for i in range(n + 1):
-            x, y = round(x0 + (x1 - x0) * i / n), round(y0 + (y1 - y0) * i / n)
-            for dy in range(size):
-                for dx in range(size):
-                    point(x + dx, y + dy, 230 - 24 * dy - 15 * dx)
-
-    if shape in ("blade", "staff", "axe", "arrow", "gun"):
-        line(3, 12, 12, 3, 2)
-        if shape == "blade":
-            line(6, 8, 12, 2, 3)
-            line(4, 7, 8, 11, 2)
-            line(2, 13, 4, 13, 2)
-        elif shape == "staff":
-            for x, y in [(11, 2), (12, 1), (13, 2), (14, 3), (13, 4), (12, 5)]:
-                point(x, y, 248)
-        elif shape == "axe":
-            for x in range(9, 15):
-                for y in range(2, 7):
-                    if (x - 11) ** 2 + (y - 4) ** 2 < 11:
-                        point(x, y, 150 + 15 * (x - 9))
-        elif shape == "arrow":
-            line(9, 2, 13, 2)
-            line(13, 2, 13, 6)
-            line(2, 11, 4, 11)
-            line(4, 12, 4, 14)
-        elif shape == "gun":
-            line(7, 8, 12, 3, 3)
-            line(7, 8, 10, 10, 2)
-    elif shape == "bow":
-        line(4, 2, 6, 5)
-        line(6, 5, 6, 10, 2)
-        line(6, 10, 4, 13)
-        line(4, 2, 4, 13)
-        line(2, 7, 13, 7, 2)
-        line(11, 5, 13, 7)
-        line(13, 7, 11, 9)
-    else:
-        for y in range(2, 15):
-            for x in range(1, 15):
-                dx = abs(x - 7.5)
-                dy = abs(y - 7.5)
-                if shape == "helm":
-                    on = (dx < 5.7 and 3 <= y < 10) or (y in (10, 11) and 3 <= dx < 5)
-                elif shape == "armor":
-                    on = (dx < 6 and 4 <= y <= 7) or (dx < 3.7 and 7 <= y <= 13)
-                    on &= not (y < 6 and dx < 1.6)
-                elif shape == "shield":
-                    on = 2 <= y <= 13 and dx <= min(5.7, 13.8 - y)
-                elif shape == "ring":
-                    radius = (x - 7.5) ** 2 + (y - 8.5) ** 2
-                    on = 9 < radius < 26 or (dy > 2 and y < 6 and dx < 1.6)
-                elif shape == "key":
-                    radius = (x - 6) ** 2 + (y - 5) ** 2
-                    on = 2 <= radius < 15 or (5 <= x <= 7 and 8 <= y <= 13) or (y in (11, 13) and 7 <= x <= 10)
-                elif shape == "bottle":
-                    on = (dx < 2.6 and 2 <= y <= 6) or (dx < 4.5 and 6 <= y <= 13)
-                elif shape == "orb":
-                    on = dx * dx + dy * dy < 30
-                elif shape == "crystal":
-                    on = dx + dy * 0.72 < 4.7
-                else:
-                    on = dx < 5 and 3 <= y <= 12
-                if on:
-                    gray = 140 + ((x * 17 + y * 3) % 39) + (42 if x < 7 else 0)
-                    if shape in ("book", "scroll") and 5 <= y <= 10 and y % 2 == 0:
-                        gray += 40
-                    if shape == "bottle" and y in (4, 8):
-                        gray += 33
-                    point(x, y, min(gray, 255))
-    return pixels
 
 
 def color_for(code, kind):
@@ -131,7 +65,8 @@ def color_for(code, kind):
     if kind == "map":
         hue = 0.12 + (code % 4) * 0.02
     red, green, blue = colorsys.hsv_to_rgb(hue, 0.32 + (code % 7) * 0.05, 0.92 + (code % 4) * 0.025)
-    return (round(red * 255) << 16 | round(green * 255) << 8 | round(blue * 255)) - 0x1000000
+    r, g, b = [round(255 * (.62 + value * .38)) for value in (red, green, blue)]
+    return (r << 16 | g << 8 | b) - 0x1000000
 
 
 def spell_school(code):
@@ -212,7 +147,7 @@ def main():
             if id_ in known:
                 id_ = f"{id_}_{code:04x}"
             known.add(id_)
-            shape = icon_for(kind, category)
+            shape = icon_for(name, kind, category)
             icons.add(shape)
             save_json(ASSETS / f"items/{id_}.json", {"model": {
                 "type": "minecraft:model", "model": f"ivalice:item/catalog/{shape}",
@@ -227,9 +162,30 @@ def main():
 
     for shape in sorted(icons):
         image = f"ivalice:item/catalog/{shape}"
-        save_png(ASSETS / f"textures/item/catalog/{shape}.png", icon_pixels(shape))
+        inventory_icon(shape).save(ASSETS / f"textures/item/catalog/{shape}.png")
         save_json(ASSETS / f"models/item/catalog/{shape}.json",
                   {"parent": "minecraft:item/generated", "textures": {"layer0": image}})
+    starter_icons = {
+        "mythril_sword": "blade", "shortbow": "bow", "iron_spear": "staff", "altair": "gun",
+        "potion": "bottle", "hi_potion": "bottle", "x_potion": "bottle",
+        "clan_primer": "book", "license_tome": "book", "gambit_scroll": "scroll",
+    }
+    for item, shape in starter_icons.items():
+        texture = ASSETS / f"textures/item/{item}.png"
+        if texture.is_file():
+            bottle_hue = {"hi_potion": 153, "x_potion": 193}.get(item)
+            inventory_icon(shape, bottle_hue).save(texture)
+    for relic in RELIC_ORDER:
+        if relic.startswith("tza_"):
+            save_json(ASSETS / f"items/{relic}.json", {"model": {
+                "type": "minecraft:model", "model": f"ivalice:item/catalog/{relic}"
+            }})
+            save_json(ASSETS / f"models/item/catalog/{relic}.json", {
+                "parent": "minecraft:item/generated", "textures": {"layer0": f"ivalice:item/catalog/{relic}"}
+            })
+            relic_icon(relic).save(ASSETS / f"textures/item/catalog/{relic}.png")
+        else:
+            relic_icon(relic).save(ASSETS / f"textures/item/{relic}.png")
     for lang, mapping in langs.items():
         save_json(ASSETS / f"lang/{lang}.json", mapping)
     (target / "tza_catalog.tsv").write_text("\n".join(records) + "\n", encoding="utf-8", newline="\n")

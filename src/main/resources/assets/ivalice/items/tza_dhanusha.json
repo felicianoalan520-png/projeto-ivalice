@@ -1,12 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ivalice:item/catalog/bow",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": -5145858
-      }
-    ]
+    "model": "ivalice:item/catalog/tza_dhanusha"
   }
 }
