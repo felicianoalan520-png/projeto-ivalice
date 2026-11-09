@@ -22,28 +22,10 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:wolf",
-              "weight": 14
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
                 "max_inclusive": 3,
                 "min_inclusive": 1
               },
               "type": "ivalice:cactoid",
-              "weight": 12
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:cockatrice",
               "weight": 12
             },
             {
@@ -62,6 +44,24 @@
             }
           ],
           "monster": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:wolf",
+              "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:cockatrice",
+              "weight": 12
+            },
             {
               "type": "minecraft:husk",
               "count": 4,

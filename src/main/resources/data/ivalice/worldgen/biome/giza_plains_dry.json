@@ -22,33 +22,6 @@
               "weight": 18
             },
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:hyena",
-              "weight": 14
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:wolf",
-              "weight": 14
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:cockatrice",
-              "weight": 12
-            },
-            {
               "type": "minecraft:rabbit",
               "count": {
                 "type": "minecraft:uniform",
@@ -77,6 +50,33 @@
             }
           ],
           "monster": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:hyena",
+              "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:wolf",
+              "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:cockatrice",
+              "weight": 12
+            },
             {
               "type": "minecraft:spider",
               "count": 4,

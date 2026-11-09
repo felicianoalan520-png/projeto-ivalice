@@ -21,6 +21,18 @@
           ],
           "creature": [
             {
+              "type": "minecraft:parrot",
+              "count": 2,
+              "weight": 25
+            },
+            {
+              "type": "minecraft:wolf",
+              "count": 3,
+              "weight": 10
+            }
+          ],
+          "monster": [
+            {
               "count": {
                 "type": "minecraft:uniform",
                 "max_inclusive": 4,
@@ -38,18 +50,6 @@
               "type": "ivalice:cockatrice",
               "weight": 12
             },
-            {
-              "type": "minecraft:parrot",
-              "count": 2,
-              "weight": 25
-            },
-            {
-              "type": "minecraft:wolf",
-              "count": 3,
-              "weight": 10
-            }
-          ],
-          "monster": [
             {
               "type": "minecraft:spider",
               "count": 4,

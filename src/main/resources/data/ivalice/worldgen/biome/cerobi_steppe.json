@@ -13,6 +13,23 @@
           ],
           "creature": [
             {
+              "type": "minecraft:goat",
+              "count": 3,
+              "weight": 10
+            },
+            {
+              "type": "minecraft:llama",
+              "count": 4,
+              "weight": 8
+            },
+            {
+              "type": "minecraft:rabbit",
+              "count": 3,
+              "weight": 10
+            }
+          ],
+          "monster": [
+            {
               "count": {
                 "type": "minecraft:uniform",
                 "max_inclusive": 4,
@@ -30,23 +47,6 @@
               "type": "ivalice:cockatrice",
               "weight": 12
             },
-            {
-              "type": "minecraft:goat",
-              "count": 3,
-              "weight": 10
-            },
-            {
-              "type": "minecraft:llama",
-              "count": 4,
-              "weight": 8
-            },
-            {
-              "type": "minecraft:rabbit",
-              "count": 3,
-              "weight": 10
-            }
-          ],
-          "monster": [
             {
               "type": "minecraft:spider",
               "count": 4,

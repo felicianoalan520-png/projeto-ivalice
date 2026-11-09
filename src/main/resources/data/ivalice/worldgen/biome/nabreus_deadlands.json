@@ -21,6 +21,13 @@
           ],
           "creature": [
             {
+              "type": "minecraft:frog",
+              "count": 3,
+              "weight": 10
+            }
+          ],
+          "monster": [
+            {
               "count": {
                 "type": "minecraft:uniform",
                 "max_inclusive": 4,
@@ -38,13 +45,6 @@
               "type": "ivalice:ichthon",
               "weight": 14
             },
-            {
-              "type": "minecraft:frog",
-              "count": 3,
-              "weight": 10
-            }
-          ],
-          "monster": [
             {
               "type": "minecraft:skeleton",
               "count": 4,

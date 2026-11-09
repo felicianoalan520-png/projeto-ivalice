@@ -1153,16 +1153,11 @@ def update_biome_spawns():
         mob_spawns = attrs.setdefault("minecraft:gameplay/natural_mob_spawns", {})
         arg = mob_spawns.setdefault("argument", {})
         spawns_by_cat = arg.setdefault("spawns_by_category", {})
-        creature_list = spawns_by_cat.setdefault("creature", [])
-
-        # Filter out existing ivalice spawns to avoid duplicates
-        preserved_vanilla = [c for c in creature_list if not str(c.get("type", "")).startswith("ivalice:")]
-
-        # Build new ivalice spawns
-        new_ivalice_spawns = []
+        new_ivalice_spawns = {"creature": [], "monster": []}
         for mob_id in BIOME_CREATURE_MAP[bname]:
             params = CREATURE_SPAWN_PARAMS.get(mob_id, {"weight": 10, "min": 1, "max": 3})
-            new_ivalice_spawns.append({
+            category = "creature" if mob_id in ("ivalice:cactoid", "ivalice:giza_rabbit") else "monster"
+            new_ivalice_spawns[category].append({
                 "count": {
                     "type": "minecraft:uniform",
                     "max_inclusive": params["max"],
@@ -1172,8 +1167,10 @@ def update_biome_spawns():
                 "weight": params["weight"]
             })
 
-        # Combine with Ivalice creatures at the top
-        spawns_by_cat["creature"] = new_ivalice_spawns + preserved_vanilla
+        for category, spawns in new_ivalice_spawns.items():
+            vanilla_spawns = [entry for entry in spawns_by_cat.get(category, [])
+                              if not entry["type"].startswith("ivalice:")]
+            spawns_by_cat[category] = spawns + vanilla_spawns
 
         # Write file cleanly without BOM
         with open(fpath, "w", encoding="utf-8") as f:
@@ -1181,7 +1178,7 @@ def update_biome_spawns():
             f.write("\n")
 
         updated_count += 1
-        print(f"  [Biome] Updated {bname}.json with {len(new_ivalice_spawns)} canonical FFXII creature spawns.")
+        print(f"  [Biome] Updated {bname}.json with {len(BIOME_CREATURE_MAP[bname])} canonical FFXII creature spawns.")
 
     return updated_count
 

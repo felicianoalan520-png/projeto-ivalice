@@ -22,6 +22,27 @@
               "weight": 18
             },
             {
+              "type": "minecraft:horse",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 6,
+                "min_inclusive": 2
+              },
+              "weight": 15
+            },
+            {
+              "type": "minecraft:chicken",
+              "count": 4,
+              "weight": 14
+            },
+            {
+              "type": "minecraft:sheep",
+              "count": 4,
+              "weight": 10
+            }
+          ],
+          "monster": [
+            {
               "count": {
                 "type": "minecraft:uniform",
                 "max_inclusive": 4,
@@ -48,27 +69,6 @@
               "type": "ivalice:cockatrice",
               "weight": 12
             },
-            {
-              "type": "minecraft:horse",
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 6,
-                "min_inclusive": 2
-              },
-              "weight": 15
-            },
-            {
-              "type": "minecraft:chicken",
-              "count": 4,
-              "weight": 14
-            },
-            {
-              "type": "minecraft:sheep",
-              "count": 4,
-              "weight": 10
-            }
-          ],
-          "monster": [
             {
               "type": "minecraft:spider",
               "count": 4,

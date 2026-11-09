@@ -21,24 +21,6 @@
           ],
           "creature": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:wolf",
-              "weight": 14
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:ichthon",
-              "weight": 14
-            },
-            {
               "type": "minecraft:wolf",
               "count": {
                 "type": "minecraft:uniform",
@@ -59,6 +41,24 @@
             }
           ],
           "monster": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:wolf",
+              "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:ichthon",
+              "weight": 14
+            },
             {
               "type": "minecraft:stray",
               "count": 4,

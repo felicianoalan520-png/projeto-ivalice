@@ -15,29 +15,11 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:ichthon",
-              "weight": 14
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
                 "max_inclusive": 5,
                 "min_inclusive": 2
               },
               "type": "ivalice:giza_rabbit",
               "weight": 18
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:hyena",
-              "weight": 14
             },
             {
               "type": "minecraft:turtle",
@@ -64,6 +46,24 @@
             }
           ],
           "monster": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:ichthon",
+              "weight": 14
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:hyena",
+              "weight": 14
+            },
             {
               "type": "minecraft:drowned",
               "count": 3,

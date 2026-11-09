@@ -25,7 +25,7 @@ public class IvaliceEntities {
     // === 6 Criaturas Canônicas Iniciais (Etapa 3.2) ===
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> WOLF =
             ENTITIES.registerEntityType("wolf", (type, level) -> new IvaliceMonsterEntity(type, level, "wolf"),
-                    MobCategory.CREATURE, b -> b.sized(0.85F, 0.95F).eyeHeight(0.75F));
+                    MobCategory.MONSTER, b -> b.sized(0.85F, 0.95F).eyeHeight(0.75F));
 
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> CACTOID =
             ENTITIES.registerEntityType("cactoid", (type, level) -> new IvaliceMonsterEntity(type, level, "cactoid"),
@@ -33,7 +33,7 @@ public class IvaliceEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> HYENA =
             ENTITIES.registerEntityType("hyena", (type, level) -> new IvaliceMonsterEntity(type, level, "hyena"),
-                    MobCategory.CREATURE, b -> b.sized(0.95F, 1.05F).eyeHeight(0.85F));
+                    MobCategory.MONSTER, b -> b.sized(0.95F, 1.05F).eyeHeight(0.85F));
 
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> GIZA_RABBIT =
             ENTITIES.registerEntityType("giza_rabbit", (type, level) -> new IvaliceMonsterEntity(type, level, "giza_rabbit"),
@@ -41,11 +41,11 @@ public class IvaliceEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> COCKATRICE =
             ENTITIES.registerEntityType("cockatrice", (type, level) -> new IvaliceMonsterEntity(type, level, "cockatrice"),
-                    MobCategory.CREATURE, b -> b.sized(0.90F, 1.0F).eyeHeight(0.80F));
+                    MobCategory.MONSTER, b -> b.sized(0.90F, 1.0F).eyeHeight(0.80F));
 
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> ICHTHON =
             ENTITIES.registerEntityType("ichthon", (type, level) -> new IvaliceMonsterEntity(type, level, "ichthon"),
-                    MobCategory.CREATURE, b -> b.sized(0.75F, 0.75F).eyeHeight(0.55F));
+                    MobCategory.MONSTER, b -> b.sized(0.75F, 0.75F).eyeHeight(0.55F));
 
     // === 4 Elite Marks — Caçadas do Clã Centurio (Etapa 4.2) ===
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> ROGUE_TOMATO =
@@ -128,6 +128,9 @@ public class IvaliceEntities {
             BlockPos pos,
             RandomSource random
     ) {
+        if (reason == EntitySpawnReason.NATURAL && type.getCategory() == MobCategory.MONSTER && !level.canSeeSky(pos)) {
+            return false;
+        }
         return !level.getBlockState(pos.below()).isAir();
     }
 
