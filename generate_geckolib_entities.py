@@ -13,13 +13,12 @@ Generates:
    - src/main/resources/assets/ivalice/textures/entity/<name>.png
 4. Updates all 15 biome JSONs in:
    - src/main/resources/data/ivalice/worldgen/biome/*.json
-   without UTF-8 BOM, including canonical regional spawns in "creature" category.
+   without UTF-8 BOM, including only regional Ivalice fauna.
 """
 
 import os
 import sys
 import json
-import math
 import struct
 import zlib
 import glob
@@ -90,6 +89,15 @@ def save_png_64x64(filepath, pixels):
 # 2. 2D UV PACKER (STRICT NON-OVERLAPPING IN 64x64)
 # ==============================================================================
 
+def snap_cube_to_pixels(cube):
+    # GeckoLib uses the cube's dimensions to calculate the box UVs.
+    # Keep those dimensions integral while preserving each cube's center.
+    dimensions = [max(1, round(size)) for size in cube["size"]]
+    cube["origin"] = [origin + (old - new) / 2 for origin, old, new in
+                      zip(cube["origin"], cube["size"], dimensions)]
+    cube["size"] = dimensions
+
+
 def pack_model_cubes(bones_def):
     """
     Packs all cubes from bone definitions into a 64x64 texture map without overlap.
@@ -100,16 +108,13 @@ def pack_model_cubes(bones_def):
         bname = b["name"]
         for idx, c in enumerate(b.get("cubes", [])):
             sx, sy, sz = c["size"]
-            w = int(math.ceil(2 * (sx + sz)))
-            h = int(math.ceil(sz + sy))
+            w = 2 * (sx + sz)
+            h = sz + sy
             ckey = f"{bname}_{idx}"
             cubes_list.append({
                 "key": ckey,
                 "w": w,
-                "h": h,
-                "bone": bname,
-                "cube_idx": idx,
-                "size": [int(math.ceil(sx)), int(math.ceil(sy)), int(math.ceil(sz))]
+                "h": h
             })
 
     # Sort descending by area and height
@@ -269,28 +274,34 @@ ENTITIES_DATA = {
     "hyena": {
         "theme_color": "#261a12",
         "colors": {
-            "base": "#d97706", "shadow": "#92400e", "highlight": "#f59e0b",
-            "spots": "#451a03", "mane": "#292524", "eye": "#eab308",
-            "eye_pupil": "#18181b", "muzzle": "#1c1917"
+            "base": "#b88a59", "shadow": "#785038", "highlight": "#dbb984",
+            "belly": "#dfc7a4", "spots": "#473026", "mane": "#3a2722", "eye": "#ffc85b",
+            "eye_pupil": "#160f12", "muzzle": "#47322e", "ear_inner": "#985f54"
         },
         "bones": [
             {"name": "root", "pivot": [0, 0, 0]},
             {"name": "body", "parent": "root", "pivot": [0, 8, 0],
              "cubes": [
-                 {"origin": [-3.5, 6.5, -6], "size": [7, 8, 7]},
-                 {"origin": [-3, 6, 1], "size": [6, 6, 6]},
-                 {"origin": [-1, 13, -5], "size": [2, 3, 9]}  # mane
+                 {"origin": [-3.5, 6, -6], "size": [7, 8, 7]},
+                 {"origin": [-2.5, 6.25, 0.75], "size": [5, 5, 6]}
+             ]},
+            {"name": "mane", "parent": "body", "pivot": [0, 13, -5],
+             "cubes": [
+                 {"origin": [-1.5, 12.75, -7], "size": [3, 4, 4]},
+                 {"origin": [-1, 13.25, -3.25], "size": [2, 2, 5]}
              ]},
             {"name": "neck", "parent": "body", "pivot": [0, 10, -5],
              "cubes": [{"origin": [-2.25, 8, -8], "size": [4.5, 5, 4]}]},
             {"name": "head", "parent": "neck", "pivot": [0, 11, -7],
              "cubes": [
-                 {"origin": [-2.75, 9.5, -11], "size": [5.5, 5, 5]},
-                 {"origin": [-1.75, 9.5, -14.5], "size": [3.5, 3, 4]}  # snout
+                 {"origin": [-3, 10, -11.25], "size": [6, 5, 5]},
+                 {"origin": [-2, 9.75, -14.5], "size": [4, 3, 4]}
              ]},
             {"name": "ear_left", "parent": "head", "pivot": [1.5, 14, -8.5],
+             "rotation": [0, 0, -12],
              "cubes": [{"origin": [1.5, 14, -8.5], "size": [2, 3, 1]}]},
             {"name": "ear_right", "parent": "head", "pivot": [-1.5, 14, -8.5],
+             "rotation": [0, 0, 12],
              "cubes": [{"origin": [-3.5, 14, -8.5], "size": [2, 3, 1]}]},
             {"name": "tail", "parent": "body", "pivot": [0, 10, 6.5],
              "cubes": [{"origin": [-1, 4.5, 6], "size": [2, 6, 2]}]},
@@ -453,24 +464,29 @@ ENTITIES_DATA = {
     # 6. Ichthon
     # --------------------------------------------------------------------------
     "ichthon": {
-        "theme_color": "#083344",
+        "theme_color": "#132c37",
         "colors": {
-            "base": "#06b6d4", "shadow": "#0e7490", "highlight": "#67e8f9",
-            "dorsal": "#0c4a6e", "belly": "#cffafe", "fins": "#38bdf8",
-            "eye": "#facc15", "eye_pupil": "#0f172a"
+            "base": "#2b766f", "shadow": "#164254", "highlight": "#72bba7",
+            "dorsal": "#243850", "belly": "#d1c892", "fins": "#ca5c42",
+            "crest": "#ed9c57", "eye": "#ffdc68", "eye_pupil": "#201629"
         },
         "bones": [
             {"name": "root", "pivot": [0, 0, 0]},
             {"name": "body", "parent": "root", "pivot": [0, 8, 0],
              "cubes": [
-                 {"origin": [-2.5, 5, -5], "size": [5, 7, 10]},
-                 {"origin": [-0.5, 12, -3], "size": [1, 4, 7]},   # dorsal fin
-                 {"origin": [-0.5, 2, -1], "size": [1, 3, 5]}     # ventral fin
+                 {"origin": [-3, 4, -5], "size": [6, 8, 10]}
              ]},
+            {"name": "crest", "parent": "body", "pivot": [0, 11, -2],
+             "cubes": [
+                 {"origin": [-0.5, 11.5, -4], "size": [1, 5, 3]},
+                 {"origin": [-0.5, 11.25, -1.25], "size": [1, 3, 4]}
+             ]},
+            {"name": "ventral_fin", "parent": "body", "pivot": [0, 4, 0],
+             "cubes": [{"origin": [-0.5, 2, 0], "size": [1, 3, 5]}]},
             {"name": "head", "parent": "body", "pivot": [0, 8, -5],
              "cubes": [
-                 {"origin": [-2.25, 5.5, -9.5], "size": [4.5, 6, 5]},
-                 {"origin": [-1.75, 4.5, -9], "size": [3.5, 2, 4.5]}  # jaw
+                 {"origin": [-2.5, 6, -10], "size": [5, 6, 6]},
+                 {"origin": [-2, 4.75, -11], "size": [4, 2, 6]}
              ]},
             {"name": "fin_left", "parent": "body", "pivot": [2.5, 7, -2],
              "cubes": [{"origin": [2.5, 6.5, -3], "size": [5, 1, 3]}]},
@@ -479,7 +495,11 @@ ENTITIES_DATA = {
             {"name": "tail_1", "parent": "body", "pivot": [0, 8, 5],
              "cubes": [{"origin": [-1.75, 6, 5], "size": [3.5, 5, 5]}]},
             {"name": "tail_2", "parent": "tail_1", "pivot": [0, 8, 10],
-             "cubes": [{"origin": [-0.5, 5, 10], "size": [1, 7, 5]}]}
+             "cubes": [
+                 {"origin": [-0.5, 4, 9.5], "size": [1, 8, 3]},
+                 {"origin": [-0.5, 9.25, 12.25], "size": [1, 4, 4]},
+                 {"origin": [-0.5, 2.75, 12.25], "size": [1, 4, 4]}
+             ]}
         ],
         "animations": {
             "idle": {
@@ -895,28 +915,19 @@ def generate_texture(name, entity_def, packed_uvs):
     eye_rgba = hex_rgba(c_map.get("eye", "#facc15"))
     pupil_rgba = hex_rgba(c_map.get("eye_pupil", "#09090b"))
 
-    # Initialize canvas with theme background gradient
-    pixels = [[(0, 0, 0, 255) for _ in range(64)] for _ in range(64)]
-    for y in range(64):
-        for x in range(64):
-            # Subtle radial vignette
-            dist = math.sqrt((x - 31.5) ** 2 + (y - 31.5) ** 2) / 45.0
-            bg = shade_color(theme_rgba, max(0.4, 1.0 - dist * 0.5))
-            pixels[y][x] = bg
+    pixels = [[theme_rgba for _ in range(64)] for _ in range(64)]
 
     # Paint each bone's cubes into their mapped UV regions
     for b in entity_def["bones"]:
         bname = b["name"]
         for idx, c in enumerate(b.get("cubes", [])):
             ckey = f"{bname}_{idx}"
-            if ckey not in packed_uvs:
-                continue
             u, v = packed_uvs[ckey]
-            dx, dy, dz = [int(math.ceil(s)) for s in c["size"]]
+            dx, dy, dz = c["size"]
 
             # Bedrock 6-Face Box UV Coordinates
             # Top face (+Y): [u + dz .. u + dz + dx, v .. v + dz]
-            # Bottom face (-Y): [u + dz + dx .. u + 2*dz + dx, v .. v + dz]
+            # Bottom face (-Y): [u + dz + dx .. u + dz + 2*dx, v .. v + dz]
             # Right face (-X): [u .. u + dz, v + dz .. v + dz + dy]
             # Front face (+Z): [u + dz .. u + dz + dx, v + dz .. v + dz + dy]
             # Left face (+X): [u + dz + dx .. u + 2*dz + dx, v + dz .. v + dz + dy]
@@ -950,6 +961,12 @@ def generate_texture(name, entity_def, packed_uvs):
                 cube_base = hex_rgba(c_map["crown"])
             elif "mane" in bname:
                 cube_base = hex_rgba(c_map["mane"])
+            elif name == "ichthon" and ("fin" in bname or bname == "tail_2"):
+                cube_base = hex_rgba(c_map["fins"])
+            elif name == "hyena" and bname == "head" and idx == 1:
+                cube_base = hex_rgba(c_map["muzzle"])
+            elif name == "hyena" and bname.startswith("ear_"):
+                cube_base = hex_rgba(c_map["ear_inner"])
 
             for fname, fx, fy, fw, fh, lum in faces:
                 for py in range(fy, fy + fh):
@@ -957,17 +974,25 @@ def generate_texture(name, entity_def, packed_uvs):
                         if 0 <= px < 64 and 0 <= py < 64:
                             # Edge shading
                             is_edge = (px == fx or px == fx + fw - 1 or py == fy or py == fy + fh - 1)
-                            factor = lum * (0.85 if is_edge else 1.0)
+                            x, y = px - fx, py - fy
+                            grain = ((x * 31 + y * 43 + x * y * 7) % 11 - 5) * 0.013
+                            factor = lum * (0.9 if is_edge else 1.0) + grain
                             col = shade_color(cube_base, factor)
 
                             # Detailed procedural textures per creature
                             if name in ("wolf", "thextera") and "body" in bname and fname == "front":
                                 if py > fy + fh // 2:
                                     col = blend_colors(col, hex_rgba(c_map.get("belly", "#edd8ba")), 0.6)
-                            elif name == "hyena" and (fname in ("front", "back", "left", "right")):
-                                # Spotted pattern
-                                if (px + py * 3) % 4 == 0:
-                                    col = hex_rgba(c_map["spots"])
+                            elif name == "hyena":
+                                if bname.startswith("leg_") and y >= fh - 2:
+                                    col = shade_color(hex_rgba(c_map["muzzle"]), lum)
+                                elif bname in ("body", "neck") and fname != "bottom":
+                                    if y >= fh - 2 and fname != "top":
+                                        col = blend_colors(col, hex_rgba(c_map["belly"]), 0.7)
+                                    elif (x * 11 + y * 19 + x * y * 3 + idx * 7) % 23 < 5:
+                                        col = shade_color(hex_rgba(c_map["spots"]), lum)
+                                elif bname == "head" and idx == 1 and y >= fh - 1:
+                                    col = shade_color(hex_rgba(c_map["belly"]), 0.75)
                             elif name in ("cactoid", "flowering_cactoid"):
                                 # Vertical spine ridges and needle dots
                                 if (px - fx) % 2 == 0:
@@ -975,11 +1000,23 @@ def generate_texture(name, entity_def, packed_uvs):
                                 if (px + py * 2) % 5 == 0:
                                     col = hex_rgba(c_map["spines"])
                             elif name == "ichthon":
-                                # Scaled pattern and luminous aqua line
-                                if py == fy + fh // 2:
-                                    col = hex_rgba(c_map["highlight"])
-                                elif (px + py) % 2 == 0:
-                                    col = shade_color(col, 1.12)
+                                if "fin" in bname or bname in ("crest", "tail_2"):
+                                    col = shade_color(cube_base, 1.25 if x % 2 == 0 else 0.8)
+                                elif bname == "head" and idx == 1:
+                                    col = shade_color(hex_rgba(c_map["belly"]), lum)
+                                    if fname in ("front", "left", "right") and y == 0 and x % 2 == 0:
+                                        col = (244, 236, 197, 255)
+                                elif fname == "top" or y < 1:
+                                    col = shade_color(hex_rgba(c_map["dorsal"]), lum)
+                                elif fname == "bottom" or y >= fh - 2:
+                                    col = shade_color(hex_rgba(c_map["belly"]), lum)
+                                elif (x + y // 2) % 3 == 0:
+                                    col = blend_colors(col, hex_rgba(c_map["highlight"]), 0.55)
+                                if bname == "head" and idx == 0 and fname in ("left", "right"):
+                                    if y == 2 and x in (1, fw - 2):
+                                        col = eye_rgba
+                                    elif y == 3 and x in (1, fw - 2):
+                                        col = pupil_rgba
                             elif name == "cockatrice" and ("wing" in bname or "body" in bname):
                                 # Feather banding
                                 if (py - fy) % 2 == 0:
@@ -1153,10 +1190,17 @@ def update_biome_spawns():
         mob_spawns = attrs.setdefault("minecraft:gameplay/natural_mob_spawns", {})
         arg = mob_spawns.setdefault("argument", {})
         spawns_by_cat = arg.setdefault("spawns_by_category", {})
-        new_ivalice_spawns = {"creature": [], "monster": []}
+        new_ivalice_spawns = {"creature": [], "monster": [], "ambient": [],
+                              "water_creature": [], "water_ambient": [],
+                              "underground_water_creature": [], "axolotls": []}
         for mob_id in BIOME_CREATURE_MAP[bname]:
             params = CREATURE_SPAWN_PARAMS.get(mob_id, {"weight": 10, "min": 1, "max": 3})
-            category = "creature" if mob_id in ("ivalice:cactoid", "ivalice:giza_rabbit") else "monster"
+            if mob_id == "ivalice:ichthon":
+                category = "water_creature"
+            elif mob_id in ("ivalice:cactoid", "ivalice:giza_rabbit"):
+                category = "creature"
+            else:
+                category = "monster"
             new_ivalice_spawns[category].append({
                 "count": {
                     "type": "minecraft:uniform",
@@ -1167,10 +1211,7 @@ def update_biome_spawns():
                 "weight": params["weight"]
             })
 
-        for category, spawns in new_ivalice_spawns.items():
-            vanilla_spawns = [entry for entry in spawns_by_cat.get(category, [])
-                              if not entry["type"].startswith("ivalice:")]
-            spawns_by_cat[category] = spawns + vanilla_spawns
+        spawns_by_cat.update(new_ivalice_spawns)
 
         # Write file cleanly without BOM
         with open(fpath, "w", encoding="utf-8") as f:
@@ -1200,7 +1241,10 @@ def main():
     for name, entity_def in ENTITIES_DATA.items():
         print(f"\nProcessing entity '{name}'...")
 
-        # 2. Pack UVs in 64x64
+        # 2. Align geometry and pack its UVs in 64x64
+        for bone in entity_def["bones"]:
+            for cube in bone.get("cubes", []):
+                snap_cube_to_pixels(cube)
         packed_uvs = pack_model_cubes(entity_def["bones"])
 
         # 3. Build & Save Geometry JSON at both locations

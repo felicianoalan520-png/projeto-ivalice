@@ -9,6 +9,7 @@ import com.ivalice.registry.IvaliceEntities;
 import com.ivalice.registry.IvaliceItems;
 import com.ivalice.worldgen.biome.IvaliceBiomes;
 import com.ivalice.worldgen.biome.IvaliceOverworldRegion;
+import com.ivalice.worldgen.biome.IvaliceOverworldSpawns;
 import com.ivalice.worldgen.season.GizaSeasonManager;
 import com.ivalice.worldgen.surface.IvaliceSurfaceRules;
 import com.mojang.datafixers.util.Pair;
@@ -42,6 +43,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 import terrablender.api.MaterialRuleManager;
 import terrablender.api.Regions;
+import terrablender.worldgen.DefaultOverworldRegion;
 
 /**
  * Classe principal do Projeto Ivalice (Final Fantasy XII: The Zodiac Age para Minecraft Java 26.3 / NeoForge).
@@ -63,6 +65,8 @@ public class IvaliceMod {
         // Eventos do servidor e sistema sazonal de Giza Plains
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.addListener(GizaSeasonManager::onLevelTickPost);
+        NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onPotentialSpawns);
+        NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onEntityJoin);
 
         // Registro do arquivo de configuração
         modContainer.registerConfig(ModConfig.Type.LOCAL, IvaliceConfig.SPEC);
@@ -73,6 +77,9 @@ public class IvaliceMod {
             if (IvaliceConfig.ENABLE_OVERWORLD_BIOMES.getAsBoolean()) {
                 int weight = IvaliceConfig.OVERWORLD_REGION_WEIGHT.getAsInt();
                 Identifier regionId = Identifier.fromNamespaceAndPath(MODID, "overworld_ivalice");
+                // TerraBlender usa a região vanilla no índice zero como fallback interno.
+                // O peso zero mantém esse índice sem selecionar a região na geração normal.
+                Regions.register(new DefaultOverworldRegion(0));
                 Regions.register(new IvaliceOverworldRegion(regionId, weight));
 
                 MaterialRuleManager.addRules(

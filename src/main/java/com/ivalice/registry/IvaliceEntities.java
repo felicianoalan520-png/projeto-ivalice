@@ -1,8 +1,10 @@
 package com.ivalice.registry;
 
 import com.ivalice.IvaliceMod;
+import com.ivalice.entity.IvaliceIchthonEntity;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -44,8 +46,8 @@ public class IvaliceEntities {
                     MobCategory.MONSTER, b -> b.sized(0.90F, 1.0F).eyeHeight(0.80F));
 
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> ICHTHON =
-            ENTITIES.registerEntityType("ichthon", (type, level) -> new IvaliceMonsterEntity(type, level, "ichthon"),
-                    MobCategory.MONSTER, b -> b.sized(0.75F, 0.75F).eyeHeight(0.55F));
+            ENTITIES.registerEntityType("ichthon", IvaliceIchthonEntity::new,
+                    MobCategory.WATER_CREATURE, b -> b.sized(0.75F, 0.75F).eyeHeight(0.55F));
 
     // === 4 Elite Marks — Caçadas do Clã Centurio (Etapa 4.2) ===
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> ROGUE_TOMATO =
@@ -102,7 +104,9 @@ public class IvaliceEntities {
         registerGroundSpawn(event, HYENA.get());
         registerGroundSpawn(event, GIZA_RABBIT.get());
         registerGroundSpawn(event, COCKATRICE.get());
-        registerGroundSpawn(event, ICHTHON.get());
+        event.register(ICHTHON.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, reason, pos, random) -> level.getFluidState(pos.below()).is(FluidTags.WATER),
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
         registerGroundSpawn(event, ROGUE_TOMATO.get());
         registerGroundSpawn(event, THEXTERA.get());
         registerGroundSpawn(event, FLOWERING_CACTOID.get());
@@ -128,7 +132,7 @@ public class IvaliceEntities {
             BlockPos pos,
             RandomSource random
     ) {
-        if (reason == EntitySpawnReason.NATURAL && type.getCategory() == MobCategory.MONSTER && !level.canSeeSky(pos)) {
+        if (reason == EntitySpawnReason.NATURAL && type.getCategory() == MobCategory.MONSTER && pos.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ())) {
             return false;
         }
         return !level.getBlockState(pos.below()).isAir();

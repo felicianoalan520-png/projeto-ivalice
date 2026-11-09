@@ -44,6 +44,12 @@ Recriação modular e progressiva do universo de **Final Fantasy XII: The Zodiac
 
 ---
 
+## Geração e fauna do Overworld
+
+Com a geração de Ivalice ativa, os novos trechos do Overworld normal usam as regiões de Ivalice. Terreno e biomas gravados em mundos existentes são preservados, e esses trechos passam a receber a fauna de Ivalice. Animais domesticados, criaturas com nome e NPCs como aldeões são preservados. Nether e End mantêm sua fauna.
+
+Ichthon vive na água. As Marks e os Espers podem ser chamados pelo sistema de caçadas.
+
 ## Como Executar e Testar
 
 No diretório `c:\Users\Pichau\Downloads\Projeto_Game\ivalice`:

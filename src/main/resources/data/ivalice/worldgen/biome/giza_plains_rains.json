@@ -4,13 +4,7 @@
       "argument": {
         "spawn_costs": {},
         "spawns_by_category": {
-          "ambient": [
-            {
-              "type": "minecraft:bat",
-              "count": 8,
-              "weight": 10
-            }
-          ],
+          "ambient": [],
           "creature": [
             {
               "count": {
@@ -20,39 +14,10 @@
               },
               "type": "ivalice:giza_rabbit",
               "weight": 18
-            },
-            {
-              "type": "minecraft:frog",
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 5,
-                "min_inclusive": 2
-              },
-              "weight": 18
-            },
-            {
-              "type": "minecraft:rabbit",
-              "count": 2,
-              "weight": 8
             }
           ],
-          "water_ambient": [
-            {
-              "type": "minecraft:tropical_fish",
-              "count": 4,
-              "weight": 15
-            }
-          ],
+          "water_ambient": [],
           "monster": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
-              },
-              "type": "ivalice:ichthon",
-              "weight": 14
-            },
             {
               "count": {
                 "type": "minecraft:uniform",
@@ -61,23 +26,21 @@
               },
               "type": "ivalice:hyena",
               "weight": 14
-            },
-            {
-              "type": "minecraft:slime",
-              "count": 3,
-              "weight": 80
-            },
-            {
-              "type": "minecraft:drowned",
-              "count": 2,
-              "weight": 50
-            },
-            {
-              "type": "minecraft:skeleton",
-              "count": 4,
-              "weight": 70
             }
-          ]
+          ],
+          "water_creature": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "type": "ivalice:ichthon",
+              "weight": 14
+            }
+          ],
+          "underground_water_creature": [],
+          "axolotls": []
         }
       },
       "modifier": "overlay"

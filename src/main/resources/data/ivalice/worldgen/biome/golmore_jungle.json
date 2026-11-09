@@ -12,25 +12,8 @@
       "argument": {
         "spawn_costs": {},
         "spawns_by_category": {
-          "ambient": [
-            {
-              "type": "minecraft:bat",
-              "count": 8,
-              "weight": 15
-            }
-          ],
-          "creature": [
-            {
-              "type": "minecraft:parrot",
-              "count": 2,
-              "weight": 25
-            },
-            {
-              "type": "minecraft:wolf",
-              "count": 3,
-              "weight": 10
-            }
-          ],
+          "ambient": [],
+          "creature": [],
           "monster": [
             {
               "count": {
@@ -49,28 +32,12 @@
               },
               "type": "ivalice:cockatrice",
               "weight": 12
-            },
-            {
-              "type": "minecraft:spider",
-              "count": 4,
-              "weight": 100
-            },
-            {
-              "type": "minecraft:cave_spider",
-              "count": 2,
-              "weight": 40
-            },
-            {
-              "type": "minecraft:skeleton",
-              "count": 4,
-              "weight": 90
-            },
-            {
-              "type": "minecraft:zombie",
-              "count": 4,
-              "weight": 80
             }
-          ]
+          ],
+          "water_creature": [],
+          "water_ambient": [],
+          "underground_water_creature": [],
+          "axolotls": []
         }
       },
       "modifier": "overlay"

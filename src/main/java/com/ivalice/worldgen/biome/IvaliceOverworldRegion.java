@@ -108,6 +108,16 @@ public class IvaliceOverworldRegion extends Region {
                 .weirdness(Weirdness.FULL_RANGE)
                 .build().forEach(point -> addBiome(mapper, point, IvaliceBiomes.PHON_COAST));
 
+        // Oceanos e ilhas também usam Phon Coast, sem disputar os climas do interior.
+        new ParameterUtils.ParameterPointListBuilder()
+                .temperature(Temperature.FULL_RANGE)
+                .humidity(Humidity.FULL_RANGE)
+                .continentalness(Continentalness.MUSHROOM_FIELDS, Continentalness.DEEP_OCEAN, Continentalness.OCEAN)
+                .erosion(Erosion.FULL_RANGE)
+                .depth(Depth.SURFACE, Depth.FLOOR)
+                .weirdness(Weirdness.FULL_RANGE)
+                .build().forEach(point -> addBiome(mapper, point, IvaliceBiomes.PHON_COAST));
+
         // 8. Golmore Jungle — Selva densa e sombreada em regiões quentes e úmidas
         new ParameterUtils.ParameterPointListBuilder()
                 .temperature(Temperature.WARM, Temperature.HOT)

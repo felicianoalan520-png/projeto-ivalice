@@ -4,13 +4,7 @@
       "argument": {
         "spawn_costs": {},
         "spawns_by_category": {
-          "ambient": [
-            {
-              "type": "minecraft:bat",
-              "count": 8,
-              "weight": 10
-            }
-          ],
+          "ambient": [],
           "creature": [
             {
               "count": {
@@ -20,32 +14,9 @@
               },
               "type": "ivalice:giza_rabbit",
               "weight": 18
-            },
-            {
-              "type": "minecraft:turtle",
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 5,
-                "min_inclusive": 2
-              },
-              "weight": 12
             }
           ],
           "water_creature": [
-            {
-              "type": "minecraft:dolphin",
-              "count": 2,
-              "weight": 5
-            }
-          ],
-          "water_ambient": [
-            {
-              "type": "minecraft:tropical_fish",
-              "count": 8,
-              "weight": 25
-            }
-          ],
-          "monster": [
             {
               "count": {
                 "type": "minecraft:uniform",
@@ -54,7 +25,10 @@
               },
               "type": "ivalice:ichthon",
               "weight": 14
-            },
+            }
+          ],
+          "water_ambient": [],
+          "monster": [
             {
               "count": {
                 "type": "minecraft:uniform",
@@ -63,18 +37,10 @@
               },
               "type": "ivalice:hyena",
               "weight": 14
-            },
-            {
-              "type": "minecraft:drowned",
-              "count": 3,
-              "weight": 60
-            },
-            {
-              "type": "minecraft:spider",
-              "count": 4,
-              "weight": 60
             }
-          ]
+          ],
+          "underground_water_creature": [],
+          "axolotls": []
         }
       },
       "modifier": "overlay"
