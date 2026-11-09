@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 16,
+    "separation": 5,
+    "salt": 6679142
+  },
+  "structures": [
+    {
+      "structure": "ivalice:magitek_boneyard",
+      "weight": 1
+    }
+  ]
+}

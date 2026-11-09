@@ -1,12 +1,14 @@
 package com.ivalice.registry;
 
 import com.ivalice.IvaliceMod;
+import com.ivalice.worldgen.RuinSealBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -206,6 +208,44 @@ public class IvaliceBlocks {
     public static final DeferredBlock<Block> NABREUS_MIST_BELL = regionalPlant("nabreus_mist_bell");
     public static final DeferredBlock<Block> PARAMINA_FROST_BELL = regionalPlant("paramina_frost_bell");
     public static final DeferredBlock<Block> MOSPHORAN_STONEBLOOM = regionalPlant("mosphoran_stonebloom");
+
+    public static final DeferredBlock<Block> RUIN_RED_EARTH = masonry("ruin_red_earth", MapColor.TERRACOTTA_RED);
+    public static final DeferredBlock<Block> RUIN_ASH = registerBlock("ruin_ash", Block::new,
+            () -> BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_GRAY)
+                    .strength(.6F).speedFactor(.92F).sound(SoundType.SOUL_SOIL));
+    public static final DeferredBlock<Block> RUIN_BASALT = masonry("ruin_basalt", MapColor.COLOR_BLACK);
+    public static final DeferredBlock<Block> RUSTED_MAGITEK = masonry("rusted_magitek", MapColor.TERRACOTTA_ORANGE);
+    public static final DeferredBlock<Block> MAGITEK_PLATING = masonry("magitek_plating", MapColor.METAL);
+    public static final DeferredBlock<Block> JUDGMENT_GLASS = radiant("judgment_glass", MapColor.COLOR_RED, 8);
+    public static final DeferredBlock<Block> BLEACHED_ASH = masonry("bleached_ash", MapColor.TERRACOTTA_WHITE);
+    public static final DeferredBlock<Block> MOBLIZ_FLAGSTONE = masonry("mobliz_flagstone", MapColor.TERRACOTTA_BROWN);
+    public static final DeferredBlock<Block> RIDORANA_LIMESTONE = masonry("ridorana_limestone", MapColor.QUARTZ);
+    public static final DeferredBlock<Block> PHAROS_ASHLAR = masonry("pharos_ashlar", MapColor.CLAY);
+    public static final DeferredBlock<Block> GIRUVEGAN_STONE = masonry("giruvegan_stone", MapColor.COLOR_CYAN);
+    public static final DeferredBlock<Block> PHAROS_RUNELIGHT = radiant("pharos_runelight", MapColor.COLOR_LIGHT_BLUE, 13);
+    public static final DeferredBlock<Block> SUBTERRA_TILES = masonry("subterra_tiles", MapColor.TERRACOTTA_PURPLE);
+    public static final DeferredBlock<Block> ANCIENT_BRONZE = masonry("ancient_bronze", MapColor.WARPED_STEM);
+    public static final DeferredBlock<Block> CRYSTAL_LATTICE = radiant("crystal_lattice", MapColor.DIAMOND, 10);
+    public static final DeferredBlock<Block> SUBTERRA_BEDROCK = masonry("subterra_bedrock", MapColor.DEEPSLATE);
+
+    public static final DeferredBlock<Block> KEFKA_SEAL = seal("kefka_seal", Level.NETHER, "judgment_fragment",
+            "kefka_god", "kefka_god_end", MapColor.COLOR_RED);
+    public static final DeferredBlock<Block> PHAROS_SEAL = seal("pharos_seal", Level.END, "tza_black_orb",
+            "shadowseer", "shadowseer", MapColor.COLOR_LIGHT_BLUE);
+    public static final DeferredBlock<Block> CRYSTAL_SEAL = seal("crystal_seal", Level.END, "crystal_sigil",
+            "omega_mark_xii", "omega_mark_xii", MapColor.DIAMOND);
+
+    private static DeferredBlock<Block> seal(String id, net.minecraft.resources.ResourceKey<Level> dimension,
+                                              String key, String boss, String hunt, MapColor color) {
+        return registerBlock(id, props -> new RuinSealBlock(props, dimension, key, boss, hunt),
+                () -> BlockBehaviour.Properties.of().mapColor(color).strength(4F, 24F)
+                        .requiresCorrectToolForDrops().sound(SoundType.AMETHYST).lightLevel(state -> 12));
+    }
+
+    private static DeferredBlock<Block> radiant(String id, MapColor color, int light) {
+        return registerBlock(id, Block::new, () -> BlockBehaviour.Properties.of().mapColor(color)
+                .strength(2.2F, 8F).requiresCorrectToolForDrops().sound(SoundType.AMETHYST).lightLevel(state -> light));
+    }
 
     private static DeferredBlock<Block> masonry(String id, MapColor color) {
         return registerBlock(id, Block::new, () -> BlockBehaviour.Properties.of().mapColor(color)

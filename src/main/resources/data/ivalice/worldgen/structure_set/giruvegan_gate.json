@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 17,
+    "separation": 5,
+    "salt": 6492307
+  },
+  "structures": [
+    {
+      "structure": "ivalice:giruvegan_gate",
+      "weight": 1
+    }
+  ]
+}

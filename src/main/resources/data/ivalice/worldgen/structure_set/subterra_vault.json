@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 17,
+    "separation": 5,
+    "salt": 447009
+  },
+  "structures": [
+    {
+      "structure": "ivalice:subterra_vault",
+      "weight": 1
+    }
+  ]
+}

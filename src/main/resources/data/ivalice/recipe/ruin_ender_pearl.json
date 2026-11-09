@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "ivalice:dark_magicite",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "id": "minecraft:ender_pearl"
+  }
+}

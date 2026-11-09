@@ -26,11 +26,14 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -131,6 +134,24 @@ public class IvaliceMod {
                     "✦ [PROJETO IVALICE — FINAL FANTASY XII] Bem-vindo a Ivalice! Use 1 no teclado numérico para abrir o menu e 2 mirando uma criatura para batalhar. Use Num 5 para escolher suas profissões e /ivalice kit para explorar as 15 Regiões, Bestiário, Caçadas, Licenças e Bazaar!"
             ).withStyle(ChatFormatting.GOLD));
         }
+    }
+
+    @SubscribeEvent
+    public void onDimensionChanged(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        String destination;
+        ChatFormatting color;
+        if (event.getTo().equals(Level.NETHER)) {
+            destination = "ivalice.dimension.ruin";
+            color = ChatFormatting.GOLD;
+        } else if (event.getTo().equals(Level.END)) {
+            destination = "ivalice.dimension.ancient";
+            color = ChatFormatting.AQUA;
+        } else {
+            return;
+        }
+        player.connection.send(new ClientboundSetSubtitleTextPacket(Component.translatable(destination + ".subtitle")));
+        player.connection.send(new ClientboundSetTitleTextPacket(Component.translatable(destination).withStyle(color)));
     }
 
     @SubscribeEvent

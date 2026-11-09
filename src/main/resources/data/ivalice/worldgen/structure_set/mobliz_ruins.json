@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 18,
+    "separation": 6,
+    "salt": 762014
+  },
+  "structures": [
+    {
+      "structure": "ivalice:mobliz_ruins",
+      "weight": 1
+    }
+  ]
+}

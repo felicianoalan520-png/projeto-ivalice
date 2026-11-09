@@ -1,0 +1,219 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.ivalice.ruin_slagworm",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
+        "visible_bounds_offset": [
+          0,
+          1,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            4,
+            4
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                0.0,
+                -2.0
+              ],
+              "size": [
+                8,
+                8,
+                11
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "neck",
+          "pivot": [
+            0,
+            4,
+            -2
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                2.0,
+                -7.0
+              ],
+              "size": [
+                6,
+                9,
+                6
+              ],
+              "uv": [
+                38,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            9,
+            -5
+          ],
+          "parent": "neck",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                7.0,
+                -11.0
+              ],
+              "size": [
+                8,
+                6,
+                7
+              ],
+              "uv": [
+                30,
+                19
+              ]
+            }
+          ]
+        },
+        {
+          "name": "jaw",
+          "pivot": [
+            0,
+            7,
+            -4
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -4.0,
+                5.0,
+                -11.0
+              ],
+              "size": [
+                8,
+                2,
+                7
+              ],
+              "uv": [
+                30,
+                32
+              ]
+            }
+          ]
+        },
+        {
+          "name": "fangs",
+          "pivot": [
+            0,
+            8,
+            -6
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                6.0,
+                -12.0
+              ],
+              "size": [
+                6,
+                2,
+                1
+              ],
+              "uv": [
+                38,
+                15
+              ]
+            }
+          ]
+        },
+        {
+          "name": "tail",
+          "pivot": [
+            0,
+            4,
+            8
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                1.0,
+                8.0
+              ],
+              "size": [
+                6,
+                5,
+                9
+              ],
+              "uv": [
+                0,
+                19
+              ]
+            }
+          ]
+        },
+        {
+          "name": "tail_tip",
+          "pivot": [
+            0,
+            4,
+            16
+          ],
+          "parent": "tail",
+          "cubes": [
+            {
+              "origin": [
+                -2.0,
+                1.0,
+                16.0
+              ],
+              "size": [
+                4,
+                3,
+                5
+              ],
+              "uv": [
+                0,
+                33
+              ],
+              "inflate": 0.04
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

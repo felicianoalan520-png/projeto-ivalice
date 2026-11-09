@@ -32,6 +32,15 @@ public class IvaliceItems {
     // =========================================================================
     // 0. CRISTAL DE TELEPORTE E GUIAS DE SISTEMAS (ETAPAS 1, 4 e 5)
     // =========================================================================
+    public static final DeferredItem<Item> JUDGMENT_FRAGMENT = registerCatalog(
+            "judgment_fragment", IvaliceItemCategory.KEY_ITEM,
+            "O fragmento desperta Kefka no altar da Torre, no Mundo em Ruínas.",
+            0, "Destroços Magitek e criaturas do Mundo em Ruínas", "World of Ruin", Rarity.RARE, true);
+    public static final DeferredItem<Item> CRYSTAL_SIGIL = registerCatalog(
+            "crystal_sigil", IvaliceItemCategory.KEY_ITEM,
+            "A chave do observatório do Grande Cristal desperta Omega Mark XII.",
+            0, "Ruínas de Giruvegan e Grande Cristal", "Great Crystal", Rarity.EPIC, true);
+
     public static final DeferredItem<Item> TELEPORT_STONE = registerGuide(
             "teleport_stone", IvaliceItemCategory.KEY_ITEM,
             "Cristal laranja usado para teleporte entre Gate Crystals e Regiões de Ivalice. Clique Direito para abrir o Mapa de Teleporte!",

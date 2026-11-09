@@ -38,7 +38,7 @@ public final class IvaliceBestiary {
 
         public boolean flying() {
             return switch (model) {
-                case "bat", "bird", "wyvern", "elemental", "ghost" -> true;
+                case "bat", "bird", "wyvern", "elemental", "ghost", "ruin_deathgaze", "ruin_ray" -> true;
                 default -> false;
             };
         }
@@ -72,17 +72,22 @@ public final class IvaliceBestiary {
     private IvaliceBestiary() {}
 
     private static Map<String, Entry> read() {
-        var stream = Objects.requireNonNull(IvaliceBestiary.class.getResourceAsStream("/ivalice/tza_bestiary.json"));
+        var entries = new LinkedHashMap<String, Entry>();
+        readEntries(entries, "/ivalice/tza_bestiary.json");
+        readEntries(entries, "/ivalice/ruin_bestiary.json");
+        return Collections.unmodifiableMap(entries);
+    }
+
+    private static void readEntries(Map<String, Entry> entries, String resource) {
+        var stream = Objects.requireNonNull(IvaliceBestiary.class.getResourceAsStream(resource));
         try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
-            var entries = new LinkedHashMap<String, Entry>();
             for (Entry entry : new Gson().fromJson(reader, Entry[].class)) {
                 if (entries.putIfAbsent(entry.id, entry) != null) {
                     throw new IllegalStateException("Duplicate Ivalice bestiary ID " + entry.id);
                 }
             }
-            return Collections.unmodifiableMap(entries);
         } catch (java.io.IOException e) {
-            throw new IllegalStateException("Cannot load the Ivalice bestiary", e);
+            throw new IllegalStateException("Cannot load " + resource, e);
         }
     }
 

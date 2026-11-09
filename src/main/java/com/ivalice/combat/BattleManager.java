@@ -655,6 +655,10 @@ public final class BattleManager {
         } else {
             if (player.hasEffect(IvaliceStatuses.SHELL) && style != BattleVisual.Style.SLASH && style != BattleVisual.Style.CLEAVE) amount *= .65F;
             player.hurtServer(level, damage, amount);
+            if (player.isAlive() && style == BattleVisual.Style.DARKGA && enemy.getSpeciesId().equals("ruin_deathgaze")
+                    && !player.hasEffect(IvaliceStatuses.DOOM) && !IvaliceEquipment.has(player, "ribbon")) {
+                player.addEffect(new MobEffectInstance(IvaliceStatuses.DOOM, 400));
+            }
         }
         if (player.isAlive() && IvaliceEquipment.has(player, "tza_battle_harness") && player.getRandom().nextFloat() < .25F) {
             strike(player, enemy, (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE), false);
@@ -695,7 +699,15 @@ public final class BattleManager {
             case "malboro", "mindflayer" -> BattleVisual.Style.DARKRA;
             case "skeleton_crusader" -> BattleVisual.Style.DARK;
             case "zodiark", "golbez" -> BattleVisual.Style.COLLAPSE;
-            case "atb_weapon", "kefka_god" -> BattleVisual.Style.SCATHE;
+            case "atb_weapon" -> BattleVisual.Style.SCATHE;
+            case "kefka_god" -> {
+                float health = enemy.getHealth() / enemy.getMaxHealth();
+                if (health <= .33F) yield round % 2 == 0 ? BattleVisual.Style.SCATHE : BattleVisual.Style.COLLAPSE;
+                if (health <= .67F) yield round % 2 == 0 ? BattleVisual.Style.HOLY : BattleVisual.Style.ARDOR;
+                yield round % 2 == 0 ? BattleVisual.Style.THUNDAGA : BattleVisual.Style.FIRAGA;
+            }
+            case "shadowseer" -> round % 2 == 0 ? BattleVisual.Style.DARKGA : BattleVisual.Style.HOLY;
+            case "omega_mark_xii" -> round % 2 == 0 ? BattleVisual.Style.THUNDAGA : BattleVisual.Style.SCATHE;
             case "yiazmat" -> BattleVisual.Style.AEROGA;
             case "judge_gabranth", "gilgamesh", "iron_giant", "adamantoise", "gil_turtle", "alpha_wolf", "alpha_hyena" -> BattleVisual.Style.CLEAVE;
             default -> {
@@ -735,7 +747,18 @@ public final class BattleManager {
             case "atb_weapon" -> "Flare Star (FFVI)";
             case "shinryu" -> "Tidal Wave (FFV)";
             case "omega_mk" -> "Wave Cannon (FFV)";
-            case "kefka_god" -> "Forsaken Ultima (FFVI)";
+            case "kefka_god" -> switch (style) {
+                case SCATHE -> "Forsaken";
+                case COLLAPSE -> "Fallen One";
+                case HOLY -> "Light of Judgment";
+                case ARDOR -> "Flare Star";
+                case THUNDAGA -> "Trine";
+                default -> "Firaga";
+            };
+            case "shadowseer" -> style == BattleVisual.Style.HOLY ? "Shining Ray" : "Darkga";
+            case "omega_mark_xii" -> style == BattleVisual.Style.THUNDAGA ? "Discharge" : "Wave Cannon";
+            case "ruin_deathgaze" -> "Doom";
+            case "ruin_magitek" -> "Magitek Laser";
             default -> switch (style) {
                 case SLASH, CLEAVE -> enemy.isAlphaLeader() ? "Investida Alfa" : "Ataque";
                 case ICE -> "Blizzard";

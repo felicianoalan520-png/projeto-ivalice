@@ -972,7 +972,7 @@ def write_site(name, villager_type, biomes, blocks, residents, dimensions, base,
                                  "processors": {"processors": []}, "projection": "rigid"},
     }]})
     save_json(DATA / f"worldgen/structure/{name}.json", {
-        "type": "minecraft:jigsaw", "biomes": [f"ivalice:{biome}" for biome in biomes],
+        "type": "minecraft:jigsaw", "biomes": [biome if ":" in biome else f"ivalice:{biome}" for biome in biomes],
         "start_pool": f"ivalice:{name}", "start_height": {"absolute": height_offset}, "size": 1,
         "project_start_to_heightmap": "WORLD_SURFACE_WG", "terrain_adaptation": terrain,
         "step": "surface_structures", "spawn_overrides": {}, "max_distance_from_center": 80, "use_expansion_hack": False,

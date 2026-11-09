@@ -221,7 +221,10 @@ public class IvaliceEntities {
                         if (entry.flying()) return new IvaliceFlyingEntity(type, level, entry.id());
                         return new IvaliceMonsterEntity(type, level, entry.id());
                     },
-                    category, builder -> builder.sized(entry.width(), entry.height()).eyeHeight(entry.height() * 0.8F));
+                    category, builder -> {
+                        builder.sized(entry.width(), entry.height()).eyeHeight(entry.height() * 0.8F);
+                        return entry.id().startsWith("ruin_") ? builder.fireImmune() : builder;
+                    });
             entries.put(entry.id(), entity);
         });
         return Collections.unmodifiableMap(entries);

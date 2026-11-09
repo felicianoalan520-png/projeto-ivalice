@@ -493,12 +493,12 @@ public class IvalicePlayerData {
                     "Kefka, God of Magic [FFVI • Nível 99]",
                     "Rank S++ (Deus Nv.99)",
                     "kefka_god",
-                    "feywood",
+                    "Torre de Kefka (Nether)",
                     "Terra Branford & Returners",
                     75000,
                     750,
                     "ribbon",
-                    "O desafio máximo de Nível 99 na Dimensão do Fim: Kefka em sua forma divina alada!"
+                    "Leve o Fragmento do Julgamento ao altar da Torre no Mundo em Ruínas. Kefka alterna magias conforme perde vida."
             )
     );
 

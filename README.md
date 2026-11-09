@@ -35,12 +35,24 @@ Inclui estruturas e blocos arquitetônicos para as grandes cidades (**Rabanastre
 ---
 
 ### 2. 🐉 Bestiário, Caçadas, Espers e Criaturas Interdimensionais
-- **453 criaturas** no mod. **439 formas de The Zodiac Age** cobrem os 384 grupos do índice numerado do Clan Primer. Formas próximas podem compartilhar uma silhueta, com texturas e estatísticas próprias.
+- **463 criaturas** no mod. **439 formas de The Zodiac Age** cobrem os 384 grupos do índice numerado do Clan Primer. Formas próximas podem compartilhar uma silhueta, com texturas e estatísticas próprias.
 - A fauna se distribui pelos **15 biomas**. Monstros raros, chefes, Juízes e Espers podem ser enfrentados por contrato. Os inimigos de locais ainda sem geração própria são associados às regiões atuais de Ivalice.
-- O saque, o roubo, a captura com **Poach** e os bônus de sequência de abates usam as tabelas disponíveis. As variantes de **FFIV, FFV, FFVI e FFXV** continuam no Nether e no Fim.
+- O saque, o roubo, a captura com **Poach** e os bônus de sequência de abates usam as tabelas disponíveis. As caçadas interdimensionais antigas preservam os IDs e as recompensas. A fauna natural das duas dimensões agora é regional.
 - Os modelos do GeckoLib têm animações de caminhada, ataque, conjuração e reação a dano. As texturas de criatura são de **256×256**, com materiais por família e detalhes pintados sobre as faces do modelo.
 
 Referências do bestiário e dos contratos. [Índice do Clan Primer](https://jegged.com/Games/Final-Fantasy-XII/Clan-Primer/Bestiary/), [dados comunitários de IZJS](https://github.com/tzapp/tzapp.github.io/tree/4d17bc27651c50f2a0e0be44e0c6eb0e6a777791/src/database), [caçadas de The Zodiac Age](https://ffxii.us/hunts).
+
+---
+
+### As duas dimensões
+
+**Mundo em Ruínas (Nether).** Fendas de lava cortam a terra da Catástrofe e os vales de cinzas. Ruínas de Mobliz e destroços Magitek guardam o Fragmento do Julgamento. Leve-o até o altar no topo da Torre de Kefka para despertar sua forma divina. Kefka alterna as magias em três fases. Cactuar, Land Ray, Slagworm, Brachiosaur e Deathgaze fazem parte da fauna.
+
+**Ruínas Ancestrais (End).** Atravesse o arquipélago de Ridorana até o Pharos, as galerias de Subterra, os portões de Giruvegan e o observatório do Grande Cristal. Use uma Esfera Negra no Pedestal da Noite para despertar Shadowseer. Use o Selo do Grande Cristal no terminal do observatório para enfrentar Omega Mark XII. Há cofres com élitros e cascos de shulker.
+
+Os portais continuam usando as dimensões do Minecraft. A luta com o dragão e as passagens do End permanecem disponíveis. O terreno novo aparece em chunks inéditos. As receitas de vara de blaze e pérola de Ender, além dos cofres de exploração, mantêm a progressão para o portal do End.
+
+Referências. [A Catástrofe de Kefka](https://www.square-enix-games.com/en_AU/tagged/products%3AFINAL%20FANTASY%20VII%20Remake?EDnwX=yzVCvRd0G7), [Ridorana e o Pharos](https://jegged.com/Games/Final-Fantasy-XII/Walkthrough/Section-4/52-The-Pharos-at-Ridorana.html), [Subterra](https://jegged.com/Games/Final-Fantasy-XII/Side-Quests/Subterra.html).
 
 ---
 
@@ -90,7 +102,7 @@ O menu de combate oferece alvo único e área para magias compatíveis, técnica
 | **`Num 1`** | Abre o Menu Principal (*Crônicas de Ivalice* + *Guia de Iniciante*) |
 | **`Num 2`** | Inicia o Combate por Turnos mirando em uma criatura (a tela oculta-se durante as animações!) |
 | **`Num 3`** | Quadro de Caçadas do Clã Centurio (*Mark Hunts* de Rank I a Rank S++) |
-| **`Num 4`** | Bestiário do Clã (*Clan Primer* — 453 criaturas de FFXII, FFIV, FFV, FFVI e FFXV) |
+| **`Num 4`** | Bestiário do Clã (*Clan Primer* — 463 criaturas de FFXII, FFIV, FFV, FFVI e FFXV) |
 | **`Num 5`** | Personagem, 12 Profissões do Zodíaco, Licenças e Gambits |
 | **`Num 6`** | Inventário e Equipamentos |
 

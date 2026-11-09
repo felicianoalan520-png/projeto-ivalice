@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "ruin_tyrannosaur",
+    "name": "Tyrannosaur",
+    "family": "Beast",
+    "kind": "Normal",
+    "model": "ruin_tyrant",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Ermos da Catástrofe",
+    "regions": [
+      "Ermos da Catástrofe"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 1.48,
+    "height": 1.85,
+    "level": 42,
+    "hp": 220,
+    "attack": 15,
+    "speed": 0.25,
+    "gil": 588,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "tza_tyrant_hide"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "tza_tyrant_hide"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "tza_tyrant_hide"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "tza_tyrant_hide"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "tza_tyrant_hide"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "tza_tyrant_hide"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "tza_tyrant_hide"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "ice": 1.6,
+      "fire": 0.5
+    },
+    "move": "CLEAVE"
+  },
+  {
+    "id": "ruin_brachiosaur",
+    "name": "Brachiosaur",
+    "family": "Beast",
+    "kind": "Normal",
+    "model": "ruin_sauropod",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Fendas do Julgamento",
+    "regions": [
+      "Fendas do Julgamento"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 1.72,
+    "height": 2.6,
+    "level": 62,
+    "hp": 390,
+    "attack": 23,
+    "speed": 0.2,
+    "gil": 868,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "gemsteel"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "ice": 1.6,
+      "fire": 0.5
+    },
+    "move": "SCATHE"
+  },
+  {
+    "id": "ruin_cactuar",
+    "name": "Cactuar",
+    "family": "Beast",
+    "kind": "Normal",
+    "model": "ruin_cactuar",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Ermos de Mobliz",
+    "regions": [
+      "Ermos de Mobliz"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 0.52,
+    "height": 1.1,
+    "level": 28,
+    "hp": 36,
+    "attack": 8,
+    "speed": 0.4,
+    "gil": 392,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "earth_stone"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "water": 1.6,
+      "fire": 0.5
+    },
+    "move": "WIND"
+  },
+  {
+    "id": "ruin_ray",
+    "name": "Land Ray",
+    "family": "Beast",
+    "kind": "Normal",
+    "model": "ruin_ray",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Vale da Cinza Branca",
+    "regions": [
+      "Vale da Cinza Branca"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 1.15,
+    "height": 0.84,
+    "level": 34,
+    "hp": 110,
+    "attack": 10,
+    "speed": 0.27,
+    "gil": 476,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "wind_stone"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "wind_stone"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "wind_stone"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "wind_stone"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "wind_stone"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "wind_stone"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "wind_stone"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "water": 1.6,
+      "fire": 0.5
+    },
+    "move": "THUNDER"
+  },
+  {
+    "id": "ruin_slagworm",
+    "name": "Slagworm",
+    "family": "Beast",
+    "kind": "Normal",
+    "model": "ruin_slagworm",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Fendas do Julgamento",
+    "regions": [
+      "Fendas do Julgamento"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 1.5,
+    "height": 1.47,
+    "level": 49,
+    "hp": 255,
+    "attack": 17,
+    "speed": 0.22,
+    "gil": 686,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "earth_stone"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "earth_stone"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "ice": 1.6,
+      "fire": 0.5
+    },
+    "move": "DARKRA"
+  },
+  {
+    "id": "ruin_mutant",
+    "name": "Mutant",
+    "family": "Beast",
+    "kind": "Normal",
+    "model": "ruin_mutant",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Ermos da Catástrofe",
+    "regions": [
+      "Ermos da Catástrofe"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 0.82,
+    "height": 1.65,
+    "level": 34,
+    "hp": 125,
+    "attack": 12,
+    "speed": 0.24,
+    "gil": 476,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "dark_magicite"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "dark_magicite"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "dark_magicite"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "dark_magicite"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "dark_magicite"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "dark_magicite"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "dark_magicite"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "holy": 1.6,
+      "fire": 0.5
+    },
+    "move": "DARK"
+  },
+  {
+    "id": "ruin_magitek",
+    "name": "Remanescente Magitek",
+    "family": "Construct",
+    "kind": "Normal",
+    "model": "ruin_magitek",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Cemitério Magitek",
+    "regions": [
+      "Cemitério Magitek"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 1.23,
+    "height": 2.25,
+    "level": 47,
+    "hp": 245,
+    "attack": 17,
+    "speed": 0.22,
+    "gil": 658,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "gemsteel"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "gemsteel"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "water": 1.6,
+      "fire": 0.5
+    },
+    "move": "THUNDARA"
+  },
+  {
+    "id": "ruin_deathgaze",
+    "name": "Deathgaze",
+    "family": "Beast",
+    "kind": "Boss",
+    "model": "ruin_deathgaze",
+    "original": false,
+    "habitat": "Mundo em Ruínas • Vale da Cinza Branca",
+    "regions": [
+      "Vale da Cinza Branca"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 1.83,
+    "height": 2.55,
+    "level": 73,
+    "hp": 465,
+    "attack": 23,
+    "speed": 0.26,
+    "gil": 1022,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "empyreal_soul"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "empyreal_soul"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "empyreal_soul"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "empyreal_soul"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "empyreal_soul"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "empyreal_soul"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "judgment_fragment"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "empyreal_soul"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "judgment_fragment"
+        ]
+      }
+    ],
+    "affinities": {
+      "holy": 1.6,
+      "fire": 0.5
+    },
+    "move": "DARKGA"
+  },
+  {
+    "id": "ridorana_sentinel",
+    "name": "Sentinela de Ridorana",
+    "family": "Construct",
+    "kind": "Normal",
+    "model": "ridorana_sentinel",
+    "original": false,
+    "habitat": "Ruínas Ancestrais • Praça de Ridorana",
+    "regions": [
+      "Praça de Ridorana"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 0.94,
+    "height": 1.72,
+    "level": 35,
+    "hp": 142,
+    "attack": 11,
+    "speed": 0.24,
+    "gil": 490,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "high_arcana"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "tza_black_orb"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "high_arcana"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "tza_black_orb"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "high_arcana"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "tza_black_orb"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "high_arcana"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "tza_black_orb"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "high_arcana"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "tza_black_orb"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "high_arcana"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "tza_black_orb"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "high_arcana"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "tza_black_orb"
+        ]
+      }
+    ],
+    "affinities": {
+      "thunder": 1.6,
+      "dark": 0.5
+    },
+    "move": "CLEAVE"
+  },
+  {
+    "id": "crystal_warden",
+    "name": "Guardião do Grande Cristal",
+    "family": "Construct",
+    "kind": "Normal",
+    "model": "crystal_warden",
+    "original": false,
+    "habitat": "Ruínas Ancestrais • Grande Cristal",
+    "regions": [
+      "Grande Cristal"
+    ],
+    "mode": "dimension",
+    "aquatic": false,
+    "neutral": false,
+    "width": 1.04,
+    "height": 1.92,
+    "level": 53,
+    "hp": 240,
+    "attack": 16,
+    "speed": 0.23,
+    "gil": 742,
+    "drops": [
+      [
+        {
+          "chance": 0.62,
+          "items": [
+            "tza_ice_crystal"
+          ]
+        },
+        {
+          "chance": 0.045,
+          "items": [
+            "crystal_sigil"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.66,
+          "items": [
+            "tza_ice_crystal"
+          ]
+        },
+        {
+          "chance": 0.06,
+          "items": [
+            "crystal_sigil"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.7,
+          "items": [
+            "tza_ice_crystal"
+          ]
+        },
+        {
+          "chance": 0.075,
+          "items": [
+            "crystal_sigil"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.74,
+          "items": [
+            "tza_ice_crystal"
+          ]
+        },
+        {
+          "chance": 0.09,
+          "items": [
+            "crystal_sigil"
+          ]
+        }
+      ]
+    ],
+    "vanillaLoot": false,
+    "steal": [
+      [
+        {
+          "chance": 0.55,
+          "items": [
+            "tza_ice_crystal"
+          ]
+        },
+        {
+          "chance": 0.08,
+          "items": [
+            "crystal_sigil"
+          ]
+        }
+      ],
+      [
+        {
+          "chance": 0.8,
+          "items": [
+            "tza_ice_crystal"
+          ]
+        },
+        {
+          "chance": 0.17,
+          "items": [
+            "crystal_sigil"
+          ]
+        }
+      ]
+    ],
+    "poach": [
+      {
+        "chance": 0.9,
+        "items": [
+          "tza_ice_crystal"
+        ]
+      },
+      {
+        "chance": 0.1,
+        "items": [
+          "crystal_sigil"
+        ]
+      }
+    ],
+    "affinities": {
+      "fire": 1.6,
+      "dark": 0.5
+    },
+    "move": "BLIZZARA"
+  }
+]

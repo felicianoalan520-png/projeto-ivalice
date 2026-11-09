@@ -920,7 +920,7 @@ public record IvaliceMonsterStats(
                     "MÁQUINA DE GUERRA AUTÔNOMA (FFV • THE END): Robô interdimensional implacável que persegue Shinryu através do Vazio.",
                     "Dispara 'Wave Cannon', 'Delta Attack' e 'Mustard Bomb' com precisão letal!"
             ),
-            // 36. Kefka, God of Magic [FFVI Final Boss Lv. 99 — The End]
+            // 36. Kefka, God of Magic [FFVI Final Boss Lv. 99 — Nether]
             new IvaliceMonsterStats(
                     "kefka_god",
                     "Kefka, God of Magic [FFVI Lv.99 Superboss]",
@@ -933,7 +933,7 @@ public record IvaliceMonsterStats(
                     "Holy",
                     "Dark",
                     "Aggressive Boss",
-                    "Dimensão do Fim (Torre dos Deuses no End)",
+                    "Torre de Kefka • Mundo em Ruínas (Nether)",
                     "Any",
                     25000,
                     750,
@@ -941,8 +941,8 @@ public record IvaliceMonsterStats(
                     "empyreal_soul",
                     "ribbon",
                     "elixir",
-                    "DEUS DA MAGIA (FFVI • NÍVEL 99 MÁXIMO): A forma divina alada de Kefka Palazzo no topo da Torre do Fim.",
-                    "Conjura 'Forsaken', 'Havoc Wing', 'Heartless Angel' e 'Ultima/Scathe', alterando toda a paisagem ao seu redor!"
+                    "DEUS DA MAGIA (FFVI • NÍVEL 99 MÁXIMO): A forma divina alada de Kefka Palazzo no topo de sua torre no Mundo em Ruínas.",
+                    "Alterna Trine, Light of Judgment e Forsaken conforme perde vida."
             )
     );
 

@@ -1,0 +1,38 @@
+{
+  "feature": "ivalice:crystal_spire",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "offset": [
+          0,
+          -1,
+          0
+        ],
+        "blocks": [
+          "ivalice:ridorana_limestone",
+          "ivalice:giruvegan_stone",
+          "ivalice:pharos_ashlar",
+          "ivalice:subterra_tiles",
+          "ivalice:ridorana_limestone",
+          "minecraft:end_stone"
+        ]
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

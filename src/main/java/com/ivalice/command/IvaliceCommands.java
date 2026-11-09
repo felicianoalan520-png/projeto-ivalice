@@ -258,6 +258,10 @@ public class IvaliceCommands {
         ServerLevel level = (ServerLevel) player.level();
         IvalicePlayerData.PlayerProfile profile = IvalicePlayerData.get(player);
 
+        if (markId.equalsIgnoreCase("kefka_god") || markId.equalsIgnoreCase("kefka_god_end")) {
+            source.sendFailure(Component.translatable("ivalice.ruin_seal.kefka_hint"));
+            return 0;
+        }
         var regional = IvaliceBestiary.find(markId.toLowerCase(Locale.ROOT));
         if (regional != null && !regional.original()) {
             if (!regional.isContract()) {

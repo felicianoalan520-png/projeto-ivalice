@@ -36,7 +36,7 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
             new GuideTopic("Níveis 1 ao 99", "Sua progressão vai do Nível 1 ao Nível 99 (máximo). Cada nível aumenta Vida, Ataque, Defesa e MP, libera a 2ª profissão no Nv.5 e destrava magias progressivas."),
             new GuideTopic("Magias e raridades", "Aldeões vendem magias apenas até o Tier 2 (Nv.1-28). Magias Tier 3 -ga (Raras, Nv.36-56) e Tier 4 Cataclísmicas (Épicas, Nv.68-95) devem ser fabricadas na Alquimia!"),
             new GuideTopic("Alquimia e ingredientes", "Cada magia exige ingredientes de regiões específicas: Fire/Water/Wind Stones nos biomas de Ivalice, Gemsteel/Dark Magicite no Nether e Serpentarius/Empyreal Soul no Fim."),
-            new GuideTopic("Dimensões (FFIV a XV)", "No Nether nascem criaturas de FFIV e FFXV (Mindflayer, Rubicante, Iron Giant, Golbez, Ifrit e Adamantoise). No End nascem as de FFV e FFVI (Ultros, Gil Turtle, Atma, Shinryu, Omega e Kefka Nv.99)."),
+            new GuideTopic("Ruínas do Nether e do End", "No Nether, vasculhe Mobliz e os destroços Magitek em busca do Fragmento do Julgamento. Use-o no altar da Torre de Kefka. No End, procure Esferas Negras e o Selo do Cristal nos cofres de Ridorana e Giruvegan."),
             new GuideTopic("Bestiário e caçadas", "Num 4 exibe as 42 espécies 3D (FFXII, FFIV, FFV, FFVI e FFXV). Num 3 abre o Quadro do Clã Centurio para invocar Marks, Espers e Chefes Interdimensionais.")
     );
     private IvalicePlayerData.MarkHuntEntry hunt;

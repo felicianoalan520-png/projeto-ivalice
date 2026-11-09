@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:block_column",
+  "direction": "up",
+  "prioritize_tip": true,
+  "allowed_placement": {
+    "type": "minecraft:matching_blocks",
+    "blocks": [
+      "minecraft:air"
+    ]
+  },
+  "layers": [
+    {
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": 1,
+        "max_inclusive": 3
+      },
+      "provider": {
+        "id": "ivalice:rusted_magitek"
+      }
+    },
+    {
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": 1,
+        "max_inclusive": 2
+      },
+      "provider": {
+        "id": "ivalice:magitek_plating"
+      }
+    }
+  ]
+}

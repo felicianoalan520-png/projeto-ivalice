@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 23,
+    "separation": 7,
+    "salt": 275313
+  },
+  "structures": [
+    {
+      "structure": "ivalice:great_crystal_observatory",
+      "weight": 1
+    }
+  ]
+}
