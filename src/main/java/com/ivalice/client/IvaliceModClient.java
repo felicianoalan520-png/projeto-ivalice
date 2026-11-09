@@ -3,12 +3,14 @@ package com.ivalice.client;
 import com.geckolib.model.DefaultedEntityGeoModel;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.ivalice.IvaliceMod;
+import com.ivalice.client.gui.BattleScreen;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import com.ivalice.registry.IvaliceEntities;
 import com.ivalice.network.IvaliceStatePayload;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.TriState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.EntityHitResult;
@@ -21,6 +23,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RenderNameTagEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
@@ -68,6 +71,16 @@ public class IvaliceModClient {
         modEventBus.addListener(this::registerPayloads);
         NeoForge.EVENT_BUS.addListener(this::onClientTick);
         NeoForge.EVENT_BUS.addListener(this::onDisconnect);
+        NeoForge.EVENT_BUS.addListener(this::onNameTag);
+    }
+
+    private void onNameTag(RenderNameTagEvent.CanRender event) {
+        if (event.getEntity() instanceof IvaliceMonsterEntity
+                && Minecraft.getInstance().gui.screen() instanceof BattleScreen battle) {
+            int number = battle.targetNumber(event.getEntity().getId());
+            event.setCanRender(number == 0 ? TriState.FALSE : TriState.TRUE);
+            if (number != 0) event.setContent(Component.literal(Integer.toString(number)));
+        }
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {

@@ -266,7 +266,7 @@ public final class BattleManager {
                     break;
                 }
                 if (enemy.isAlive()) {
-                    player.setInvulnerableTime(0);
+                    player.damageCooldownTime = 0;
                     player.hurtServer(player.level(), player.level().damageSources().mobAttack(enemy),
                             (float) Math.max(1.5, enemy.getStats().attackDamage() * 0.45));
                     counters++;
@@ -403,7 +403,7 @@ public final class BattleManager {
 
     private static void strike(ServerPlayer player, IvaliceMonsterEntity target, float amount, boolean magic) {
         if (target.isAlive()) {
-            target.setInvulnerableTime(0);
+            if (isEngaged(target)) target.damageCooldownTime = 0;
             ServerLevel level = player.level();
             target.hurtWithCalculatedDamage(level, magic ? level.damageSources().indirectMagic(player, player)
                     : level.damageSources().playerAttack(player), amount);

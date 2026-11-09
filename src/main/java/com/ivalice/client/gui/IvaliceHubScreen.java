@@ -87,7 +87,7 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
         List<Entry> entries = new ArrayList<>();
         switch (page) {
             case ROOT -> {
-                entries.add(new Entry("Glossário e caçadas", () -> open(Page.JOURNAL)));
+                entries.add(new Entry("Glossário", () -> open(Page.JOURNAL)));
                 entries.add(new Entry("Bestiário", () -> open(Page.BESTIARY)));
                 entries.add(new Entry("Personagem", () -> open(Page.CHARACTER)));
                 entries.add(new Entry("Viajar", () -> open(Page.TRAVEL)));
@@ -119,7 +119,7 @@ public final class IvaliceHubScreen extends IvalicePanelScreen {
                 }
             }
             case CHARACTER -> {
-                entries.add(new Entry("Profissões do Zodíaco", () -> open(Page.JOBS)));
+                entries.add(new Entry("Profissões", () -> open(Page.JOBS)));
                 entries.add(new Entry("Licenças e atributos", () -> open(Page.LICENSES)));
                 entries.add(new Entry("Equipar itens", ClientScreenHelper::openEquipment));
                 entries.add(new Entry(profile().getBooleanOr("gambits", false) ? "Desativar Gambits" : "Ativar Gambits",

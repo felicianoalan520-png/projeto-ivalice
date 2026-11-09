@@ -10,7 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 
 public final class ZodiacJobs {
@@ -69,11 +69,7 @@ public final class ZodiacJobs {
 
     private static void update(ServerPlayer player) {
         IvalicePlayerData.applyLicenseAttributes(player);
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot != EquipmentSlot.MAINHAND) {
-                checkEquipment(player, slot, player.getItemBySlot(slot));
-            }
-        }
+        checkEquipment(player);
         IvalicePlayerData.save(player);
     }
 
@@ -84,17 +80,22 @@ public final class ZodiacJobs {
         }
     }
 
-    public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && event.getSlot() != EquipmentSlot.MAINHAND) {
-            checkEquipment(player, event.getSlot(), event.getTo());
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player && player.isAlive()) {
+            checkEquipment(player);
         }
     }
 
-    private static void checkEquipment(ServerPlayer player, EquipmentSlot slot, ItemStack stack) {
-        if (!permits(player, stack)) {
-            player.setItemSlot(slot, ItemStack.EMPTY);
-            player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
-            player.sendOverlayMessage(Component.literal("Equipamento devolvido: incompatível com suas profissões."));
+    private static void checkEquipment(ServerPlayer player) {
+        if (IvalicePlayerData.get(player).jobs.isEmpty()) return;
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot == EquipmentSlot.MAINHAND) continue;
+            ItemStack stack = player.getItemBySlot(slot);
+            if (!permits(player, stack)) {
+                player.setItemSlot(slot, ItemStack.EMPTY);
+                player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
+                player.sendOverlayMessage(Component.literal("Equipamento devolvido: incompatível com suas profissões."));
+            }
         }
     }
 }

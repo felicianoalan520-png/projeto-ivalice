@@ -110,6 +110,17 @@ public final class BattleScreen extends IvalicePanelScreen {
         return state.getListOrEmpty("enemies");
     }
 
+    public int targetNumber(int entityId) {
+        if (page != Page.TARGET || waiting) return 0;
+        int start = targetsPage * 6;
+        for (int i = start; i < Math.min(start + 6, enemies().size()); i++) {
+            if (enemies().getCompoundOrEmpty(i).getIntOr("id", 0) == entityId) {
+                return i - start + 1;
+            }
+        }
+        return 0;
+    }
+
     private int firstTarget() {
         return enemies().getCompoundOrEmpty(0).getIntOr("id", 0);
     }
@@ -189,6 +200,10 @@ public final class BattleScreen extends IvalicePanelScreen {
         int hp = minecraft.player == null ? 0 : (int) Math.ceil(minecraft.player.getHealth());
         drawPanel(graphics, heading, "HP " + hp + "   •   MP " + state.getIntOr("mp", 0)
                 + "/" + state.getIntOr("maxMp", 100));
+        if (minecraft.player != null && panelWidth >= 225) {
+            drawMeter(graphics, 12, minecraft.player.getHealth() / minecraft.player.getMaxHealth(), 0xFFE4A06D);
+            drawMeter(graphics, 21, (float) state.getIntOr("mp", 0) / Math.max(1, state.getIntOr("maxMp", 100)), 0xFF73B9CC);
+        }
         if (waiting) {
             line(graphics, "Resolvendo rodada…", 52, TEXT);
         } else if (page == Page.CAST_MODE) {
@@ -203,5 +218,13 @@ public final class BattleScreen extends IvalicePanelScreen {
             line(graphics, state.getStringOr("message", ""), 105, MUTED);
         }
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+    }
+
+    private void drawMeter(GuiGraphicsExtractor graphics, int row, float ratio, int color) {
+        int right = panelX + panelWidth - 10;
+        int left = right - 58;
+        int y = panelY + row;
+        graphics.fill(left, y, right, y + 4, 0xFF253B50);
+        graphics.fill(left, y, left + Math.round(58 * Math.clamp(ratio, 0, 1)), y + 4, color);
     }
 }

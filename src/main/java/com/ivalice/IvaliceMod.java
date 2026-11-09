@@ -74,7 +74,7 @@ public class IvaliceMod {
         NeoForge.EVENT_BUS.addListener(BattleManager::onLogout);
         NeoForge.EVENT_BUS.addListener(BattleManager::onDamage);
         NeoForge.EVENT_BUS.addListener(ZodiacJobs::onAttack);
-        NeoForge.EVENT_BUS.addListener(ZodiacJobs::onEquipmentChange);
+        NeoForge.EVENT_BUS.addListener(ZodiacJobs::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(GizaSeasonManager::onLevelTickPost);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onPotentialSpawns);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onEntityJoin);
