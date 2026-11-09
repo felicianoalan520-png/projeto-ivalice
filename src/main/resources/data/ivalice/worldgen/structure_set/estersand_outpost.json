@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 10,
+    "salt": 30926011
+  },
+  "structures": [
+    {
+      "structure": "ivalice:estersand_outpost",
+      "weight": 1
+    }
+  ]
+}

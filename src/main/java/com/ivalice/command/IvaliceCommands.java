@@ -3,6 +3,7 @@ package com.ivalice.command;
 import com.ivalice.IvaliceMod;
 import com.ivalice.combat.BattleManager;
 import com.ivalice.data.IvalicePlayerData;
+import com.ivalice.job.ZodiacJobs;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import com.ivalice.entity.IvaliceMonsterStats;
 import com.ivalice.registry.IvaliceEntities;
@@ -24,7 +25,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -56,15 +56,29 @@ public class IvaliceCommands {
                 .then(Commands.literal("bestiary")
                         .executes(ctx -> showBestiary(ctx.getSource())))
 
-                // 4. /ivalice battle <entityId> <action> — Executa um turno da BattleScreen
+                .then(Commands.literal("job")
+                        .then(Commands.literal("choose")
+                                .then(Commands.argument("id", StringArgumentType.word())
+                                        .executes(ctx -> ZodiacJobs.choose(ctx.getSource().getPlayerOrException(),
+                                                StringArgumentType.getString(ctx, "id")) ? 1 : 0)))
+                        .then(Commands.literal("reset")
+                                .executes(ctx -> ZodiacJobs.reset(ctx.getSource().getPlayerOrException()) ? 1 : 0)))
+                .then(Commands.literal("engage")
+                        .then(Commands.argument("entityId", IntegerArgumentType.integer())
+                                .executes(ctx -> engage(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "entityId")))))
+
+                // /ivalice battle <entityId> <action> [revision]
                 .then(Commands.literal("battle")
                         .then(Commands.argument("entityId", IntegerArgumentType.integer())
                                 .then(Commands.argument("action", StringArgumentType.word())
-                                        .executes(ctx -> executeBattleTurn(
-                                                ctx.getSource(),
+                                        .executes(ctx -> executeBattleTurn(ctx.getSource(),
                                                 IntegerArgumentType.getInteger(ctx, "entityId"),
-                                                StringArgumentType.getString(ctx, "action")
-                                        )))))
+                                                StringArgumentType.getString(ctx, "action"), 0))
+                                        .then(Commands.argument("revision", IntegerArgumentType.integer(1))
+                                                .executes(ctx -> executeBattleTurn(ctx.getSource(),
+                                                        IntegerArgumentType.getInteger(ctx, "entityId"),
+                                                        StringArgumentType.getString(ctx, "action"),
+                                                        IntegerArgumentType.getInteger(ctx, "revision")))))))
 
                 // 5. /ivalice hunt spawn <markId> — Aceita e invoca a Mark/Esper da Caçada do Clã Centurio
                 .then(Commands.literal("hunt")
@@ -153,7 +167,7 @@ public class IvaliceCommands {
         IvalicePlayerData.applyLicenseAttributes(player);
 
         player.sendSystemMessage(Component.literal("═══ [PERFIL DO CLÃ CENTURIO — IVALICE] ═══").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
-        player.sendSystemMessage(Component.literal("• Rank do Clã: " + profile.getClanRank()).withStyle(ChatFormatting.YELLOW));
+        player.sendSystemMessage(Component.literal("• Nível " + profile.getBattleLevel() + " | " + profile.getClanRank()).withStyle(ChatFormatting.YELLOW));
         player.sendSystemMessage(Component.literal("• Fundos: " + profile.gil + " Gil   |   License Points: " + profile.lp + " LP").withStyle(ChatFormatting.GREEN));
         player.sendSystemMessage(Component.literal("• Caçadas Concluídas: " + profile.completedHunts.size() + " / " + IvalicePlayerData.MARK_HUNTS.size()).withStyle(ChatFormatting.AQUA));
         player.sendSystemMessage(Component.literal("• Licenças Ativas: " + profile.unlockedLicenses).withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -178,15 +192,19 @@ public class IvaliceCommands {
         return 1;
     }
 
-    private static int executeBattleTurn(CommandSourceStack source, int entityId, String action) {
+    private static int engage(CommandSourceStack source, int entityId) {
         ServerPlayer player = source.getPlayer();
-        if (player == null) return 0;
-        Entity entity = player.level().getEntity(entityId);
-        if (entity instanceof IvaliceMonsterEntity monster) {
-            BattleManager.executeTurnAction(player, monster, action);
-            return 1;
+        return player != null && player.level().getEntity(entityId) instanceof IvaliceMonsterEntity monster
+                && BattleManager.engage(player, monster) ? 1 : 0;
+    }
+
+    private static int executeBattleTurn(CommandSourceStack source, int entityId, String action, int revision) {
+        ServerPlayer player = source.getPlayer();
+        if (player == null) {
+            return 0;
         }
-        return 0;
+        BattleManager.executeTurnAction(player, entityId, action, revision);
+        return 1;
     }
 
     private static int spawnHuntMark(CommandSourceStack source, String markId) {

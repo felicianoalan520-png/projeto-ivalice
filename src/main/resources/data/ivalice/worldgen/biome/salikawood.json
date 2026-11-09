@@ -27,11 +27,11 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
+                "max_inclusive": 3,
+                "min_inclusive": 1
               },
               "type": "ivalice:hyena",
-              "weight": 14
+              "weight": 10
             },
             {
               "count": {
@@ -134,7 +134,8 @@
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "ivalice:patch_gysahl_greens",
-      "ivalice:golmore_darkwood_tree"
+      "ivalice:golmore_darkwood_tree",
+      "ivalice:patch_golmore_orchid"
     ],
     [
       "minecraft:freeze_top_layer"

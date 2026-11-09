@@ -353,6 +353,11 @@ public class IvaliceItems {
     // =========================================================================
     // 7. OVOS DE INVOCAÇÃO DE CRIATURAS, MARKS E ESPERS (12 SPAWN EGGS)
     // =========================================================================
+    public static final DeferredItem<Item> ZODIAC_RESET_SEAL = registerCatalog(
+            "zodiac_reset_seal", IvaliceItemCategory.KEY_ITEM,
+            "Reinicia suas profissões e licenças no menu Personagem.", 0, "Espólio secreto de Mateus",
+            "Projeto Ivalice", Rarity.EPIC, false);
+
     public static final DeferredItem<Item> WOLF_SPAWN_EGG = registerSpawnEgg("wolf_spawn_egg", IvaliceEntities.WOLF);
     public static final DeferredItem<Item> CACTOID_SPAWN_EGG = registerSpawnEgg("cactoid_spawn_egg", IvaliceEntities.CACTOID);
     public static final DeferredItem<Item> HYENA_SPAWN_EGG = registerSpawnEgg("hyena_spawn_egg", IvaliceEntities.HYENA);

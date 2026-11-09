@@ -1,211 +1,267 @@
 package com.ivalice.client.gui;
 
+import com.ivalice.client.ClientScreenHelper;
 import com.ivalice.data.IvalicePlayerData;
 import com.ivalice.entity.IvaliceMonsterStats;
-import net.minecraft.client.Minecraft;
+import com.ivalice.job.ZodiacJob;
+import com.ivalice.job.ZodiacJobs;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.StringTag;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Interface Gráfica Principal do Projeto Ivalice (Etapas 1, 4 e 5).
- * Reúne 5 abas interativas em estilo Final Fantasy XII:
- * 0 - Cristal de Teleporte (Teleporte direto para qualquer um dos 15 Biomas Canônicos de Ivalice)
- * 1 - Bestiário (Clan Primer: Catálogo das 12 Criaturas, Fraquezas Elementais, Habitats e Sage Knowledge)
- * 2 - Quadro de Caçadas (Clan Centurio Hunt Board: Aceitar e Invocar Marks Rank I, V e Espers Rank S)
- * 3 - Tabuleiro de Licenças & Gambits (License Board: Gastar LP em bônus permanentes de HP, Ataque, Velocidade e Defesa)
- * 4 - Bazaar de Rabanastre (Trocar espólios de monstros por pacotes especiais como Tournesol, Masamune e Hi-Potions)
- */
-public class IvaliceHubScreen extends Screen {
-    private int currentTab;
-    private int selectedMonsterIndex = 0;
-
-    private static final String[][] BIOME_BUTTONS = {
-            {"dalmasca_estersand", "1. Dalmasca Estersand"},
-            {"dalmasca_westersand", "2. Dalmasca Westersand"},
-            {"giza_plains_dry", "3. Giza Plains (Dry)"},
-            {"giza_plains_rains", "4. Giza Plains (Rains)"},
-            {"ozmone_plain", "5. Ozmone Plain"},
-            {"golmore_jungle", "6. Golmore Jungle"},
-            {"phon_coast", "7. Phon Coast"},
-            {"tchita_uplands", "8. Tchita Uplands"},
-            {"paramina_rift", "9. Paramina Rift"},
-            {"salikawood", "10. Salikawood"},
-            {"feywood", "11. Feywood"},
-            {"mosphoran_highwaste", "12. Mosphoran Highwaste"},
-            {"nabreus_deadlands", "13. Nabreus Deadlands"},
-            {"ogir_yensa_sandsea", "14. Ogir-Yensa Sandsea"},
-            {"nam_yensa_sandsea", "15. Nam-Yensa / Cerobi"}
+public final class IvaliceHubScreen extends IvalicePanelScreen {
+    private static final String[][] BIOMES = {
+            {"dalmasca_estersand", "Dalmasca Estersand"}, {"dalmasca_westersand", "Dalmasca Westersand"},
+            {"giza_plains_dry", "Giza Plains • Seca"}, {"giza_plains_rains", "Giza Plains • Chuvas"},
+            {"ozmone_plain", "Ozmone Plain"}, {"golmore_jungle", "Golmore Jungle"},
+            {"phon_coast", "Phon Coast"}, {"tchita_uplands", "Tchita Uplands"},
+            {"paramina_rift", "Paramina Rift"}, {"salikawood", "Salikawood"},
+            {"feywood", "Feywood"}, {"mosphoran_highwaste", "Mosphoran Highwaste"},
+            {"nabreus_deadlands", "Nabreus Deadlands"}, {"ogir_yensa_sandsea", "Ogir-Yensa Sandsea"},
+            {"cerobi_steppe", "Cerobi Steppe"}
     };
 
+    private enum Page { ROOT, TRAVEL, BESTIARY, JOURNAL, CHARACTER, BAZAAR, LICENSES, JOBS, JOB, RESET_JOB, MONSTER, HUNT }
+    private Page page;
+    private int listPage;
+    private IvaliceMonsterStats monster;
+    private ZodiacJob selectedJob;
+    private IvalicePlayerData.MarkHuntEntry hunt;
+    private record Entry(String label, Runnable action) {}
+
     public IvaliceHubScreen(int initialTab) {
-        super(Component.literal("Crônicas de Ivalice — Clan Centurio & Cristal de Teleporte"));
-        this.currentTab = initialTab;
+        super("Crônicas de Ivalice");
+        page = switch (initialTab) {
+            case 0 -> Page.TRAVEL;
+            case 1 -> Page.BESTIARY;
+            case 2 -> Page.JOURNAL;
+            case 3 -> Page.CHARACTER;
+            case 4 -> Page.BAZAAR;
+            default -> Page.ROOT;
+        };
+    }
+
+    private CompoundTag profile() {
+        return ClientScreenHelper.profile();
+    }
+
+    private boolean listed(String key, String value) {
+        return profile().getListOrEmpty(key).contains(StringTag.valueOf(value));
     }
 
     @Override
     protected void init() {
-        super.init();
-        int centerX = this.width / 2;
-        int topY = this.height / 2 - 115;
-
-        // Barra de Abas no Topo
-        this.addRenderableWidget(Button.builder(Component.literal("💎 Teleporte (Biomas)"), b -> switchTab(0))
-                .bounds(centerX - 205, topY + 22, 80, 18).build());
-        this.addRenderableWidget(Button.builder(Component.literal("📖 Bestiário"), b -> switchTab(1))
-                .bounds(centerX - 122, topY + 22, 75, 18).build());
-        this.addRenderableWidget(Button.builder(Component.literal("🎯 Caçadas (Hunts)"), b -> switchTab(2))
-                .bounds(centerX - 44, topY + 22, 88, 18).build());
-        this.addRenderableWidget(Button.builder(Component.literal("🛡 Licenças & Gambits"), b -> switchTab(3))
-                .bounds(centerX + 47, topY + 22, 92, 18).build());
-        this.addRenderableWidget(Button.builder(Component.literal("⚖ Bazaar"), b -> switchTab(4))
-                .bounds(centerX + 142, topY + 22, 63, 18).build());
-
-        int contentY = topY + 48;
-
-        if (currentTab == 0) {
-            // Aba 0: 15 Botões de Teleporte Direto para os Biomas de Ivalice
-            for (int i = 0; i < BIOME_BUTTONS.length; i++) {
-                int col = i % 3;
-                int row = i / 3;
-                String biomeId = BIOME_BUTTONS[i][0];
-                String label = BIOME_BUTTONS[i][1];
-                this.addRenderableWidget(Button.builder(Component.literal(label), btn -> {
-                    sendServerCommand("ivalice tp " + biomeId);
-                    this.onClose();
-                }).bounds(centerX - 195 + col * 132, contentY + 18 + row * 26, 126, 22).build());
-            }
-        } else if (currentTab == 1) {
-            // Aba 1: Bestiário (Clan Primer) — Seletor das 12 criaturas à esquerda e detalhes à direita
-            List<IvaliceMonsterStats> monsters = IvaliceMonsterStats.ALL_MONSTERS;
-            for (int i = 0; i < monsters.size(); i++) {
-                final int idx = i;
-                int col = i / 6;
-                int row = i % 6;
-                String shortName = (i + 1) + ". " + monsters.get(i).id();
-                this.addRenderableWidget(Button.builder(Component.literal(shortName), btn -> {
-                    this.selectedMonsterIndex = idx;
-                }).bounds(centerX - 198 + col * 92, contentY + 16 + row * 24, 88, 20).build());
-            }
-        } else if (currentTab == 2) {
-            // Aba 2: Quadro de Caçadas do Clã Centurio (6 Marks & Espers)
-            List<IvalicePlayerData.MarkHuntEntry> hunts = IvalicePlayerData.MARK_HUNTS;
-            for (int i = 0; i < hunts.size(); i++) {
-                IvalicePlayerData.MarkHuntEntry hunt = hunts.get(i);
-                int rowY = contentY + 14 + i * 26;
-                this.addRenderableWidget(Button.builder(Component.literal("⚔ Invocar/Caçar: " + hunt.id()), btn -> {
-                    sendServerCommand("ivalice hunt spawn " + hunt.id());
-                    this.onClose();
-                }).bounds(centerX + 55, rowY, 140, 20).build());
-            }
-        } else if (currentTab == 3) {
-            // Aba 3: Tabuleiro de Licenças (License Board) & Gambits
-            List<IvalicePlayerData.LicenseNode> nodes = IvalicePlayerData.LICENSE_CATALOG;
-            for (int i = 0; i < Math.min(nodes.size(), 10); i++) {
-                IvalicePlayerData.LicenseNode node = nodes.get(i);
-                int col = i % 2;
-                int row = i / 2;
-                String btnLabel = String.format("%s [%d LP]", node.name(), node.lpCost());
-                this.addRenderableWidget(Button.builder(Component.literal(btnLabel), btn -> {
-                    sendServerCommand("ivalice license unlock " + node.id());
-                }).bounds(centerX - 195 + col * 198, contentY + 16 + row * 25, 192, 21).build());
-            }
-            this.addRenderableWidget(Button.builder(Component.literal("⚙ Alternar Preset de Gambits Automáticos"), btn -> {
-                sendServerCommand("ivalice gambit toggle");
-            }).bounds(centerX - 130, contentY + 144, 260, 20).build());
-        } else if (currentTab == 4) {
-            // Aba 4: Bazaar de Rabanastre
-            List<IvalicePlayerData.BazaarPackage> packs = IvalicePlayerData.BAZAAR_PACKAGES;
-            for (int i = 0; i < packs.size(); i++) {
-                IvalicePlayerData.BazaarPackage pack = packs.get(i);
-                int rowY = contentY + 18 + i * 34;
-                this.addRenderableWidget(Button.builder(Component.literal("💰 Adquirir (" + pack.gilCost() + " Gil)"), btn -> {
-                    sendServerCommand("ivalice bazaar buy " + pack.id());
-                }).bounds(centerX + 65, rowY, 130, 22).build());
-            }
+        layout(278, 133, false);
+        List<Entry> entries = entries();
+        int count = Math.max(1, (entries.size() + 5) / 6);
+        listPage = Math.clamp(listPage, 0, count - 1);
+        for (int i = listPage * 6; i < Math.min(entries.size(), listPage * 6 + 6); i++) {
+            Entry entry = entries.get(i);
+            int slot = i % 6;
+            option(entry.label(), slot % 2, slot / 2, entry.action());
+        }
+        if (page == Page.HUNT) {
+            option("Aceitar caçada", 0, 2, () -> run("ivalice hunt spawn " + hunt.id()));
+        }
+        if (page == Page.JOB && canChoose(selectedJob)) {
+            option("Confirmar profissão", 0, 2, () -> run("ivalice job choose " + selectedJob.id()));
+        } else if (page == Page.RESET_JOB) {
+            option("Usar Selo Zodiacal", 0, 2, () -> run("ivalice job reset"));
+        }
+        int foot = panelY + panelHeight - 23;
+        if (page != Page.ROOT) {
+            button("Voltar", panelX + 9, foot, 62, this::onClose);
+        }
+        if (listPage > 0) {
+            button("‹ Anterior", panelX + panelWidth - 144, foot, 64, () -> turnPage(-1));
+        }
+        if (listPage + 1 < count) {
+            button("Próxima ›", panelX + panelWidth - 73, foot, 64, () -> turnPage(1));
         }
     }
 
-    private void switchTab(int tab) {
-        this.currentTab = tab;
-        this.rebuildWidgets();
+    private List<Entry> entries() {
+        List<Entry> entries = new ArrayList<>();
+        switch (page) {
+            case ROOT -> {
+                entries.add(new Entry("Glossário e caçadas", () -> open(Page.JOURNAL)));
+                entries.add(new Entry("Bestiário", () -> open(Page.BESTIARY)));
+                entries.add(new Entry("Personagem", () -> open(Page.CHARACTER)));
+                entries.add(new Entry("Viajar", () -> open(Page.TRAVEL)));
+                entries.add(new Entry("Bazaar", () -> open(Page.BAZAAR)));
+                entries.add(new Entry("Voltar ao jogo", super::onClose));
+            }
+            case TRAVEL -> {
+                for (String[] biome : BIOMES) {
+                    entries.add(new Entry(biome[1], () -> run("ivalice tp " + biome[0])));
+                }
+            }
+            case BESTIARY -> {
+                for (IvaliceMonsterStats species : IvaliceMonsterStats.ALL_MONSTERS) {
+                    if (listed("encountered", species.id())) {
+                        entries.add(new Entry(shortName(species), () -> {
+                            monster = species;
+                            open(Page.MONSTER);
+                        }));
+                    }
+                }
+            }
+            case JOURNAL -> {
+                for (var entry : IvalicePlayerData.MARK_HUNTS) {
+                    String mark = listed("hunts", entry.id()) ? "✓ " : "";
+                    entries.add(new Entry(mark + entry.markName(), () -> {
+                        hunt = entry;
+                        open(Page.HUNT);
+                    }));
+                }
+            }
+            case CHARACTER -> {
+                entries.add(new Entry("Profissões do Zodíaco", () -> open(Page.JOBS)));
+                entries.add(new Entry("Licenças e atributos", () -> open(Page.LICENSES)));
+                entries.add(new Entry("Equipar itens", ClientScreenHelper::openEquipment));
+                entries.add(new Entry(profile().getBooleanOr("gambits", false) ? "Desativar Gambits" : "Ativar Gambits",
+                        () -> run("ivalice gambit toggle")));
+            }
+            case JOBS -> {
+                for (ZodiacJob job : ZodiacJob.values()) {
+                    String chosen = listed("jobs", job.id()) ? "✓ " : "";
+                    entries.add(new Entry(chosen + job.label, () -> {
+                        selectedJob = job;
+                        open(Page.JOB);
+                    }));
+                }
+                if (!profile().getListOrEmpty("jobs").isEmpty()) {
+                    entries.add(new Entry("Reiniciar profissões", () -> open(Page.RESET_JOB)));
+                }
+            }
+            case LICENSES -> {
+                for (var node : IvalicePlayerData.LICENSE_CATALOG) {
+                    boolean unlocked = listed("licenses", node.id());
+                    entries.add(new Entry(unlocked ? "✓ " + node.name() : node.lpCost() + " LP • " + node.name(),
+                            () -> { if (!unlocked) run("ivalice license unlock " + node.id()); }));
+                }
+            }
+            case BAZAAR -> {
+                for (var pack : IvalicePlayerData.BAZAAR_PACKAGES) {
+                    entries.add(new Entry(pack.rewardItemId().replace('_', ' ') + " • " + pack.gilCost() + " Gil",
+                            () -> run("ivalice bazaar buy " + pack.id())));
+                }
+            }
+            default -> {}
+        }
+        return entries;
     }
 
-    private void sendServerCommand(String cmd) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && mc.player.connection != null) {
-            mc.player.connection.sendCommand(cmd);
+    private boolean canChoose(ZodiacJob job) {
+        int slots = profile().getIntOr("level", 1) >= ZodiacJobs.SECOND_JOB_LEVEL ? 2 : 1;
+        return !listed("jobs", job.id()) && profile().getListOrEmpty("jobs").size() < slots;
+    }
+
+    private String jobSummary() {
+        List<String> names = new ArrayList<>();
+        for (ZodiacJob job : ZodiacJob.values()) {
+            if (listed("jobs", job.id())) names.add(job.label);
+        }
+        return names.isEmpty() ? "Escolha sua primeira profissão" : String.join(" + ", names);
+    }
+
+    private void open(Page next) {
+        page = next;
+        listPage = 0;
+        rebuildWidgets();
+    }
+
+    private void turnPage(int offset) {
+        listPage += offset;
+        rebuildWidgets();
+    }
+
+    private void run(String command) {
+        super.onClose();
+        ClientScreenHelper.command(command);
+    }
+
+    @Override
+    public void onClose() {
+        switch (page) {
+            case ROOT -> super.onClose();
+            case MONSTER -> open(Page.BESTIARY);
+            case HUNT -> open(Page.JOURNAL);
+            case LICENSES, JOBS -> open(Page.CHARACTER);
+            case JOB, RESET_JOB -> open(Page.JOBS);
+            default -> open(Page.ROOT);
         }
     }
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        int centerX = this.width / 2;
-        int topY = this.height / 2 - 115;
-
-        // Janela Principal FFXII
-        graphics.fillGradient(centerX - 212, topY, centerX + 212, topY + 230, 0xEC091326, 0xF2050914);
-        graphics.outline(centerX - 212, topY, 424, 230, 0xFFD4AF37);
-        graphics.outline(centerX - 210, topY + 2, 420, 226, 0x88AA8822);
-
-        graphics.centeredText(this.font, Component.literal("══ PROJETO IVALICE — FINAL FANTASY XII: THE ZODIAC AGE ══"), centerX, topY + 8, 0xFFFFD700);
-
-        int contentY = topY + 48;
-
-        if (currentTab == 0) {
-            graphics.centeredText(this.font, Component.literal("Clique em qualquer Região Canônica para Teleportar imediatamente até lá:"), centerX, contentY + 2, 0xFF55FFFF);
-        } else if (currentTab == 1) {
-            graphics.text(this.font, Component.literal("Catálogo do Clã:"), centerX - 195, contentY + 2, 0xFFFFD700);
-            IvaliceMonsterStats m = IvaliceMonsterStats.ALL_MONSTERS.get(selectedMonsterIndex);
-            int infoX = centerX - 8;
-            graphics.fill(infoX, contentY + 12, centerX + 202, contentY + 168, 0xAA0D1B30);
-            graphics.outline(infoX, contentY + 12, 210, 156, 0xFFD4AF37);
-
-            graphics.text(this.font, Component.literal(m.displayName()), infoX + 6, contentY + 18, 0xFFFFE066);
-            graphics.text(this.font, Component.literal("Família: " + m.family() + " | Lv." + m.level()), infoX + 6, contentY + 31, 0xFFDDDDDD);
-            graphics.text(this.font, Component.literal("Classificação: " + m.rankType()), infoX + 6, contentY + 43, 0xFFFFAA55);
-            graphics.text(this.font, Component.literal("HP Base: " + (int) m.maxHealth() + " | ATQ: " + m.attackDamage()), infoX + 6, contentY + 55, 0xFF88FF88);
-            graphics.text(this.font, Component.literal("Fraqueza (2x): " + m.weakness() + " | Resist: " + m.resistance()), infoX + 6, contentY + 67, 0xFF55FFFF);
-            graphics.text(this.font, Component.literal("Espólios: " + m.primaryLootId() + ", " + m.rareLootId()), infoX + 6, contentY + 79, 0xFFFFCC88);
-            graphics.text(this.font, Component.literal("Recompensa: " + m.gilReward() + " Gil & " + m.lpReward() + " LP"), infoX + 6, contentY + 91, 0xFFFFD700);
-            graphics.text(this.font, Component.literal("Habitat: " + clip(m.habitat(), 30)), infoX + 6, contentY + 105, 0xFFAAAAAA);
-            graphics.text(this.font, Component.literal("Nota: " + clip(m.bestiaryLore1(), 32)), infoX + 6, contentY + 120, 0xFFCCCCCC);
-            graphics.text(this.font, Component.literal(clip(m.bestiaryLore2(), 35)), infoX + 6, contentY + 133, 0xFFDDA0DD);
-        } else if (currentTab == 2) {
-            graphics.text(this.font, Component.literal("Quadro de Caçadas do Clã Centurio (Montblanc):"), centerX - 195, contentY + 1, 0xFFFFD700);
-            List<IvalicePlayerData.MarkHuntEntry> hunts = IvalicePlayerData.MARK_HUNTS;
-            for (int i = 0; i < hunts.size(); i++) {
-                IvalicePlayerData.MarkHuntEntry h = hunts.get(i);
-                int rowY = contentY + 16 + i * 26;
-                graphics.text(this.font, Component.literal("[" + h.rank() + "] " + h.markName()), centerX - 195, rowY, 0xFFFF8866);
-                graphics.text(this.font, Component.literal("Região: " + h.biomeId() + " | +" + h.gilReward() + " Gil, +" + h.lpReward() + " LP"), centerX - 195, rowY + 10, 0xFFBBBBBB);
+        CompoundTag data = profile();
+        String heading = switch (page) {
+            case ROOT -> "Crônicas de Ivalice";
+            case TRAVEL -> "Cristais de viagem";
+            case BESTIARY -> "Bestiário do Clã";
+            case JOURNAL -> "Glossário • Quadro de caçadas";
+            case CHARACTER -> "Personagem";
+            case LICENSES -> "Licenças e atributos";
+            case JOBS -> "Profissões do Zodíaco";
+            case JOB -> selectedJob.label;
+            case RESET_JOB -> "Reiniciar profissões";
+            case BAZAAR -> "Bazaar de Rabanastre";
+            case MONSTER -> shortName(monster);
+            case HUNT -> hunt.markName();
+        };
+        String stats = "Nível " + data.getIntOr("level", 1) + "   •   "
+                + data.getIntOr("gil", 0) + " Gil   •   " + data.getIntOr("lp", 0) + " LP";
+        String subtitle = switch (page) {
+            case ROOT, CHARACTER, LICENSES -> stats;
+            case JOBS -> jobSummary();
+            case JOB -> listed("jobs", selectedJob.id()) ? "Profissão ativa" : "Especialidade";
+            case RESET_JOB -> "Consome um Selo Zodiacal";
+            case TRAVEL -> "Escolha uma região";
+            case BESTIARY -> data.getListOrEmpty("encountered").size() + " espécies encontradas";
+            case JOURNAL -> data.getListOrEmpty("hunts").size() + " caçadas concluídas";
+            case BAZAAR -> data.getIntOr("gil", 0) + " Gil • Também aceita espólios";
+            case MONSTER -> monster.family() + " • Nível " + monster.level();
+            case HUNT -> hunt.rank() + " • " + hunt.petitioner();
+        };
+        drawPanel(graphics, heading, subtitle);
+        if (page == Page.JOB) {
+            int y = 42;
+            for (var part : font.split(net.minecraft.network.chat.Component.literal(selectedJob.specialty), panelWidth - 18)) {
+                graphics.text(font, part, panelX + 9, panelY + y, TEXT);
+                y += 11;
             }
-        } else if (currentTab == 3) {
-            graphics.centeredText(this.font, Component.literal("Tabuleiro de Licenças (License Board) — Clique para desbloquear bônus permanentes com LP:"), centerX, contentY + 2, 0xFF88FF88);
-        } else if (currentTab == 4) {
-            graphics.text(this.font, Component.literal("Bazaar de Rabanastre — Mercadorias Especiais Desbloqueáveis:"), centerX - 195, contentY + 2, 0xFFFFD700);
-            List<IvalicePlayerData.BazaarPackage> packs = IvalicePlayerData.BAZAAR_PACKAGES;
-            for (int i = 0; i < packs.size(); i++) {
-                IvalicePlayerData.BazaarPackage p = packs.get(i);
-                int rowY = contentY + 19 + i * 34;
-                graphics.text(this.font, Component.literal("★ " + p.packageName()), centerX - 195, rowY, 0xFFFFE066);
-                graphics.text(this.font, Component.literal(clip(p.description(), 44)), centerX - 195, rowY + 11, 0xFFCCCCCC);
+            if (!canChoose(selectedJob) && !listed("jobs", selectedJob.id())) {
+                line(graphics, "Segunda vaga no nível " + ZodiacJobs.SECOND_JOB_LEVEL + " • Escolhas fixas.", 72, MUTED);
             }
+        } else if (page == Page.RESET_JOB) {
+            line(graphics, "Reinicia as profissões e o tabuleiro de licenças.", 42, TEXT);
+            line(graphics, "Mantém nível, Gil, LP atuais e Bestiário.", 55, MUTED);
+        } else if (page == Page.MONSTER) {
+            int kills = data.getCompoundOrEmpty("kills").getIntOr(monster.id(), 0);
+            line(graphics, "Habitat: " + monster.habitat(), 41, TEXT);
+            line(graphics, "Abates: " + kills + "   •   HP base: " + (int) monster.maxHealth(), 56, TEXT);
+            line(graphics, "Fraqueza: " + monster.weakness() + "   •   Resistência: " + monster.resistance(), 71, TEXT);
+        } else if (page == Page.HUNT) {
+            line(graphics, "Região: " + hunt.biomeId().replace('_', ' '), 39, TEXT);
+            line(graphics, "+" + hunt.gilReward() + " Gil   •   +" + hunt.lpReward() + " LP", 52, ACCENT);
+            line(graphics, listed("hunts", hunt.id()) ? "Concluída" : "Disponível", 65, TEXT);
+        } else if (page == Page.BESTIARY && data.getListOrEmpty("encountered").isEmpty()) {
+            line(graphics, "Explore os biomas para registrar suas primeiras criaturas.", 49, TEXT);
         }
-
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
     }
 
-    private static String clip(String text, int maxLen) {
-        if (text == null) return "";
-        return text.length() <= maxLen ? text : text.substring(0, maxLen) + "…";
+    public void refresh() {
+        rebuildWidgets();
     }
 
-    @Override
-    public boolean isPauseScreen() {
-        return false;
+    private static String shortName(IvaliceMonsterStats monster) {
+        String name = monster.displayName();
+        int annotation = name.indexOf(" (");
+        return annotation < 0 ? name : name.substring(0, annotation);
     }
 }

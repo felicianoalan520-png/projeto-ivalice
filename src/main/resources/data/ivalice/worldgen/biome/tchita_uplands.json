@@ -20,11 +20,11 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
+                "max_inclusive": 3,
+                "min_inclusive": 1
               },
               "type": "ivalice:hyena",
-              "weight": 14
+              "weight": 10
             },
             {
               "count": {

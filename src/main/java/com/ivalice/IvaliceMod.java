@@ -1,12 +1,16 @@
 package com.ivalice;
 
+import com.ivalice.combat.BattleManager;
 import com.ivalice.command.IvaliceCommands;
 import com.ivalice.config.IvaliceConfig;
 import com.ivalice.data.IvalicePlayerData;
+import com.ivalice.network.IvaliceStatePayload;
+import com.ivalice.job.ZodiacJobs;
 import com.ivalice.registry.IvaliceBlocks;
 import com.ivalice.registry.IvaliceCreativeTabs;
 import com.ivalice.registry.IvaliceEntities;
 import com.ivalice.registry.IvaliceItems;
+import com.ivalice.registry.IvaliceVillagers;
 import com.ivalice.worldgen.biome.IvaliceBiomes;
 import com.ivalice.worldgen.biome.IvaliceOverworldRegion;
 import com.ivalice.worldgen.biome.IvaliceOverworldSpawns;
@@ -55,15 +59,22 @@ public class IvaliceMod {
 
     public IvaliceMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(IvaliceStatePayload::register);
 
         // Registro modular de blocos, itens, entidades e abas criativas
         IvaliceBlocks.register(modEventBus);
         IvaliceItems.register(modEventBus);
         IvaliceEntities.register(modEventBus);
+        IvaliceVillagers.register(modEventBus);
         IvaliceCreativeTabs.register(modEventBus);
 
         // Eventos do servidor e sistema sazonal de Giza Plains
         NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.addListener(BattleManager::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(BattleManager::onLogout);
+        NeoForge.EVENT_BUS.addListener(BattleManager::onDamage);
+        NeoForge.EVENT_BUS.addListener(ZodiacJobs::onAttack);
+        NeoForge.EVENT_BUS.addListener(ZodiacJobs::onEquipmentChange);
         NeoForge.EVENT_BUS.addListener(GizaSeasonManager::onLevelTickPost);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onPotentialSpawns);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onEntityJoin);
@@ -103,6 +114,7 @@ public class IvaliceMod {
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             IvalicePlayerData.applyLicenseAttributes(serverPlayer);
+            IvaliceStatePayload.sendProfile(serverPlayer);
             // Se o jogador não tiver o Teleport Stone nem o Clan Primer no inventário, entrega o guia inicial
             if (serverPlayer.getInventory().countItem(IvaliceItems.TELEPORT_STONE.get()) == 0
                     && serverPlayer.getInventory().countItem(IvaliceItems.CLAN_PRIMER.get()) == 0) {
@@ -110,7 +122,7 @@ public class IvaliceMod {
                 serverPlayer.getInventory().add(new ItemStack(IvaliceItems.CLAN_PRIMER.get(), 1));
             }
             serverPlayer.sendSystemMessage(Component.literal(
-                    "✦ [PROJETO IVALICE — FINAL FANTASY XII] Bem-vindo a Ivalice! Clique Direito com o Teleport Stone ou Clan Primer (ou use /ivalice tp <bioma> e /ivalice kit) para explorar as 15 Regiões, Bestiário, Caçadas, Licenças e Bazaar!"
+                    "✦ [PROJETO IVALICE — FINAL FANTASY XII] Bem-vindo a Ivalice! Use 1 no teclado numérico para abrir o menu e 2 mirando uma criatura para batalhar. Use Num 5 para escolher suas profissões e /ivalice kit para explorar as 15 Regiões, Bestiário, Caçadas, Licenças e Bazaar!"
             ).withStyle(ChatFormatting.GOLD));
         }
     }

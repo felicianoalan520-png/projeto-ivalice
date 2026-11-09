@@ -1,10 +1,12 @@
 package com.ivalice.registry;
 
 import com.ivalice.IvaliceMod;
-import net.minecraft.core.Holder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -160,6 +163,30 @@ public class IvaliceBlocks {
                     .lightLevel(state -> 5)
                     .sound(SoundType.GRASS)
                     .pushReaction(PushReaction.POPPED));
+
+    public static final DeferredBlock<Block> DALMASCA_CARVED_BRICKS = masonry("dalmasca_carved_bricks", MapColor.SAND);
+    public static final DeferredBlock<Block> GIZA_PAINTED_ADOBE = masonry("giza_painted_adobe", MapColor.TERRACOTTA_ORANGE);
+
+    public static final DeferredBlock<Block> DALMASCA_EMBERBLOOM = regionalPlant("dalmasca_emberbloom");
+    public static final DeferredBlock<Block> GIZA_SUNBLOOM = regionalPlant("giza_sunbloom");
+    public static final DeferredBlock<Block> GOLMORE_ORCHID = regionalPlant("golmore_orchid");
+    public static final DeferredBlock<Block> PHON_SEA_LILY = regionalPlant("phon_sea_lily");
+
+    private static DeferredBlock<Block> masonry(String id, MapColor color) {
+        return registerBlock(id, Block::new, () -> BlockBehaviour.Properties.of().mapColor(color)
+                .strength(1.5F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.STONE));
+    }
+
+    private static DeferredBlock<Block> regionalPlant(String id) {
+        return registerBlock(id, properties -> new BushBlock(properties, 12) {
+            @Override
+            protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+                return super.mayPlaceOn(state, level, pos) || state.is(BlockTags.SAND)
+                        || state.is(DALMASCA_SAND.get()) || state.is(YENSA_FINE_SAND.get());
+            }
+        }, () -> BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollision()
+                .instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.POPPED));
+    }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(
             String name,

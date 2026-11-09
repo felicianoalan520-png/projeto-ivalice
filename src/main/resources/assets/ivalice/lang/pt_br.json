@@ -175,5 +175,19 @@
   "item.ivalice.galbana_lilies": "Lírios de Galbana",
   "item.ivalice.cactus_bloom": "Flor de Cacto",
   "item.ivalice.wyrmfire_shot": "Projétil Fogo de Dragão (Wyrmfire Shot)",
-  "item.ivalice.broken_key": "Chave Quebrada"
+  "item.ivalice.broken_key": "Chave Quebrada",
+  "key.categories.ivalice.controls": "Ivalice",
+  "key.ivalice.menu": "Menu de Ivalice",
+  "key.ivalice.battle": "Iniciar batalha",
+  "key.ivalice.journal": "Glossário e caçadas",
+  "key.ivalice.bestiary": "Bestiário",
+  "key.ivalice.character": "Personagem",
+  "key.ivalice.equipment": "Equipar itens",
+  "block.ivalice.dalmasca_emberbloom": "Flor-brasa de Dalmasca",
+  "block.ivalice.giza_sunbloom": "Flor-do-sol de Giza",
+  "block.ivalice.golmore_orchid": "Orquídea de Golmore",
+  "block.ivalice.phon_sea_lily": "Lírio costeiro de Phon",
+  "block.ivalice.dalmasca_carved_bricks": "Tijolos lavrados de Dalmasca",
+  "block.ivalice.giza_painted_adobe": "Adobe pintado de Giza",
+  "item.ivalice.zodiac_reset_seal": "Selo Zodiacal"
 }

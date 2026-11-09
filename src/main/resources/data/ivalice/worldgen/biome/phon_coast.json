@@ -32,11 +32,11 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
+                "max_inclusive": 3,
+                "min_inclusive": 1
               },
               "type": "ivalice:hyena",
-              "weight": 14
+              "weight": 10
             }
           ],
           "underground_water_creature": [],
@@ -118,7 +118,8 @@
       "minecraft:patch_sugar_cane",
       "minecraft:warm_ocean_vegetation",
       "minecraft:seagrass_warm",
-      "minecraft:sea_pickle"
+      "minecraft:sea_pickle",
+      "ivalice:patch_phon_sea_lily"
     ],
     [
       "minecraft:freeze_top_layer"

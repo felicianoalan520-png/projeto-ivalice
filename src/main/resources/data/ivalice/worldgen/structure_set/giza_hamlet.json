@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 10,
+    "salt": 30926029
+  },
+  "structures": [
+    {
+      "structure": "ivalice:giza_hamlet",
+      "weight": 1
+    }
+  ]
+}

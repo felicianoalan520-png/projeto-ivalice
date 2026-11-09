@@ -1,0 +1,16 @@
+{
+  "values": {
+    "ivalice:dalmasca_estersand": {
+      "villager_type": "ivalice:dalmasca"
+    },
+    "ivalice:dalmasca_westersand": {
+      "villager_type": "ivalice:dalmasca"
+    },
+    "ivalice:giza_plains_dry": {
+      "villager_type": "ivalice:giza"
+    },
+    "ivalice:ozmone_plain": {
+      "villager_type": "ivalice:giza"
+    }
+  }
+}

@@ -1,148 +1,207 @@
 package com.ivalice.client.gui;
 
-import com.ivalice.combat.BattleManager;
-import com.ivalice.entity.IvaliceMonsterEntity;
+import com.ivalice.client.ClientScreenHelper;
 import com.ivalice.entity.IvaliceMonsterStats;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 
-import java.util.List;
+public final class BattleScreen extends IvalicePanelScreen {
+    private enum Page { COMMANDS, MAGICK, MORE, CAST_MODE, TECHNICKS, TARGET }
+    private CompoundTag state;
+    private Page page = Page.COMMANDS;
+    private Page targetBack;
+    private Page spellBack;
+    private String spellLabel;
+    private int spellCost;
+    private String action;
+    private boolean waiting;
+    private boolean finished;
+    private int ticksWaiting;
+    private int targetsPage;
 
-/**
- * Interface de Combate por Turnos de Final Fantasy XII (Etapa 3.3).
- * Apresenta a janela clássica azul-marinho e dourada de Ivalice com:
- * - Painel de Status do Monstro / Mark / Esper (HP, Nível, Família, Fraqueza via Libra)
- * - Barra de HP e ATB do Jogador
- * - Menu de Comandos: Attack, Magicks (Fire, Blizzard, Thunder, Cure), Technicks (Libra, Steal), Items (Hi-Potion), Gambit Auto e Flee
- * - Registro de Batalha (Combat Log) em tempo real
- */
-public class BattleScreen extends Screen {
-    private final IvaliceMonsterEntity monster;
+    public BattleScreen(CompoundTag state) {
+        super("Encontro de Ivalice");
+        this.state = state;
+    }
 
-    public BattleScreen(IvaliceMonsterEntity monster) {
-        super(Component.literal("Final Fantasy XII — Active Dimension Battle"));
-        this.monster = monster;
+    public void acceptState(CompoundTag updated) {
+        state = updated;
+        waiting = false;
+        open(Page.COMMANDS);
+    }
+
+    public void finish() {
+        finished = true;
+        super.onClose();
     }
 
     @Override
     protected void init() {
-        super.init();
-        int centerX = this.width / 2;
-        int baseY = this.height / 2 - 20;
-
-        // Coluna 1: Comandos Principais (Attack, Gambit Auto, Cure, Hi-Potion, Flee)
-        int col1X = centerX - 185;
-        this.addRenderableWidget(Button.builder(Component.literal("⚔ Attack (Ataque)"), btn -> sendBattleCommand("attack"))
-                .bounds(col1X, baseY, 115, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("⚙ Gambit Auto-Turn"), btn -> sendBattleCommand("gambit"))
-                .bounds(col1X, baseY + 24, 115, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("✚ White Magick: Cura"), btn -> sendBattleCommand("cure"))
-                .bounds(col1X, baseY + 48, 115, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("🧪 Item: Hi-Potion"), btn -> sendBattleCommand("potion"))
-                .bounds(col1X, baseY + 72, 115, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("🏃 Flee (Recuar)"), btn -> {
-            sendBattleCommand("flee");
-            this.onClose();
-        }).bounds(col1X, baseY + 96, 115, 20).build());
-
-        // Coluna 2: Black/Time Magicks & Technicks (Fire, Blizzard, Thunder, Aero, Libra, Steal)
-        int col2X = centerX - 62;
-        this.addRenderableWidget(Button.builder(Component.literal("🔥 Black Magick: Fire"), btn -> sendBattleCommand("fire"))
-                .bounds(col2X, baseY, 125, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("❄ Black Magick: Blizzard"), btn -> sendBattleCommand("blizzard"))
-                .bounds(col2X, baseY + 24, 125, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("⚡ Black Magick: Thunder"), btn -> sendBattleCommand("thunder"))
-                .bounds(col2X, baseY + 48, 125, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("👁 Technick: Libra"), btn -> {
-            BattleManager.setClientLibraActive(true);
-            sendBattleCommand("libra");
-        }).bounds(col2X, baseY + 72, 125, 20).build());
-        this.addRenderableWidget(Button.builder(Component.literal("✋ Technick: Steal"), btn -> sendBattleCommand("steal"))
-                .bounds(col2X, baseY + 96, 125, 20).build());
+        layout(294, 123, true);
+        if (waiting) {
+            return;
+        }
+        switch (page) {
+            case COMMANDS -> {
+                option("Ataque", 0, 0, () -> select("attack"));
+                option("Magias", 1, 0, () -> open(Page.MAGICK));
+                option("Hi-Potion", 0, 1, () -> send("potion", firstTarget()));
+                option("Técnicas", 1, 1, () -> open(Page.TECHNICKS));
+                option("Gambit", 0, 2, () -> select("gambit"));
+                option("Fugir", 1, 2, () -> send("flee", firstTarget()));
+            }
+            case MAGICK -> {
+                if (state.getBooleanOr("black", false)) {
+                    option("Fire", 0, 0, () -> spell("fire", "Fire", 12));
+                    option("Blizzard", 1, 0, () -> spell("blizzard", "Blizzard", 12));
+                    option("Thunder", 0, 1, () -> spell("thunder", "Thunder", 22));
+                    option("Mais magias", 0, 2, () -> open(Page.MORE));
+                }
+                if (state.getBooleanOr("white", false)) {
+                    option("Cura • 10 MP", 1, 1, () -> send("cure", firstTarget()));
+                }
+                if (state.getBooleanOr("time", false) && !state.getBooleanOr("black", false)) {
+                    option("Hastega • 18 MP", 0, 0, () -> send("hastega", firstTarget()));
+                }
+            }
+            case MORE -> {
+                option("Aero", 0, 0, () -> spell("aero", "Aero", 14));
+                option("Aqua", 1, 0, () -> spell("water_magic", "Aqua", 14));
+                if (state.getBooleanOr("time", false)) {
+                    option("Hastega • 18 MP", 0, 1, () -> send("hastega", firstTarget()));
+                }
+            }
+            case CAST_MODE -> {
+                option("Alvo único • " + spellCost + " MP", 0, 0, () -> select(action));
+                option("Em área • " + (spellCost + com.ivalice.combat.BattleManager.AREA_MP_SURCHARGE) + " MP",
+                        1, 0, () -> send(action + "_area", firstTarget()));
+            }
+            case TECHNICKS -> {
+                option("Libra", 0, 0, () -> select("libra"));
+                option("Steal", 1, 0, () -> select("steal"));
+            }
+            case TARGET -> {
+                for (int i = targetsPage * 6; i < Math.min((targetsPage + 1) * 6, enemies().size()); i++) {
+                    CompoundTag target = enemies().getCompoundOrEmpty(i);
+                    var stats = IvaliceMonsterStats.byId(target.getStringOr("species", "wolf"));
+                    String name = stats.displayName();
+                    int annotation = name.indexOf(" (");
+                    if (annotation >= 0) name = name.substring(0, annotation);
+                    String suffix = " • " + target.getIntOr("hp", 0) + " HP";
+                    int slot = i % 6;
+                    String label = fit(name, (panelWidth - 25) / 2 - font.width(suffix) - 22) + suffix;
+                    option(label, slot % 2, slot / 2, () -> send(action, target.getIntOr("id", 0)));
+                }
+            }
+        }
+        if (page != Page.COMMANDS && page != Page.TARGET) {
+            button("Voltar", panelX + panelWidth - 68, panelY + 79, 59, this::onClose);
+        }
+        if (page == Page.TARGET && enemies().size() > 6) {
+            button(targetsPage == 0 ? "Alvo 7 ›" : "‹ 1 a 6", panelX + panelWidth - 72, panelY + 100, 63, () -> {
+                targetsPage = 1 - targetsPage;
+                rebuildWidgets();
+            });
+        }
     }
 
-    private void sendBattleCommand(String actionId) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && mc.player.connection != null && monster != null) {
-            mc.player.connection.sendCommand("ivalice battle " + monster.getId() + " " + actionId);
+    private ListTag enemies() {
+        return state.getListOrEmpty("enemies");
+    }
+
+    private int firstTarget() {
+        return enemies().getCompoundOrEmpty(0).getIntOr("id", 0);
+    }
+
+    private void spell(String id, String label, int cost) {
+        action = id;
+        spellLabel = label;
+        spellCost = cost;
+        spellBack = page;
+        open(Page.CAST_MODE);
+    }
+
+    private void select(String choice) {
+        if (enemies().size() <= 1) {
+            send(choice, firstTarget());
+        } else {
+            action = choice;
+            targetBack = page;
+            targetsPage = 0;
+            open(Page.TARGET);
+        }
+    }
+
+    private void open(Page next) {
+        page = next;
+        rebuildWidgets();
+    }
+
+    private void send(String choice, int id) {
+        if (waiting) return;
+        waiting = true;
+        ticksWaiting = 0;
+        rebuildWidgets();
+        ClientScreenHelper.command("ivalice battle " + id + " " + choice + " " + state.getIntOr("revision", 1));
+    }
+
+    @Override
+    public void tick() {
+        if (waiting && ++ticksWaiting > 100) {
+            super.onClose();
+        }
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return !waiting;
+    }
+
+    @Override
+    public void onClose() {
+        if (waiting) return;
+        switch (page) {
+            case COMMANDS -> send("flee", firstTarget());
+            case TARGET -> open(targetBack);
+            case MORE -> open(Page.MAGICK);
+            case CAST_MODE -> open(spellBack);
+            default -> open(Page.COMMANDS);
+        }
+    }
+
+    @Override
+    public void removed() {
+        if (!finished) {
+            ClientScreenHelper.command("ivalice battle " + firstTarget() + " flee");
         }
     }
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        //Se o monstro morreu, fecha a tela automaticamente após mostrar vitória
-        if (monster == null || !monster.isAlive()) {
-            this.onClose();
-            return;
+        String heading = switch (page) {
+            case COMMANDS -> "Rodada " + state.getIntOr("round", 1) + "   •   " + enemies().size() + " inimigo(s)";
+            case MAGICK, MORE -> "Magias";
+            case CAST_MODE -> spellLabel;
+            case TECHNICKS -> "Técnicas";
+            case TARGET -> "Escolha o alvo";
+        };
+        int hp = minecraft.player == null ? 0 : (int) Math.ceil(minecraft.player.getHealth());
+        drawPanel(graphics, heading, "HP " + hp + "   •   MP " + state.getIntOr("mp", 0)
+                + "/" + state.getIntOr("maxMp", 100));
+        if (waiting) {
+            line(graphics, "Resolvendo rodada…", 52, TEXT);
+        } else if (page == Page.CAST_MODE) {
+            line(graphics, "Alvo único: dano completo.", 58, TEXT);
+            line(graphics, "Em área: 60% de dano por inimigo.", 70, MUTED);
+        } else if (page == Page.MAGICK && !state.getBooleanOr("black", false)
+                && !state.getBooleanOr("white", false) && !state.getBooleanOr("time", false)) {
+            line(graphics, "Suas profissões atuais não concedem magias.", 52, TEXT);
+        } else if (page == Page.TARGET && enemies().size() > 6) {
+            line(graphics, "Esc para voltar", 105, MUTED);
+        } else {
+            line(graphics, state.getStringOr("message", ""), 105, MUTED);
         }
-
-        int centerX = this.width / 2;
-        int topY = this.height / 2 - 110;
-
-        // Fundo translúcido estilo FFXII Menu Window (Azul-Marinho Escuro com borda Dourada)
-        graphics.fillGradient(centerX - 195, topY, centerX + 195, topY + 218, 0xE60B1528, 0xEE060B16);
-        graphics.outline(centerX - 195, topY, 390, 218, 0xFFD4AF37);
-        graphics.outline(centerX - 193, topY + 2, 386, 214, 0x88AA8822);
-
-        IvaliceMonsterStats stats = monster.getStats();
-
-        // Cabeçalho da Batalha
-        graphics.centeredText(this.font, Component.literal("══ FINAL FANTASY XII — COMBATE EM IVALICE ══"), centerX, topY + 8, 0xFFFFD700);
-
-        // Painel do Inimigo (Topo)
-        graphics.fill(centerX - 185, topY + 22, centerX + 185, topY + 82, 0x9910203A);
-        graphics.outline(centerX - 185, topY + 22, 370, 60, 0xFF887020);
-
-        String titleLine = String.format("Alvo: %s   [Lv.%d | %s | %s]", stats.displayName(), stats.level(), stats.family(), stats.rankType());
-        graphics.text(this.font, Component.literal(titleLine), centerX - 178, topY + 27, 0xFFFFE066);
-
-        // Barra de HP do Monstro
-        float hpRatio = Math.clamp(monster.getHealth() / monster.getMaxHealth(), 0.0F, 1.0F);
-        int barWidth = 220;
-        int filledWidth = (int) (barWidth * hpRatio);
-        graphics.fill(centerX - 178, topY + 41, centerX - 178 + barWidth, topY + 51, 0xFF221111);
-        graphics.fill(centerX - 178, topY + 41, centerX - 178 + filledWidth, topY + 51, 0xFFCC2222);
-        graphics.outline(centerX - 178, topY + 41, barWidth, 10, 0xFFD4AF37);
-
-        String hpText = String.format("HP: %d / %d", (int) Math.ceil(monster.getHealth()), (int) Math.ceil(monster.getMaxHealth()));
-        graphics.text(this.font, Component.literal(hpText), centerX + 50, topY + 42, 0xFFFFFFFF);
-
-        // Linha Libra (Fraqueza Elemental, Resistência e Roubo)
-        String libraLine = String.format("Fraqueza Elemental (2x Dano): %s   |   Resistência: %s   |   Roubo: %s",
-                stats.weakness(), stats.resistance(), stats.stealItemId());
-        graphics.text(this.font, Component.literal(libraLine), centerX - 178, topY + 56, 0xFF55FFFF);
-
-        // Status do Jogador
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null) {
-            String playerLine = String.format("Herói: %s   |   HP: %d/%d   |   ATB: PRONTO [100%%]",
-                    mc.player.getName().getString(), (int) Math.ceil(mc.player.getHealth()), (int) Math.ceil(mc.player.getMaxHealth()));
-            graphics.text(this.font, Component.literal(playerLine), centerX - 178, topY + 69, 0xFF88FF88);
-        }
-
-        // Painel de Log de Combate (Direita)
-        int logX = centerX + 70;
-        int logY = this.height / 2 - 20;
-        graphics.fill(logX, logY, centerX + 185, logY + 116, 0xAA091220);
-        graphics.outline(logX, logY, 115, 116, 0xFF887020);
-        graphics.text(this.font, Component.literal("Registro de Turnos:"), logX + 5, logY + 5, 0xFFFFD700);
-
-        List<String> logs = BattleManager.getClientBattleLog();
-        int lineY = logY + 18;
-        for (String line : logs) {
-            String clipped = line.length() > 22 ? line.substring(0, 22) + "…" : line;
-            graphics.text(this.font, Component.literal("• " + clipped), logX + 4, lineY, 0xFFDDDDDD);
-            lineY += 13;
-        }
-
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        return false;
     }
 }

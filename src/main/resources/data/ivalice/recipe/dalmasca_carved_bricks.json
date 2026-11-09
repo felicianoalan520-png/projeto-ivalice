@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "ivalice:dalmasca_sandstone"
+  },
+  "result": {
+    "id": "ivalice:dalmasca_carved_bricks",
+    "count": 4
+  }
+}

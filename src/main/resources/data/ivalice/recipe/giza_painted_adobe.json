@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "minecraft:terracotta"
+  },
+  "result": {
+    "id": "ivalice:giza_painted_adobe",
+    "count": 4
+  }
+}

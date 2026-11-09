@@ -175,5 +175,19 @@
   "item.ivalice.galbana_lilies": "Galbana Lilies",
   "item.ivalice.cactus_bloom": "Cactus Bloom",
   "item.ivalice.wyrmfire_shot": "Wyrmfire Shot",
-  "item.ivalice.broken_key": "Broken Key"
+  "item.ivalice.broken_key": "Broken Key",
+  "key.categories.ivalice.controls": "Ivalice",
+  "key.ivalice.menu": "Ivalice menu",
+  "key.ivalice.battle": "Start battle",
+  "key.ivalice.journal": "Journal and hunts",
+  "key.ivalice.bestiary": "Bestiary",
+  "key.ivalice.character": "Character",
+  "key.ivalice.equipment": "Equipment",
+  "block.ivalice.dalmasca_emberbloom": "Dalmasca Emberbloom",
+  "block.ivalice.giza_sunbloom": "Giza Sunbloom",
+  "block.ivalice.golmore_orchid": "Golmore Orchid",
+  "block.ivalice.phon_sea_lily": "Phon Sea Lily",
+  "block.ivalice.dalmasca_carved_bricks": "Dalmasca Carved Bricks",
+  "block.ivalice.giza_painted_adobe": "Giza Painted Adobe",
+  "item.ivalice.zodiac_reset_seal": "Zodiac Seal"
 }

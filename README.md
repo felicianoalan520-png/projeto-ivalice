@@ -40,7 +40,7 @@ Recriação modular e progressiva do universo de **Final Fantasy XII: The Zodiac
 - **Etapa 2** — Itens, equipamentos, consumíveis, espólios, magias e técnicas.
 - **Etapa 3** — Criaturas com modelos e animações GeckoLib e combate por turnos.
 - **Etapa 4** — Bestiário, perfil do Clã Centurio, caçadas e recompensas.
-- **Etapa 5** — Belias e Mateus como alvos, Bazaar, licenças e Gambits. Estruturas e masmorras personalizadas seguem pendentes.
+- **Etapa 5** — Belias e Mateus como alvos, Bazaar, licenças, Gambits, profissões e os primeiros assentamentos regionais.
 
 ---
 
@@ -49,6 +49,8 @@ Recriação modular e progressiva do universo de **Final Fantasy XII: The Zodiac
 Com a geração de Ivalice ativa, os novos trechos do Overworld normal usam as regiões de Ivalice. Terreno e biomas gravados em mundos existentes são preservados, e esses trechos passam a receber a fauna de Ivalice. Animais domesticados, criaturas com nome e NPCs como aldeões são preservados. Nether e End mantêm sua fauna.
 
 Ichthon vive na água. As Marks e os Espers podem ser chamados pelo sistema de caçadas.
+
+Os trechos novos podem gerar o Entreposto de Estersand e a Aldeia de Giza. Eles têm aldeões com trajes regionais, alvenaria própria e pequenas praças. Flores regionais também crescem em Dalmasca, Giza, Golmore e Phon Coast.
 
 ## Como Executar e Testar
 
@@ -66,6 +68,25 @@ No diretório `c:\Users\Pichau\Downloads\Projeto_Game\ivalice`:
 ```
 
 Para instalar o `.jar` fora do ambiente de desenvolvimento, coloque-o na pasta `mods` do cliente e do servidor junto com TerraBlender 26.3.0.0.9 e GeckoLib 5.5.7.
+
+## Controles e encontros
+
+Com Num Lock ligado, o teclado numérico abre as telas de Ivalice. Os atalhos podem ser remapeados nos controles do Minecraft.
+
+| Tecla | Ação |
+| --- | --- |
+| Num 1 | Menu de Ivalice |
+| Num 2 | Iniciar encontro com a criatura na mira |
+| Num 3 | Glossário e caçadas |
+| Num 4 | Bestiário das criaturas encontradas |
+| Num 5 | Personagem, licenças e Gambits |
+| Num 6 | Inventário e equipamentos |
+
+Dentro do painel, os números escolhem as opções e Esc volta ou recua do encontro. No jogo solo, o mundo pausa enquanto você escolhe e roda durante a resolução da ação. Em multiplayer, o mundo segue ativo e os combatentes esperam a rodada. Cada encontro admite até sete inimigos. A velocidade determina a iniciativa e um ataque físico pode acertar duas vezes se o personagem for rápido o suficiente. As magias ofensivas oferecem alvo único com dano completo ou área com 60% do dano por inimigo e custo de 6 MP adicionais.
+
+Em **Personagem → Profissões do Zodíaco**, escolha uma das doze profissões. Uma segunda vaga abre no nível 5 e combina os equipamentos, magias e bônus das duas escolhas. O Selo Zodiacal de Mateus permite reiniciar as profissões e licenças. Nível, Gil, LP disponíveis e Bestiário são preservados.
+
+Os nascimentos naturais em terra respeitam sete hostis e três hienas por chunk. A regra é aplicada ao nascimento, então criaturas andando entre chunks podem formar grupos temporariamente maiores.
 
 Comandos de teste no jogo
 

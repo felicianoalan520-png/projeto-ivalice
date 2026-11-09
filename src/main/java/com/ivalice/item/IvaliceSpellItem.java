@@ -2,6 +2,7 @@ package com.ivalice.item;
 
 import com.ivalice.combat.BattleManager;
 import com.ivalice.entity.IvaliceMonsterEntity;
+import com.ivalice.job.ZodiacJobs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -61,6 +62,10 @@ public class IvaliceSpellItem extends IvaliceCatalogItem {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
+            if (!ZodiacJobs.permits(serverPlayer, getCategory())) {
+                serverPlayer.sendOverlayMessage(Component.literal("Sua profissão não permite esta magia."));
+                return InteractionResult.FAIL;
+            }
             castSpell(serverLevel, serverPlayer);
             player.getCooldowns().addCooldown(player.getItemInHand(hand), cooldownTicks);
         }
@@ -91,7 +96,7 @@ public class IvaliceSpellItem extends IvaliceCatalogItem {
             }
             case FIRE -> {
                 if (!monsters.isEmpty()) {
-                    BattleManager.executeTurnAction(player, monsters.getFirst(), "fire");
+                    BattleManager.castFieldSpell(player, monsters.getFirst(), "fire");
                 } else {
                     for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && !(e instanceof Player))) {
                         target.setRemainingFireTicks(100);
@@ -102,7 +107,7 @@ public class IvaliceSpellItem extends IvaliceCatalogItem {
             }
             case THUNDER -> {
                 if (!monsters.isEmpty()) {
-                    BattleManager.executeTurnAction(player, monsters.getFirst(), "thunder");
+                    BattleManager.castFieldSpell(player, monsters.getFirst(), "thunder");
                 } else {
                     for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && !(e instanceof Player))) {
                         target.hurtServer(level, level.damageSources().magic(), 12.0F);
@@ -112,7 +117,7 @@ public class IvaliceSpellItem extends IvaliceCatalogItem {
             }
             case BLIZZARD -> {
                 if (!monsters.isEmpty()) {
-                    BattleManager.executeTurnAction(player, monsters.getFirst(), "blizzard");
+                    BattleManager.castFieldSpell(player, monsters.getFirst(), "blizzard");
                 } else {
                     for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && !(e instanceof Player))) {
                         target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 120, 2));
@@ -123,7 +128,7 @@ public class IvaliceSpellItem extends IvaliceCatalogItem {
             }
             case LIBRA -> {
                 if (!monsters.isEmpty()) {
-                    BattleManager.executeTurnAction(player, monsters.getFirst(), "libra");
+                    BattleManager.castFieldSpell(player, monsters.getFirst(), "libra");
                 } else {
                     for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player)) {
                         target.addEffect(new MobEffectInstance(MobEffects.GLOWING, 300, 0));
@@ -133,7 +138,7 @@ public class IvaliceSpellItem extends IvaliceCatalogItem {
             }
             case STEAL -> {
                 if (!monsters.isEmpty()) {
-                    BattleManager.executeTurnAction(player, monsters.getFirst(), "steal");
+                    BattleManager.castFieldSpell(player, monsters.getFirst(), "steal");
                 } else {
                     player.sendOverlayMessage(Component.literal("✋ [Technick: Steal] Aproxime-se de uma criatura de Ivalice para roubar seu espólio!").withStyle(ChatFormatting.YELLOW));
                 }

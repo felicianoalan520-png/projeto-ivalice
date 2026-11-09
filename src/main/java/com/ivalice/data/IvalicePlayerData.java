@@ -3,6 +3,9 @@ package com.ivalice.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ivalice.IvaliceMod;
+import com.ivalice.entity.IvaliceMonsterStats;
+import com.ivalice.job.ZodiacJob;
+import com.ivalice.network.IvaliceStatePayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -38,6 +41,8 @@ public class IvalicePlayerData {
         public int gil = 500;
         public int lp = 30;
         public String activeHuntId = "";
+        public Set<String> jobs = new LinkedHashSet<>();
+        public Set<String> encounteredMonsters = new LinkedHashSet<>();
         public Map<String, Integer> bestiaryKills = new LinkedHashMap<>();
         public Set<String> completedHunts = new LinkedHashSet<>();
         public Set<String> unlockedLicenses = new LinkedHashSet<>();
@@ -50,7 +55,10 @@ public class IvalicePlayerData {
             activeGambits.add("SELF_HP_50_POTION");
             activeGambits.add("FOE_WEAKNESS_MAGIC");
             activeGambits.add("FOE_NEAREST_ATTACK");
-            // Licença básica inicial
+            addStarterLicenses();
+        }
+
+        public void addStarterLicenses() {
             unlockedLicenses.add("WHITE_MAGICK_1");
             unlockedLicenses.add("LIGHT_ARMOR_1");
             unlockedLicenses.add("SWORDS_1");
@@ -61,9 +69,22 @@ public class IvalicePlayerData {
         }
 
         public void recordKill(String speciesId, int rewardGil, int rewardLp) {
+            encounteredMonsters.add(speciesId);
             bestiaryKills.put(speciesId, getKills(speciesId) + 1);
             this.gil += rewardGil;
             this.lp += rewardLp;
+        }
+
+        public int getBattleLevel() {
+            long xp = 0;
+            for (IvaliceMonsterStats monster : IvaliceMonsterStats.ALL_MONSTERS) {
+                xp += (long) getKills(monster.id()) * monster.xpReward();
+            }
+            int level = 1;
+            while (level < 99 && xp >= 100L * level * (level + 1) / 2) {
+                level++;
+            }
+            return level;
         }
 
         public String getClanRank() {
@@ -88,6 +109,10 @@ public class IvalicePlayerData {
         return profile;
     }
 
+    public static void unload(UUID uuid) {
+        PROFILES.remove(uuid);
+    }
+
     public static void save(ServerPlayer player) {
         PlayerProfile profile = get(player);
         Path file = getPlayerFile(player);
@@ -99,6 +124,7 @@ public class IvalicePlayerData {
         } catch (IOException e) {
             IvaliceMod.LOGGER.error("[Projeto Ivalice] Falha ao salvar dados de Ivalice para {}: {}", player.getName().getString(), e.getMessage());
         }
+        IvaliceStatePayload.sendProfile(player);
     }
 
     private static PlayerProfile loadFromDisk(Path file) {
@@ -106,6 +132,7 @@ public class IvalicePlayerData {
             try (Reader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
                 PlayerProfile loaded = GSON.fromJson(reader, PlayerProfile.class);
                 if (loaded != null) {
+                    loaded.encounteredMonsters.addAll(loaded.bestiaryKills.keySet());
                     return loaded;
                 }
             } catch (Exception e) {
@@ -143,6 +170,15 @@ public class IvalicePlayerData {
         double bonusArmor = 0.0;
         if (profile.unlockedLicenses.contains("SHIELD_BLOCK_1")) bonusArmor += 3.0;
         if (profile.unlockedLicenses.contains("HEAVY_ARMOR_MAX")) bonusArmor += 4.0;
+
+        for (String id : profile.jobs) {
+            ZodiacJob job = ZodiacJob.byId(id);
+            if (job != null) {
+                bonusAttack += job.attack;
+                bonusArmor += job.armor;
+                bonusSpeed += job.speed;
+            }
+        }
 
         applyModifier(player.getAttribute(Attributes.MAX_HEALTH), "license_hp_bonus", bonusHp);
         applyModifier(player.getAttribute(Attributes.ATTACK_DAMAGE), "license_attack_bonus", bonusAttack);

@@ -158,9 +158,9 @@ ENTITIES_DATA = {
     "wolf": {
         "theme_color": "#2c1c13",
         "colors": {
-            "base": "#b89058", "shadow": "#7a542b", "highlight": "#d8b27d",
-            "belly": "#edd8ba", "muzzle": "#382318", "eye": "#f59e0b",
-            "eye_pupil": "#18181b", "nose": "#1c1917"
+            "base": "#a48d70", "shadow": "#544b43", "highlight": "#cfbd9a",
+            "belly": "#e1d2b1", "muzzle": "#5d4b42", "eye": "#f4bc52",
+            "eye_pupil": "#16151a", "nose": "#211b1c", "mane": "#65584c"
         },
         "bones": [
             {"name": "root", "pivot": [0, 0, 0]},
@@ -168,6 +168,11 @@ ENTITIES_DATA = {
              "cubes": [{"origin": [-3, 5, -6], "size": [6, 7, 12]}]},
             {"name": "neck", "parent": "body", "pivot": [0, 9, -5],
              "cubes": [{"origin": [-2, 7, -8], "size": [4, 5, 4]}]},
+            {"name": "mane", "parent": "neck", "pivot": [0, 11, -5],
+             "cubes": [
+                 {"origin": [-2.5, 10.75, -7.5], "size": [5, 3, 4]},
+                 {"origin": [-1.5, 11.5, -4], "size": [3, 2, 4]}
+             ]},
             {"name": "head", "parent": "neck", "pivot": [0, 10, -7],
              "cubes": [
                  {"origin": [-2.5, 8.5, -11], "size": [5, 5, 5]},
@@ -980,9 +985,29 @@ def generate_texture(name, entity_def, packed_uvs):
                             col = shade_color(cube_base, factor)
 
                             # Detailed procedural textures per creature
-                            if name in ("wolf", "thextera") and "body" in bname and fname == "front":
-                                if py > fy + fh // 2:
-                                    col = blend_colors(col, hex_rgba(c_map.get("belly", "#edd8ba")), 0.6)
+                            if name == "wolf":
+                                if bname in ("body", "neck", "mane"):
+                                    if fname == "top" or y <= 1 + (x * 3 % 4 == 0):
+                                        col = blend_colors(col, shadow_rgba, 0.75)
+                                    elif fname == "bottom" or y >= fh - 2:
+                                        col = blend_colors(col, hex_rgba(c_map["belly"]), 0.72)
+                                    elif (x * 11 + y * 7) % 19 < 7:
+                                        col = blend_colors(col, highlight_rgba, 0.5)
+                                elif bname.startswith("leg_") and y >= fh - 2:
+                                    col = shade_color(shadow_rgba, lum)
+                                elif bname == "tail" and (x < 2 or x >= fw - 2):
+                                    col = shade_color(shadow_rgba, lum)
+                                elif bname == "head" and idx == 1:
+                                    col = shade_color(hex_rgba(c_map["nose" if fname == "front" and y == 0 else "muzzle"]), lum)
+                                elif bname == "head" and fname in ("left", "right") and y == 1 and x in (1, fw - 2):
+                                    col = eye_rgba
+                            elif name == "thextera" and bname == "body" and fname == "front" and y > fh // 2:
+                                col = blend_colors(col, hex_rgba(c_map.get("belly", "#edd8ba")), 0.6)
+                            elif name == "giza_rabbit":
+                                if bname.startswith("ear_") and fname in ("front", "back") and y > 0:
+                                    col = blend_colors(col, hex_rgba(c_map["ear_inner"]), 0.72)
+                                elif bname in ("body", "head") and (y == 0 or x in (0, fw - 1)):
+                                    col = blend_colors(col, shadow_rgba, 0.55)
                             elif name == "hyena":
                                 if bname.startswith("leg_") and y >= fh - 2:
                                     col = shade_color(hex_rgba(c_map["muzzle"]), lum)
@@ -1168,7 +1193,7 @@ CREATURE_SPAWN_PARAMS = {
     "ivalice:cactoid": {"weight": 12, "min": 1, "max": 3},
     "ivalice:cockatrice": {"weight": 12, "min": 2, "max": 4},
     "ivalice:giza_rabbit": {"weight": 18, "min": 2, "max": 5},
-    "ivalice:hyena": {"weight": 14, "min": 2, "max": 4},
+    "ivalice:hyena": {"weight": 10, "min": 1, "max": 3},
     "ivalice:ichthon": {"weight": 14, "min": 2, "max": 4},
 }
 

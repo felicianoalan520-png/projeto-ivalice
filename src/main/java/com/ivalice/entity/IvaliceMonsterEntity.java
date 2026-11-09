@@ -13,10 +13,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -93,7 +92,15 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
+    public boolean canAttack(LivingEntity target) {
+        return !(target instanceof ServerPlayer player && BattleManager.isInBattle(player)) && super.canAttack(target);
+    }
+
+    @Override
     public void tick() {
+        if (!level().isClientSide() && isAlive() && BattleManager.isEngaged(this)) {
+            return;
+        }
         super.tick();
         if (!this.level().isClientSide() && this.tickCount % 20 == 0) {
             updateCustomNameplate();
@@ -121,30 +128,6 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
         this.setCustomNameVisible(true);
     }
 
-    /**
-     * Clicar com o botão direito na criatura abre ou inicia o Combate por Turnos de Final Fantasy XII (Etapa 3.3),
-     * ou exibe informações de Libra se estiver segurando o Clan Primer!
-     */
-    @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (hand != InteractionHand.MAIN_HAND) {
-            return InteractionResult.PASS;
-        }
-        if (!this.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
-            BattleManager.startOrResumeBattle(serverPlayer, this);
-            return InteractionResult.SUCCESS;
-        }
-        if (this.level().isClientSide()) {
-            BattleManager.openClientBattleScreen(this);
-            return InteractionResult.SUCCESS;
-        }
-        return super.mobInteract(player, hand);
-    }
-
-    /**
-     * Ao atacar uma criatura de Ivalice no mundo, engaja automaticamente o sistema de combate FFXII
-     * (aplicando Gambits automáticos, fraquezas elementais e feedback de turno) ou abre a tela de batalha se agachado.
-     */
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         if (source.getEntity() instanceof ServerPlayer serverPlayer) {
@@ -152,7 +135,7 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
             float finalAmount = BattleManager.calculateFieldDamage(serverPlayer, this, amount);
             boolean hit = super.hurtServer(level, source, finalAmount);
             if (hit && this.isAlive()) {
-                BattleManager.onPlayerFieldStrike(serverPlayer, this, finalAmount);
+                BattleManager.onPlayerFieldStrike(serverPlayer, this);
             }
             updateCustomNameplate();
             return hit;
@@ -185,6 +168,11 @@ public class IvaliceMonsterEntity extends PathfinderMob implements GeoEntity {
             if (rare != null) {
                 this.spawnAtLocation(level, new ItemStack(rare, 1));
             }
+        }
+
+        if ("mateus".equals(speciesId) && damageSource.getEntity() instanceof ServerPlayer
+                && random.nextFloat() < 0.12F) {
+            spawnAtLocation(level, new ItemStack(IvaliceItems.ZODIAC_RESET_SEAL.get()));
         }
 
         // Atualiza Bestiário, Gil, LP e verifica conclusão de Caçada (Mark Hunt) para o jogador!

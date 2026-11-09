@@ -5,9 +5,13 @@ import com.geckolib.renderer.GeoEntityRenderer;
 import com.ivalice.IvaliceMod;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import com.ivalice.registry.IvaliceEntities;
+import com.ivalice.network.IvaliceStatePayload;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -15,6 +19,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -25,12 +33,41 @@ import net.neoforged.neoforge.common.NeoForge;
 @Mod(value = IvaliceMod.MODID, dist = Dist.CLIENT)
 public class IvaliceModClient {
     private static int clientTicks = 0;
+    private static final KeyMapping.Category KEYS = KeyMapping.Category.register(
+            Identifier.fromNamespaceAndPath(IvaliceMod.MODID, "controls"));
+    private static final KeyMapping MENU = key("menu", InputConstants.KEY_NUMPAD1);
+    private static final KeyMapping BATTLE = key("battle", InputConstants.KEY_NUMPAD2);
+    private static final KeyMapping JOURNAL = key("journal", InputConstants.KEY_NUMPAD3);
+    private static final KeyMapping BESTIARY = key("bestiary", InputConstants.KEY_NUMPAD4);
+    private static final KeyMapping CHARACTER = key("character", InputConstants.KEY_NUMPAD5);
+    private static final KeyMapping EQUIPMENT = key("equipment", InputConstants.KEY_NUMPAD6);
+
+    private static KeyMapping key(String id, int key) {
+        return new KeyMapping("key.ivalice." + id, key, KEYS);
+    }
+
+    private void registerKeys(RegisterKeyMappingsEvent event) {
+        for (KeyMapping key : new KeyMapping[]{MENU, BATTLE, JOURNAL, BESTIARY, CHARACTER, EQUIPMENT}) {
+            event.register(key);
+        }
+    }
+
+    private void registerPayloads(RegisterClientPayloadHandlersEvent event) {
+        event.register(IvaliceStatePayload.TYPE, ClientScreenHelper::receive);
+    }
+
+    private void onDisconnect(ClientPlayerNetworkEvent.LoggingOut event) {
+        ClientScreenHelper.clearProfile();
+    }
 
     public IvaliceModClient(IEventBus modEventBus, ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::onRegisterRenderers);
+        modEventBus.addListener(this::registerKeys);
+        modEventBus.addListener(this::registerPayloads);
         NeoForge.EVENT_BUS.addListener(this::onClientTick);
+        NeoForge.EVENT_BUS.addListener(this::onDisconnect);
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
@@ -66,6 +103,20 @@ public class IvaliceModClient {
     }
 
     private void onClientTick(final ClientTickEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null && mc.player.isAlive() && mc.gui.screen() == null) {
+            if (MENU.consumeClick()) ClientScreenHelper.openHubScreen(-1);
+            else if (BATTLE.consumeClick()) {
+                if (mc.hitResult instanceof EntityHitResult hit && hit.getEntity() instanceof IvaliceMonsterEntity mob) {
+                    ClientScreenHelper.command("ivalice engage " + mob.getId());
+                } else {
+                    mc.player.sendSystemMessage(Component.literal("Mire em uma criatura de Ivalice próxima."));
+                }
+            } else if (JOURNAL.consumeClick()) ClientScreenHelper.openHubScreen(2);
+            else if (BESTIARY.consumeClick()) ClientScreenHelper.openHubScreen(1);
+            else if (CHARACTER.consumeClick()) ClientScreenHelper.openHubScreen(3);
+            else if (EQUIPMENT.consumeClick()) ClientScreenHelper.openEquipment();
+        }
         if ("true".equalsIgnoreCase(System.getProperty("ivalice.autoStopClient"))) {
             clientTicks++;
             if (clientTicks == 40) {

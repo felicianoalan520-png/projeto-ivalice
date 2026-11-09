@@ -10,7 +10,10 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -134,6 +137,25 @@ public class IvaliceEntities {
     ) {
         if (reason == EntitySpawnReason.NATURAL && type.getCategory() == MobCategory.MONSTER && pos.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ())) {
             return false;
+        }
+        if (reason == EntitySpawnReason.NATURAL && level instanceof ServerLevel serverLevel
+                && type.getCategory() == MobCategory.MONSTER) {
+            ChunkPos chunk = ChunkPos.containing(pos);
+            AABB bounds = new AABB(chunk.getMinBlockX(), level.getMinY(), chunk.getMinBlockZ(),
+                    chunk.getMaxBlockX() + 1, level.getMaxY() + 1, chunk.getMaxBlockZ() + 1);
+            int hostiles = 0;
+            int hyenas = 0;
+            for (IvaliceMonsterEntity mob : serverLevel.getEntitiesOfClass(IvaliceMonsterEntity.class, bounds,
+                    entity -> entity.isAlive() && entity.getType().getCategory() == MobCategory.MONSTER
+                            && entity.chunkPosition().equals(chunk))) {
+                hostiles++;
+                if (mob.getType() == HYENA.get()) {
+                    hyenas++;
+                }
+            }
+            if (hostiles >= 7 || (type == HYENA.get() && hyenas >= 3)) {
+                return false;
+            }
         }
         return !level.getBlockState(pos.below()).isAir();
     }

@@ -20,11 +20,11 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
+                "max_inclusive": 3,
+                "min_inclusive": 1
               },
               "type": "ivalice:hyena",
-              "weight": 14
+              "weight": 10
             },
             {
               "count": {
@@ -127,7 +127,8 @@
       "minecraft:flower_warm",
       "minecraft:patch_grass_savanna",
       "ivalice:patch_gysahl_greens",
-      "ivalice:patch_estersand_scrub"
+      "ivalice:patch_estersand_scrub",
+      "ivalice:patch_giza_sunbloom"
     ],
     [
       "minecraft:freeze_top_layer"
