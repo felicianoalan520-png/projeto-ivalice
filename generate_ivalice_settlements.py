@@ -773,10 +773,12 @@ def flora_and_blocks():
     for idx, (fname, petals, bright) in enumerate(extra_flora):
         f_px = plant_pixels(idx + 20, petals, bright)
         save_png(ASSETS / f"textures/block/{fname}.png", f_px)
-        f_n = [[(128, 128, 255, 255 if f_px[y][x][3] > 0 else 0) for x in range(32)] for y in range(32)]
+        f_n = [[(128, 128, 255, 255) for x in range(32)] for y in range(32)]
         f_s = [[(55, 28, 180, 180 if (fname == "feywood_white_lily" and f_px[y][x][3] > 0 and y < 14) else 0) for x in range(32)] for y in range(32)]
         save_png(ASSETS / f"textures/block/{fname}_n.png", f_n)
         save_png(ASSETS / f"textures/block/{fname}_s.png", f_s)
+
+    from upgrade_ivalice_item_sprites import save_png_32x32, upgrade_sprite_32x32
 
     seal = blank(16)
     for y in range(2, 14):
@@ -784,7 +786,8 @@ def flora_and_blocks():
             distance = abs(x - 7.5) + abs(y - 7.5)
             if distance <= 8:
                 seal[y][x] = shade((209, 161, 79) if distance >= 6 or (x + y) % 6 == 0 else (64, 100, 125), 12 - y)
-    save_png(ASSETS / "textures/item/zodiac_reset_seal.png", seal)
+    seal_texture = ASSETS / "textures/item/zodiac_reset_seal.png"
+    save_png_32x32(seal_texture, upgrade_sprite_32x32(seal_texture.name, 16, 16, seal))
     save_json(ASSETS / "items/zodiac_reset_seal.json", {"model": {"type": "minecraft:model", "model": "ivalice:item/zodiac_reset_seal"}})
     save_json(ASSETS / "models/item/zodiac_reset_seal.json", {
         "parent": "minecraft:item/generated", "textures": {"layer0": "ivalice:item/zodiac_reset_seal"},
