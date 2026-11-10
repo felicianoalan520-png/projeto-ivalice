@@ -1,4 +1,8 @@
 {
+  "entity.ivalice.dalmasca_guard": "Guarda de Dalmasca",
+  "ivalice.village.arrival": "Refúgio de Dalmasca. Os guardas vigiam as entradas. Use /ivalice vila para voltar.",
+  "ivalice.village.unavailable": "O refúgio não tem um ponto de chegada disponível.",
+  "ivalice.village.in_battle": "Encerre a batalha antes de voltar à vila.",
   "itemGroup.ivalice.world": "Ivalice: Regiões & Natureza",
   "itemGroup.ivalice.equipment": "Ivalice: Armas, Armaduras & Magicks",
   "itemGroup.ivalice.loot": "Ivalice: Espólios, Consumíveis & Criaturas",

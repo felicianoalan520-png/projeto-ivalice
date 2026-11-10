@@ -11,6 +11,7 @@ import com.ivalice.entity.IvaliceMonsterStats;
 import com.ivalice.registry.IvaliceEntities;
 import com.ivalice.registry.IvaliceItems;
 import com.ivalice.registry.IvaliceTzaCatalog;
+import com.ivalice.worldgen.structure.IvaliceStarterVillage;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -49,6 +50,8 @@ public class IvaliceCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("ivalice")
+                .then(Commands.literal("vila")
+                        .executes(ctx -> IvaliceStarterVillage.travel(ctx.getSource().getPlayerOrException()) ? 1 : 0))
                 // 1. /ivalice tp <biome> — Localiza o bioma em qualquer seed e teleporta o jogador para a superfície segura!
                 .then(Commands.literal("tp")
                         .then(Commands.argument("biome", StringArgumentType.greedyString())

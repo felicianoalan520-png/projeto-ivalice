@@ -89,6 +89,8 @@ public class IvaliceModClient {
     }
 
     private void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(IvaliceEntities.DALMASCA_GUARD.get(), ctx -> new GeoEntityRenderer<>(ctx,
+                new DefaultedEntityGeoModel<>(Identifier.fromNamespaceAndPath(IvaliceMod.MODID, "dalmasca_guard"))));
         registerGeoMonster(event, IvaliceEntities.WOLF.get(), "wolf");
         registerGeoMonster(event, IvaliceEntities.CACTOID.get(), "cactoid");
         registerGeoMonster(event, IvaliceEntities.HYENA.get(), "hyena");

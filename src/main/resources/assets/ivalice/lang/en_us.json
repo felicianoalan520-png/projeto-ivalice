@@ -1,4 +1,8 @@
 {
+  "entity.ivalice.dalmasca_guard": "Dalmascan Guard",
+  "ivalice.village.arrival": "Dalmasca Refuge. Guards watch the gates. Use /ivalice vila to return.",
+  "ivalice.village.unavailable": "The refuge has no safe arrival point available.",
+  "ivalice.village.in_battle": "Finish the battle before returning to the refuge.",
   "itemGroup.ivalice.world": "Ivalice: Regions & Nature",
   "itemGroup.ivalice.equipment": "Ivalice: Weapons, Armor & Magicks",
   "itemGroup.ivalice.loot": "Ivalice: Loot, Consumables & Creatures",

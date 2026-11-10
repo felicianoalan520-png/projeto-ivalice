@@ -17,6 +17,7 @@ import com.ivalice.worldgen.biome.IvaliceBiomes;
 import com.ivalice.worldgen.biome.IvaliceOverworldRegion;
 import com.ivalice.worldgen.biome.IvaliceOverworldSpawns;
 import com.ivalice.worldgen.season.GizaSeasonManager;
+import com.ivalice.worldgen.structure.IvaliceStarterVillage;
 import com.ivalice.worldgen.surface.IvaliceSurfaceRules;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
@@ -85,6 +86,8 @@ public class IvaliceMod {
         NeoForge.EVENT_BUS.addListener(ZodiacJobs::onAttack);
         NeoForge.EVENT_BUS.addListener(ZodiacJobs::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(GizaSeasonManager::onLevelTickPost);
+        NeoForge.EVENT_BUS.addListener(IvaliceStarterVillage::onLevelTick);
+        NeoForge.EVENT_BUS.addListener(IvaliceStarterVillage::onRespawn);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onPotentialSpawns);
         NeoForge.EVENT_BUS.addListener(IvaliceOverworldSpawns::onEntityJoin);
         NeoForge.EVENT_BUS.addListener(IvaliceVillagers::onEntityInteract);
@@ -123,6 +126,7 @@ public class IvaliceMod {
     @SubscribeEvent
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            IvaliceStarterVillage.welcome(serverPlayer);
             IvalicePlayerData.applyLicenseAttributes(serverPlayer);
             IvaliceStatePayload.sendProfile(serverPlayer);
             // Se o jogador não tiver o Teleport Stone nem o Clan Primer no inventário, entrega o guia inicial
@@ -176,6 +180,7 @@ public class IvaliceMod {
         if (overworld == null) {
             return;
         }
+        IvaliceStarterVillage.prepare(overworld);
         long seed = overworld.getSeed();
         LOGGER.info("[Projeto Ivalice] Verificando geração natural dos biomas de Final Fantasy XII no Overworld (Seed: {})...", seed);
 

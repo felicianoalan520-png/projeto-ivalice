@@ -3,6 +3,7 @@ package com.ivalice.registry;
 import com.ivalice.IvaliceMod;
 import com.ivalice.entity.IvaliceBestiary;
 import com.ivalice.entity.IvaliceFlyingEntity;
+import com.ivalice.entity.IvaliceGuardEntity;
 import com.ivalice.entity.IvaliceIchthonEntity;
 import com.ivalice.entity.IvaliceMonsterEntity;
 import net.minecraft.core.BlockPos;
@@ -33,6 +34,10 @@ import java.util.Map;
  */
 public class IvaliceEntities {
     public static final DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(IvaliceMod.MODID);
+
+    public static final DeferredHolder<EntityType<?>, EntityType<IvaliceGuardEntity>> DALMASCA_GUARD =
+            ENTITIES.registerEntityType("dalmasca_guard", IvaliceGuardEntity::new, MobCategory.CREATURE,
+                    b -> b.sized(0.62F, 1.82F).eyeHeight(1.64F));
 
     // === 6 Criaturas Canônicas Iniciais (Etapa 3.2) ===
     public static final DeferredHolder<EntityType<?>, EntityType<IvaliceMonsterEntity>> WOLF =
@@ -241,6 +246,7 @@ public class IvaliceEntities {
     }
 
     public static void registerAttributes(EntityAttributeCreationEvent event) {
+        event.put(DALMASCA_GUARD.get(), IvaliceGuardEntity.createAttributes().build());
         event.put(WOLF.get(), IvaliceMonsterEntity.createAttributes("wolf").build());
         event.put(CACTOID.get(), IvaliceMonsterEntity.createAttributes("cactoid").build());
         event.put(HYENA.get(), IvaliceMonsterEntity.createAttributes("hyena").build());

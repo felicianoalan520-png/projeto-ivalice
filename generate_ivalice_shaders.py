@@ -1,6 +1,6 @@
 """
 Projeto Ivalice - Iris & OptiFine PBR Shaderpack Generator
-Generates Ivalice-Realism-PBR.zip shaderpack with GLSL #version 120 compatibility profile.
+Generates Ivalice-Realism-PBR.zip for the Iris and OptiFine compatibility profile.
 Supports LabPBR 1.3 normal maps (_n.png) with POM, specular maps (_s.png) with metallic/smoothness,
 warm Dalmascan tone mapping, and atmospheric mist.
 """
@@ -22,6 +22,59 @@ SHADERS_PROPERTIES = """# Ivalice Realism PBR Shaderpack
 screen = IVALICE_PARALLAX POM_DEPTH
 screen.columns = 2
 sliders = POM_DEPTH
+"""
+
+SKY_VSH = """#version 120
+varying vec4 skyTint;
+varying vec3 skyDirection;
+uniform mat4 gbufferModelViewInverse;
+
+void main() {
+    skyTint = gl_Color;
+    skyDirection = mat3(gbufferModelViewInverse) * (gl_ModelViewMatrix * gl_Vertex).xyz;
+    gl_Position = ftransform();
+}
+"""
+
+SKY_FSH = """#version 120
+varying vec4 skyTint;
+varying vec3 skyDirection;
+uniform vec3 fogColor;
+uniform vec3 skyColor;
+uniform int renderStage;
+
+/* DRAWBUFFERS:0 */
+
+void main() {
+    if (renderStage == MC_RENDER_STAGE_SKY || renderStage == MC_RENDER_STAGE_VOID) {
+        float elevation = normalize(skyDirection).y;
+        float height = smoothstep(-0.06, 0.42, elevation);
+        vec3 upperSky = max(skyColor, fogColor * 0.35);
+        gl_FragData[0] = vec4(mix(fogColor, upperSky, height), 1.0);
+    } else {
+        gl_FragData[0] = skyTint;
+    }
+}
+"""
+
+SKY_TEXTURED_VSH = """#version 120
+varying vec4 skyTint;
+varying vec2 uv;
+void main() {
+    skyTint = gl_Color;
+    uv = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
+    gl_Position = ftransform();
+}
+"""
+
+SKY_TEXTURED_FSH = """#version 120
+uniform sampler2D gtexture;
+varying vec4 skyTint;
+varying vec2 uv;
+/* DRAWBUFFERS:0 */
+void main() {
+    gl_FragData[0] = texture2D(gtexture, uv) * skyTint;
+}
 """
 
 GBUFFERS_TERRAIN_VSH = """#version 130
@@ -62,12 +115,14 @@ void main() {
     viewVector = -viewPos.xyz;
 
     vec3 n = normalize(gl_NormalMatrix * gl_Normal);
+    if (length(n) < 0.1) n = vec3(0.0, 1.0, 0.0);
     vec3 t;
     if (length(at_tangent.xyz) > 0.01) {
         t = normalize(gl_NormalMatrix * at_tangent.xyz);
     } else {
         t = normalize(abs(n.y) < 0.99 ? cross(n, vec3(0.0, 1.0, 0.0)) : cross(n, vec3(1.0, 0.0, 0.0)));
     }
+    t = normalize(t - dot(t, n) * n);
     vec3 b = cross(t, n) * (at_tangent.w < 0.0 ? -1.0 : 1.0);
     tbnMatrix = mat3(t, b, n);
     normal = n;
@@ -94,6 +149,10 @@ uniform sampler2D gtexture;
 uniform sampler2D normals;
 uniform sampler2D specular;
 uniform sampler2D lightmap;
+uniform float alphaTestRef;
+uniform vec3 shadowLightPosition;
+uniform vec3 sunPosition;
+uniform float rainStrength;
 
 varying vec4 color;
 varying vec2 texcoord;
@@ -145,12 +204,15 @@ vec2 parallaxLocal(vec2 local, vec3 viewTS, float fade, vec2 inset, vec2 uvDx, v
 void main() {
     vec4 baseColor = texture2D(gtexture, texcoord);
     float coverage = baseColor.a * color.a;
-    if (coverage < 0.1) discard;
+    if (coverage < max(0.1, alphaTestRef)) discard;
 
     vec4 nSample = texture2D(normals, texcoord);
     vec4 sSample = texture2D(specular, texcoord);
     vec3 V = normalize(viewVector);
-    vec3 L = normalize(lightVector);
+    vec3 L = length(shadowLightPosition) > 0.1 ? normalize(shadowLightPosition) : normalize(lightVector);
+    float sunFacing = dot(L, normalize(lightVector));
+    float litSky = smoothstep(0.55, 0.95, lmcoord.y);
+    float directLight = litSky * mix(0.18, 1.0, smoothstep(-0.1, 0.5, sunFacing)) * (1.0 - rainStrength * 0.65);
 
     #if IVALICE_PARALLAX == 1
     vec2 uvDx = dFdx(texcoord);
@@ -181,33 +243,27 @@ void main() {
 
     vec4 albedo = vec4(baseColor.rgb * color.rgb, coverage);
     vec3 N = normalize(normal);
+    float distanceFade = 1.0 - smoothstep(14.0, 54.0, length(viewVector));
     vec2 normalXY = nSample.rg * 2.0 - 1.0;
-    if (length(normalXY) > 0.012) {
-        vec3 nTS = vec3(normalXY, sqrt(max(0.0, 1.0 - dot(normalXY, normalXY))));
-        N = normalize(tbnMatrix * nTS);
-    }
-    float ao = clamp(nSample.b, 0.35, 1.0);
-    float smoothness = sSample.r;
-    float f0 = sSample.g;
+    vec3 nTS = vec3(normalXY, sqrt(max(0.0, 1.0 - dot(normalXY, normalXY))));
+    N = normalize(mix(N, normalize(tbnMatrix * nTS), 0.48 * distanceFade));
+    float ao = clamp(nSample.b, 0.45, 1.0);
+    float smoothness = clamp(sSample.r, 0.0, 0.9);
+    float f0 = sSample.g < 0.9 ? min(sSample.g, 0.16) : 0.28;
     float emissive = sSample.a < 0.999 ? sSample.a : 0.0;
 
     vec4 lm = texture2D(lightmap, lmcoord);
     float NdotL = max(0.0, dot(N, L));
     vec3 H = normalize(L + V);
-    float roughness = max(0.05, 1.0 - smoothness);
-    float spec = pow(max(0.0, dot(N, H)), min(2.0 / (roughness * roughness), 256.0)) * smoothness * 0.6;
+    float roughness = max(0.28, 1.0 - smoothness);
+    float spec = pow(max(0.0, dot(N, H)), min(2.0 / (roughness * roughness), 40.0));
+    spec *= NdotL * smoothness * f0 * directLight * distanceFade;
 
-    vec3 specColor = vec3(1.0);
-    if (f0 > 0.88) {
-        specColor = albedo.rgb;
-        albedo.rgb *= 0.35 + 0.65 * (1.0 - smoothness);
-    }
-
-    // Keep vanilla brightness as baseline (lightmap), add directional relief on top.
-    float relief = mix(0.82, 1.12, NdotL);
-    vec3 finalColor = albedo.rgb * lm.rgb * relief * mix(0.85, 1.0, ao);
-    finalColor += spec * specColor * lm.rgb;
-    if (emissive > 0.25) finalColor += albedo.rgb * emissive * 1.6;
+    // Preserve the vanilla lightmap and apply material contrast at close range.
+    float relief = mix(1.0, mix(0.89, 1.06, NdotL), directLight);
+    vec3 finalColor = albedo.rgb * lm.rgb * relief * mix(1.0, ao, 0.25 * distanceFade);
+    finalColor += spec * mix(vec3(1.0), albedo.rgb, step(0.9, sSample.g)) * lm.rgb;
+    finalColor += albedo.rgb * emissive * 0.42;
 
     gl_FragData[0] = vec4(finalColor, albedo.a);
 }
@@ -236,36 +292,35 @@ COMPOSITE_FSH = """#version 120
 
 uniform sampler2D colortex0;
 uniform sampler2D depthtex0;
+uniform mat4 gbufferProjectionInverse;
+uniform vec3 fogColor;
+uniform float fogStart;
+uniform float fogEnd;
+uniform float far;
+uniform int fogShape;
+uniform int isEyeInWater;
 
 varying vec2 texcoord;
 
 /* DRAWBUFFERS:0 */
 
-float linearizeDepth(float depth) {
-    float near = 0.1;
-    float far = 256.0;
-    return (2.0 * near) / (far + near - depth * (far - near));
-}
-
 void main() {
     vec4 scene = texture2D(colortex0, texcoord);
     float depth = texture2D(depthtex0, texcoord).r;
-    float linDepth = linearizeDepth(depth);
-
     vec3 color = scene.rgb;
 
-    // Warm Ivalice tone mapping (Dalmasca golden sunlight)
-    vec3 warmColor = color * vec3(1.05, 1.01, 0.96);
-    color = (warmColor * (2.51 * warmColor + 0.03)) / (warmColor * (2.43 * warmColor + 0.59) + 0.14);
-
-    // Subtle atmospheric mist
-    if (depth < 1.0) {
-        float mistFactor = 1.0 - exp(-linDepth * 18.0 * 0.0035);
-        mistFactor = clamp(mistFactor, 0.0, 0.45);
-        vec3 mistColor = vec3(0.85, 0.80, 0.72);
-        color = mix(color, mistColor, mistFactor);
+    if (depth < 0.999999) {
+        vec4 projected = gbufferProjectionInverse * vec4(texcoord * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
+        vec3 view = projected.xyz / max(0.00001, abs(projected.w));
+        float distance = fogShape == 1 ? max(length(view.xz), abs(view.y)) : length(view);
+        float endDistance = fogEnd > 1.0 ? fogEnd : far;
+        float startDistance = isEyeInWater == 0 ? min(fogStart, endDistance * 0.68) : fogStart;
+        float fog = smoothstep(max(0.0, startDistance), max(startDistance + 1.0, endDistance), distance);
+        color = mix(color, fogColor, fog);
     }
 
+    // A restrained grade keeps night and dusk from crushing to black.
+    color = clamp(color * vec3(1.035, 1.005, 0.98), 0.0, 1.0);
     gl_FragData[0] = vec4(color, scene.a);
 }
 """
@@ -299,7 +354,7 @@ void main() {
     vec4 color = texture2D(colortex0, texcoord);
 
     vec2 coord = (texcoord - 0.5) * 2.0;
-    float vignette = 1.0 - dot(coord, coord) * 0.12;
+    float vignette = 1.0 - dot(coord, coord) * 0.045;
     color.rgb *= clamp(vignette, 0.0, 1.0);
 
     gl_FragColor = color;
@@ -307,7 +362,7 @@ void main() {
 """
 
 README_TEXT = """========================================================================
-IVALICE REALISM PBR SHADERPACK (v1.3)
+IVALICE REALISM PBR SHADERPACK (v1.4)
 Projeto Ivalice - Final Fantasy XII Minecraft 26.3 NeoForge
 ========================================================================
 
@@ -416,6 +471,12 @@ void main() {
 }
 """
 
+GBUFFERS_WATER_VSH = GBUFFERS_ENTITIES_VSH.replace(
+    "#version 120",
+    "#version 120\nattribute vec2 mc_Entity;\nvarying float waterBlock;",
+    1,
+).replace("void main() {", "void main() {\n    waterBlock = float(mc_Entity.x == 10000.0);", 1)
+
 GBUFFERS_WATER_FSH = """#version 120
 
 /*
@@ -425,6 +486,8 @@ GBUFFERS_WATER_FSH = """#version 120
 
 uniform sampler2D texture;
 uniform sampler2D lightmap;
+uniform vec3 fogColor;
+uniform float sunAngle;
 
 varying vec4 color;
 varying vec2 texcoord;
@@ -432,6 +495,7 @@ varying vec2 lmcoord;
 varying vec3 normal;
 varying vec3 viewVector;
 varying vec3 lightVector;
+varying float waterBlock;
 
 /* DRAWBUFFERS:0 */
 
@@ -448,11 +512,18 @@ void main() {
 
     float NdotV = max(0.0, dot(N, V));
     float fresnel = pow(1.0 - NdotV, 4.0) * 0.45;
-    float sunSpec = pow(max(0.0, dot(N, H)), 96.0) * 0.65;
+    float sunSpec = pow(max(0.0, dot(N, H)), 48.0) * 0.15 * smoothstep(0.6, 0.97, lmcoord.y);
 
     vec4 lm = texture2D(lightmap, lmcoord);
     vec3 finalRgb = albedo.rgb * lm.rgb + vec3(1.25, 1.15, 0.98) * (sunSpec + fresnel * 0.35);
-    float finalAlpha = clamp(albedo.a + fresnel * 0.25 + sunSpec * 0.35, 0.0, 1.0);
+    float finalAlpha = clamp(albedo.a + fresnel * 0.36 + sunSpec * 0.2, 0.0, 1.0);
+    if (waterBlock > 0.5) {
+        float daylight = smoothstep(0.0, 0.08, sunAngle) * (1.0 - smoothstep(0.42, 0.50, sunAngle));
+        vec3 waterTint = mix(color.rgb * vec3(0.53, 0.67, 0.79), albedo.rgb, 0.32);
+        finalRgb = mix(waterTint * lm.rgb, fogColor, fresnel * 0.56);
+        finalRgb += vec3(1.0, 0.94, 0.81) * sunSpec * daylight * 0.65;
+        finalAlpha = clamp(max(0.42, albedo.a) + fresnel * 0.69, 0.0, 0.90);
+    }
 
     gl_FragData[0] = vec4(finalRgb, finalAlpha);
 }
@@ -462,13 +533,18 @@ FILES = {
     "shaders/shaders.properties": SHADERS_PROPERTIES,
     "shaders/lang/en_us.lang": "option.IVALICE_PARALLAX=Parallax relief\noption.POM_DEPTH=Parallax depth\n",
     "shaders/lang/pt_br.lang": "option.IVALICE_PARALLAX=Relevo por paralaxe\noption.POM_DEPTH=Profundidade do relevo\n",
+    "shaders/gbuffers_skybasic.vsh": SKY_VSH,
+    "shaders/gbuffers_skybasic.fsh": SKY_FSH,
+    "shaders/gbuffers_skytextured.vsh": SKY_TEXTURED_VSH,
+    "shaders/gbuffers_skytextured.fsh": SKY_TEXTURED_FSH,
     "shaders/gbuffers_terrain.vsh": GBUFFERS_TERRAIN_VSH,
     "shaders/gbuffers_terrain.fsh": GBUFFERS_TERRAIN_FSH,
     "shaders/gbuffers_entities.vsh": GBUFFERS_ENTITIES_VSH,
     "shaders/gbuffers_entities.fsh": GBUFFERS_ENTITIES_FSH,
     "shaders/gbuffers_hand.vsh": GBUFFERS_ENTITIES_VSH,
     "shaders/gbuffers_hand.fsh": GBUFFERS_ENTITIES_FSH,
-    "shaders/gbuffers_water.vsh": GBUFFERS_ENTITIES_VSH,
+    "shaders/block.properties": "block.10000=minecraft:water minecraft:bubble_column\n",
+    "shaders/gbuffers_water.vsh": GBUFFERS_WATER_VSH,
     "shaders/gbuffers_water.fsh": GBUFFERS_WATER_FSH,
     "shaders/composite.vsh": COMPOSITE_VSH,
     "shaders/composite.fsh": COMPOSITE_FSH,

@@ -1,6 +1,7 @@
 package com.ivalice.worldgen.biome;
 
 import com.ivalice.config.IvaliceConfig;
+import com.ivalice.worldgen.structure.IvaliceStarterVillage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -25,6 +27,12 @@ public final class IvaliceOverworldSpawns {
 
     public static void onPotentialSpawns(LevelEvent.PotentialSpawns event) {
         if (!(event.getLevel() instanceof ServerLevel level)) {
+            return;
+        }
+
+        if (level.dimension().equals(Level.OVERWORLD) && event.getMobCategory() == MobCategory.MONSTER
+                && IvaliceStarterVillage.protects(level, event.getPos())) {
+            List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
             return;
         }
 
@@ -59,7 +67,7 @@ public final class IvaliceOverworldSpawns {
     public static void onEntityJoin(EntityJoinLevelEvent event) {
         if (event.getLevel() instanceof ServerLevel level && (usesIvaliceFauna(level) || usesRuinFauna(level))
                 && event.getEntity() instanceof Mob mob && isVanillaFauna(mob.getType())
-                && !mob.hasCustomName() && !(mob instanceof TamableAnimal pet && pet.isTame())) {
+                && !(mob instanceof Villager) && !mob.hasCustomName() && !(mob instanceof TamableAnimal pet && pet.isTame())) {
             event.setCanceled(true);
         }
     }
